@@ -190,15 +190,3 @@ class NLP_over_time:
         
         return named_entities
 
-nlp_flow = NLP_over_time()
-
-data = pd.read_parquet("voice_reddit_comments.parquet", engine="pyarrow")
-
-data_exp = nlp_flow.expand_dataframe_with_sentences(data, 'body')
-
-data_exp = nlp_flow.remove_stopwords(data_exp, 'body')
-
-frames = nlp_flow.get_frames(data_exp, 'created_utc', timescale='week')
-
-top_terms = nlp_flow.top_n_terms_per_frame(frames, 'body', n=10)
-
