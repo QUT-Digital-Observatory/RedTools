@@ -1,0 +1,18 @@
+# requirements.in
+numpy
+pandas
+bertopic
+matplotlib
+nltk
+tqdm
+plotly
+datetime
+transformers
+sentence_splitter
+scikit-learn
+spacy
+wordcloud
+praw
+networkx
+typing
+# End of requirements.in

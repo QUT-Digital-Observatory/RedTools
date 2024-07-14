@@ -2,7 +2,6 @@
 
 import numpy as np
 import pandas as pd
-import math
 import re
 from bertopic import BERTopic
 from cuml.cluster import HDBSCAN
@@ -20,7 +19,7 @@ import matplotlib.pyplot as plt
 
 config_path = "/home/fleetr/config.yaml"
 
-#TODO: switch for GPU to CPU in yaml and impelment alternates in code
+#TODO: switch for GPU to CPU in yaml and impelment alternates in code <--- cpu is default
 class TopicWindow:
     def __init__(self, config_path: str):
         self.data = []  # Changed to a list to keep track of weekly data slices
