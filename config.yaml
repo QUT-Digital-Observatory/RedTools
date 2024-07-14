@@ -1,0 +1,16 @@
+umap:
+  n_components: 5
+  n_neighbors: 15
+  min_dist: 0.0
+  random_state: 42
+
+hdbscan:
+  min_samples: 10
+  gen_min_span_tree: True
+  prediction_data: True
+
+bertopic:
+  calculate_probabilities: False
+  verbose: True
+  min_topic_size: 10
+  min_similarity: 0.7
