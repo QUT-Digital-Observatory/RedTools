@@ -84,6 +84,16 @@ class Reddit_trees:
             time.sleep(2)
 
         return pd.DataFrame(comments_data)
+    
+    def save_to_file(self, df: pd.DataFrame, filename: str, file_format: str = 'csv'):
+        if file_format == 'csv':
+            df.to_csv(filename, index=False)
+        elif file_format == 'excel':
+            df.to_excel(filename, index=False)
+        elif file_format == 'parquet':
+            df.to_parquet(filename, engine='pyarrow')
+        else:
+            raise ValueError("Invalid file format. Choose from 'csv', 'excel' or 'parquet'.")
 
     def topic_model_comments(self, comments, text_column="body"):
         umap_model = UMAP(n_components=5, n_neighbors=10, min_dist=0.0, random_state=42)
