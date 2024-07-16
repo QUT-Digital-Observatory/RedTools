@@ -176,5 +176,3 @@ class Reddit_trees:
     
 
 reddit_trees = Reddit_trees()
-
-comments = reddit_trees.fetch_comments(['1coh749'])
