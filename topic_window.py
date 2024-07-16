@@ -23,7 +23,7 @@ def load_config(config_path: str) -> dict:
         config = yaml.safe_load(file)
     return config
 
-config_path = '/home/fleetr/RedTools/config.yaml'
+config_path = 'config.yaml'
 
 config = load_config(config_path)
 hardware = config.get('hardware', 'CPU')
