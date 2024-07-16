@@ -539,43 +539,4 @@ class TopicWindow:
 #fit_transform each frame (merge models does not have the cTF-IDF matrix)
 #now get h trees for each frame
 
-    
-    
-topic_window = TopicWindow(config_path=config_path)
-
-data = pd.read_parquet("test_data_parq.parquet", engine="pyarrow")
-
-data_exp = topic_window.expand_dataframe_with_sentences(data, 'body')
-
-topic_window.fit(data_exp, 'created_utc', 'body', 'hour')
-
-merged_topics, merged_data_frames = topic_window.windows_merge_topics(4)
- 
-docs =topic_window.get_docs(merged_data_frames, merged_topics, 'body')
-
-tot = topic_window.topics_over_time(docs, 'created_utc', 'week')
-
-figs = topic_window.plot_topics_over_time(tot)
-
-figs_int = topic_window.plot_intertopic_distances(merged_topics)
-
-figs_rank = topic_window.plot_line_flow(tot)
-
-figs_stream = topic_window.plot_stacked_area(tot, 5)
-
-all_model = topic_window.all_model(data_exp, 'body')
-
-all_model_docs = topic_window.get_all_model_docs(all_model, data_exp, 'body')
-
-frames = topic_window.get_frames(data_exp, 'created_utc', timescale='week')
-
-windows, docs_a = topic_window.merge_frames_into_windows(frames, 4)
-
-models = topic_window.model_windows(windows, 'body')
-
-figs_hier = topic_window.visualise_hierarchy(models)
-
-hier_topics = topic_window.get_hierarchical_topics(models, docs_a)
-
-
 
