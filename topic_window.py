@@ -4,8 +4,6 @@ import numpy as np
 import pandas as pd
 import re
 from bertopic import BERTopic
-from cuml.cluster import HDBSCAN
-from cuml.manifold import UMAP
 import yaml
 from datetime import datetime
 from sentence_splitter import SentenceSplitter
@@ -17,7 +15,28 @@ from tqdm.auto import tqdm
 from nltk.corpus import stopwords
 import matplotlib.pyplot as plt
 
-config_path = "/home/fleetr/config.yaml"
+def load_config(config_path: str) -> dict:
+    """
+    Load the configuration file from the specified path.
+    """
+    with open(config_path, 'r') as file:
+        config = yaml.safe_load(file)
+    return config
+
+config_path = '/home/fleetr/RedTools/config.yaml'
+
+config = load_config(config_path)
+hardware = config.get('hardware', 'CPU')
+
+if hardware == 'GPU':
+    from cuml.manifold import UMAP
+    from cuml.cluster import HDBSCAN
+    print("Using GPU for UMAP and HDBSCAN.")
+else:
+    from umap import UMAP
+    from hdbscan import HDBSCAN
+    print("Using CPU for UMAP and HDBSCAN.")
+
 
 #TODO: switch for GPU to CPU in yaml and impelment alternates in code <--- cpu is default
 class TopicWindow:
@@ -133,17 +152,22 @@ class TopicWindow:
         hdbscan_params = self.config['hdbscan']
         bertopic_params = self.config['bertopic']
         # Initialize models with parameters from config
-        umap_model = UMAP(
+        if hardware == 'GPU':
+            umap_model = UMAP(
             n_components=umap_params['n_components'],
             n_neighbors=umap_params['n_neighbors'],
             min_dist=umap_params['min_dist'],
             random_state=umap_params['random_state']
         )
-        hdbscan_model = HDBSCAN(
+            hdbscan_model = HDBSCAN(
             min_samples=hdbscan_params['min_samples'],
             gen_min_span_tree=hdbscan_params['gen_min_span_tree'],
             prediction_data=hdbscan_params['prediction_data']
         )
+        else:
+            umap_model = UMAP()
+            hdbscan_model = HDBSCAN()   
+
         frames = self.get_frames(data, date_column, timescale)
         total_frames = len(frames)
         for i, frame in enumerate(frames, start=1):
@@ -371,17 +395,22 @@ class TopicWindow:
         hdbscan_params = self.config['hdbscan']
         bertopic_params = self.config['bertopic']
         # Initialize models with parameters from config
-        umap_model = UMAP(
+        if hardware == 'GPU':
+            umap_model = UMAP(
             n_components=umap_params['n_components'],
             n_neighbors=umap_params['n_neighbors'],
             min_dist=umap_params['min_dist'],
             random_state=umap_params['random_state']
         )
-        hdbscan_model = HDBSCAN(
+            hdbscan_model = HDBSCAN(
             min_samples=hdbscan_params['min_samples'],
             gen_min_span_tree=hdbscan_params['gen_min_span_tree'],
             prediction_data=hdbscan_params['prediction_data']
         )
+        else:
+            umap_model = UMAP()
+            hdbscan_model = HDBSCAN()    
+
         all_model = BERTopic(umap_model=umap_model, 
                          hdbscan_model=hdbscan_model,
                          calculate_probabilities=bertopic_params['calculate_probabilities'], 
@@ -442,17 +471,22 @@ class TopicWindow:
         hdbscan_params = self.config['hdbscan']
         bertopic_params = self.config['bertopic']
         # Initialize models with parameters from config
-        umap_model = UMAP(
+        if hardware == 'GPU':
+            umap_model = UMAP(
             n_components=umap_params['n_components'],
             n_neighbors=umap_params['n_neighbors'],
             min_dist=umap_params['min_dist'],
             random_state=umap_params['random_state']
         )
-        hdbscan_model = HDBSCAN(
+            hdbscan_model = HDBSCAN(
             min_samples=hdbscan_params['min_samples'],
             gen_min_span_tree=hdbscan_params['gen_min_span_tree'],
             prediction_data=hdbscan_params['prediction_data']
         )
+        else:
+            umap_model = UMAP()
+            hdbscan_model = HDBSCAN()    
+        
         models = []
         total_windows = len(windows)
         for i, window in enumerate(windows, start=1):
@@ -509,11 +543,11 @@ class TopicWindow:
     
 topic_window = TopicWindow(config_path=config_path)
 
-data = pd.read_parquet("voice_reddit_comments.parquet", engine="pyarrow")
+data = pd.read_parquet("test_data_parq.parquet", engine="pyarrow")
 
 data_exp = topic_window.expand_dataframe_with_sentences(data, 'body')
 
-topic_window.fit(data_exp, 'created_utc', 'body', 'week')
+topic_window.fit(data_exp, 'created_utc', 'body', 'hour')
 
 merged_topics, merged_data_frames = topic_window.windows_merge_topics(4)
  

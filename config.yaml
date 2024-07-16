@@ -14,3 +14,5 @@ bertopic:
   verbose: True
   min_topic_size: 10
   min_similarity: 0.7
+
+hardware: CPU
