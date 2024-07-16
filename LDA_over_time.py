@@ -199,22 +199,3 @@ class LDA_over_time:
         plt.axis('off')
         plt.title(f'Word Cloud for Topic {topic_id}')
         plt.show()
-
-        
-    
-
-lda = LDA_over_time()
-
-data = pd.read_parquet("voice_reddit_comments.parquet", engine="pyarrow")
-
-data_exp = lda.expand_dataframe_with_sentences(data, 'body')
-
-data_exp = lda.remove_stopwords(data_exp, 'body')
-
-results, lda_model = lda.lda_with_dataframe(data_exp, 'body', num_topics=10)
-
-fig = lda.visualize_topic_trends(results, 'created_utc', timescale='week')
-
-fig_2 = lda.visualize_topic_distribution(results)
-
-fig_3 = lda.visualize_word_cloud(5)
