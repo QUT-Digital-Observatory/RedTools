@@ -17,6 +17,7 @@ from sklearn.decomposition import LatentDirichletAllocation
 
 
 #TODO: LDA hierarchical clustering working here. Plus vis trees over time
+#TODO: Seeded LDA over time
 
 class LDA_over_time:
     def __init__(self):
