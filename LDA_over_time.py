@@ -160,6 +160,23 @@ class LDA_over_time:
             lda_models.append(lda_model)
         return lda_models
     
+    def merge_frames_into_windows(self, frames, window_size):
+        """
+        Merge frames into windows of specified size.
+        """
+        windows = []
+        docs = []
+        total_frames = len(frames)
+        for i in range(0, total_frames - window_size + 1):
+            window = pd.concat(frames[i:i + window_size]).reset_index(drop=True)
+            docs = window['body'].tolist()
+            windows.append(window)
+        return windows, docs
+    
+    def lda_model_for_windows(self, windows: list, text_column: str, num_topics: int = 5):
+
+
+
     def visualize_topic_trends(self, df, date_column, timescale='week'):
         """
         Visualize the trends of topics over time using a line plot.

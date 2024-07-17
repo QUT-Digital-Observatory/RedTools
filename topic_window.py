@@ -500,8 +500,8 @@ class TopicWindow:
                     min_topic_size=bertopic_params['min_topic_size']
                 ).fit(window[text_column])
                 models.append(model)
-        return models        
-
+        return models
+                
     def visualise_hierarchy(self, models):
         """
         Visualise the hierarchy of a specific topic in the model.
