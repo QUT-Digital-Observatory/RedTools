@@ -38,8 +38,6 @@ else:
     from hdbscan import HDBSCAN
     print("Using CPU for UMAP and HDBSCAN.")
 
-
-#TODO: switch for GPU to CPU in yaml and impelment alternates in code <--- cpu is default
 class TopicWindow:
     def __init__(self, config_path: str):
         self.data = []  # Changed to a list to keep track of weekly data slices
