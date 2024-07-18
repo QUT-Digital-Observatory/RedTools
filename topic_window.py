@@ -1,5 +1,6 @@
 #voice_tot
 
+from pydoc_data import topics
 import numpy as np
 import pandas as pd
 import re
@@ -26,7 +27,7 @@ def load_config(config_path: str) -> dict:
 config_path = 'config.yaml'
 
 config = load_config(config_path)
-hardware = config.get('hardware', 'CPU')
+hardware = config.get('hardware', 'GPU')
 
 if hardware == 'GPU':
     from cuml.manifold import UMAP
@@ -455,13 +456,14 @@ class TopicWindow:
         Merge frames into windows of specified size.
         """
         windows = []
-        docs = []
+        docs_out = []
         total_frames = len(frames)
         for i in range(0, total_frames - window_size + 1):
             window = pd.concat(frames[i:i + window_size]).reset_index(drop=True)
             docs = window['body'].tolist()
             windows.append(window)
-        return windows, docs
+            docs_out.append(docs)
+        return windows, docs_out
     
     def model_windows(self, windows, text_column):
         """
@@ -501,7 +503,7 @@ class TopicWindow:
                 ).fit(window[text_column])
                 models.append(model)
         return models
-                
+    #bugged            
     def visualise_hierarchy(self, models):
         """
         Visualise the hierarchy of a specific topic in the model.
@@ -511,7 +513,7 @@ class TopicWindow:
             fig = model.visualize_hierarchy()
             figs.append(fig)
         return figs
-    
+    #this is just not right
     def get_hierarchical_topics(self, models: list, docs: list):
         """
         Get the hierarchical topics for each model.

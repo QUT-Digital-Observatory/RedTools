@@ -174,8 +174,16 @@ class LDA_over_time:
         return windows, docs
     
     def lda_model_for_windows(self, windows: list, text_column: str, num_topics: int = 5):
-
-
+        """
+        Fits an LDA model to each window in the input list of windows.
+        """
+        lda_results = []
+        lda_models = []
+        for window in tqdm(windows):
+            df, lda_model = self.lda_with_dataframe(window[text_column], num_topics)
+            lda_results.append(df)
+            lda_models.append(lda_model)
+        return lda_results, lda_models
 
     def visualize_topic_trends(self, df, date_column, timescale='week'):
         """
