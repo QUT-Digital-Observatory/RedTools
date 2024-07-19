@@ -526,10 +526,30 @@ class TopicWindow:
             raise ValueError("The number of models and documents must be the same.")
 
         for model, doc_frame in zip(models, docs):
-            doc_list = doc_frame['text'].tolist()
-            hierarchical_topics.append(model.get_hierarchy(doc_list))
+            doc_list = doc_frame['body'].tolist()
+            hierarchical_topics.append(model.hierarchical_topics(doc_list))
         
         return hierarchical_topics
+    
+    def get_topic_tree(self, models: list, docs: list):
+        """
+        Get the topic tree for each model.
+
+        :param models: List of models.
+        :param docs: List of documents where each entry corresponds to a model.
+        :return: List of topic trees for each model.
+        """
+        topic_trees = []
+        
+        # Ensure that models and docs have the same length
+        if len(models) != len(docs):
+            raise ValueError("The number of models and documents must be the same.")
+
+        for model, doc_frame in zip(models, docs):
+            doc_list = doc_frame['body'].tolist()
+            topic_trees.append(model.get_topic_tree(doc_list))
+        
+        return topic_trees
 
         
     
