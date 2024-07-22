@@ -14,6 +14,7 @@ import plotly.graph_objects as go
 from tqdm.auto import tqdm
 from nltk.corpus import stopwords
 import matplotlib.pyplot as plt
+from typing import List, Tuple, Any
 
 def load_config(config_path: str) -> dict:
     """
@@ -447,115 +448,5 @@ class TopicWindow:
         topic_counts = topic_counts[topic].reset_index()
         fig = px.line(topic_counts, x='days', y=topic, title=f"Topic {topic} Over Time (Window {window_idx+1})", labels={"value": "Number of Documents", "days": "Days"})
         return fig
-
-    def merge_frames_into_windows(self, frames, window_size):
-        """
-        Merge frames into windows of specified size.
-        """
-        windows = []
-        docs_out = []
-        total_frames = len(frames)
-        for i in range(0, total_frames - window_size + 1):
-            window = pd.concat(frames[i:i + window_size]).reset_index(drop=True)
-            docs = window['body'].tolist()
-            windows.append(window)
-            docs_out.append(docs)
-        return windows, docs_out
-    
-    def model_windows(self, windows, text_column):
-        """
-        Fit a BERTopic model to each window in the input list.
-        """
-        umap_params = self.config['umap']
-        hdbscan_params = self.config['hdbscan']
-        bertopic_params = self.config['bertopic']
-        # Initialize models with parameters from config
-        if hardware == 'GPU':
-            umap_model = UMAP(
-            n_components=umap_params['n_components'],
-            n_neighbors=umap_params['n_neighbors'],
-            min_dist=umap_params['min_dist'],
-            random_state=umap_params['random_state']
-        )
-            hdbscan_model = HDBSCAN(
-            min_samples=hdbscan_params['min_samples'],
-            gen_min_span_tree=hdbscan_params['gen_min_span_tree'],
-            prediction_data=hdbscan_params['prediction_data']
-        )
-        else:
-            umap_model = UMAP()
-            hdbscan_model = HDBSCAN()    
-        
-        models = []
-        total_windows = len(windows)
-        for i, window in enumerate(windows, start=1):
-            print(f"Fitting model for window {i} of {total_windows}...")
-            if not window.empty:
-                model = BERTopic(
-                    umap_model=umap_model, 
-                    hdbscan_model=hdbscan_model, 
-                    calculate_probabilities=bertopic_params['calculate_probabilities'], 
-                    verbose=bertopic_params['verbose'], 
-                    min_topic_size=bertopic_params['min_topic_size']
-                ).fit(window[text_column])
-                models.append(model)
-        return models
-    #bugged            
-    def visualise_hierarchy(self, models):
-        """
-        Visualise the hierarchy of a specific topic in the model.
-        """
-        figs = []
-        for model in models:
-            fig = model.visualize_hierarchy()
-            figs.append(fig)
-        return figs
-    #this is just not right
-    def get_hierarchical_topics(self, models: list, docs: list):
-        """
-        Get the hierarchical topics for each model.
-
-        :param models: List of models.
-        :param docs: List of documents where each entry corresponds to a model.
-        :return: List of hierarchical topics for each model.
-        """
-        hierarchical_topics = []
-        
-        # Ensure that models and docs have the same length
-        if len(models) != len(docs):
-            raise ValueError("The number of models and documents must be the same.")
-
-        for model, doc_frame in zip(models, docs):
-            doc_list = doc_frame['body'].tolist()
-            hierarchical_topics.append(model.hierarchical_topics(doc_list))
-        
-        return hierarchical_topics
-    
-    def get_topic_tree(self, models: list, docs: list):
-        """
-        Get the topic tree for each model.
-
-        :param models: List of models.
-        :param docs: List of documents where each entry corresponds to a model.
-        :return: List of topic trees for each model.
-        """
-        topic_trees = []
-        
-        # Ensure that models and docs have the same length
-        if len(models) != len(docs):
-            raise ValueError("The number of models and documents must be the same.")
-
-        for model, doc_frame in zip(models, docs):
-            doc_list = doc_frame['body'].tolist()
-            topic_trees.append(model.get_topic_tree(doc_list))
-        
-        return topic_trees
-
-        
-    
-
-#TODO: vis h trees over time
-#fit_transform each frame (merge models does not have the cTF-IDF matrix)
-#now get h trees for each frame
 
 
