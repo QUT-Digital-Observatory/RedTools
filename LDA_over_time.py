@@ -14,6 +14,18 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.decomposition import LatentDirichletAllocation
+from sklearn.cluster import AgglomerativeClustering
+import scipy.sparse as sp
+
+import nltk
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
+from nltk.stem import WordNetLemmatizer
+
+
+nltk.download('punkt')
+nltk.download('stopwords')
+nltk.download('wordnet')
 
 
 #TODO: LDA hierarchical clustering working here. Plus vis trees over time
@@ -23,6 +35,8 @@ class LDA_over_time:
     def __init__(self):
         self.vectorizer = None
         self.lda_model = None
+        self.stopwords = set(stopwords.words('english'))
+        self.lemmatizer = WordNetLemmatizer()
 
     def __pre_process__(self, text: str) -> str:  
         text = re.sub(r"&gt;", "", text)
@@ -225,3 +239,100 @@ class LDA_over_time:
         plt.axis('off')
         plt.title(f'Word Cloud for Topic {topic_id}')
         plt.show()
+
+    #hierarchical LDAs
+    
+    def _preprocess_hlda(self, doc):
+        tokens = word_tokenize(doc.lower())
+        tokens = [word for word in tokens if word.isalnum()]
+        tokens = [word for word in tokens if word not in self.stopwords]  
+        tokens = [self.lemmatizer.lemmatize(word) for word in tokens]
+        return tokens
+    
+    def _get_top_words(self, model, feature_names, n_top_words=10):
+        top_words = {}
+        for topic_idx, topic in enumerate(model.components_):
+            top_words[topic_idx] = [feature_names[i] for i in topic.argsort()[:-n_top_words - 1:-1]]
+        return top_words
+    
+    def hlda_model(self, df: pd.DataFrame, text_column: str, n_topics: int = 10) -> pd.DataFrame:
+        # Apply preprocessing to each document in the DataFrame
+        processed_docs = df[text_column].apply(self._preprocess_hlda)
+        processed_docs = processed_docs.apply(lambda x: ' '.join(x))
+        
+        # Vectorize the documents
+        vectorizer = CountVectorizer()
+        doc_term_matrix = vectorizer.fit_transform(processed_docs)
+        
+        # Perform LDA
+        lda_model = LatentDirichletAllocation(n_components=n_topics, random_state=42)
+        lda_output = lda_model.fit_transform(doc_term_matrix)
+        
+        # Assign the most probable topic to each document
+        most_probable_topics = lda_output.argmax(axis=1)
+        
+        # Get the top words for each topic
+        feature_names = vectorizer.get_feature_names_out()
+        top_words = self._get_top_words(lda_model, feature_names)
+        
+        # Map the most probable topic's words to each document
+        topic_words = [', '.join(top_words[topic]) for topic in most_probable_topics]
+        
+        # Add the assigned topic and topic words to the DataFrame
+        df['assigned_topic'] = most_probable_topics
+        df['topic_words'] = topic_words
+        
+        # Hierarchical clustering of the topics
+        topic_distributions = lda_model.components_
+        clustering_model = AgglomerativeClustering(n_clusters=3)
+        hierarchical_topics = clustering_model.fit_predict(topic_distributions)
+        
+        # Add hierarchical cluster information
+        topic_hierarchy = {i: hierarchical_topics[i] for i in range(len(hierarchical_topics))}
+        df['hierarchical_topic'] = df['assigned_topic'].map(topic_hierarchy)
+        
+        return df
+
+    def _modify_term_matrix(self, term_matrix, vocab, seed_words, weight=10):
+        for topic, words in seed_words.items():
+            for word in words:
+                if word in vocab:
+                    word_index = vocab.tolist().index(word)
+                    term_matrix[:, word_index] *= weight
+        return term_matrix
+
+    def seeded_lda_model(self, df: pd.DataFrame, text_column: str, seed_words: dict, n_topics: int = 10, n_iter: int = 1000) -> pd.DataFrame:
+        # Apply preprocessing to each document in the DataFrame
+        processed_docs = df[text_column].apply(self._preprocess)
+        processed_docs = processed_docs.apply(lambda x: ' '.join(x))
+        
+        # Vectorize the documents
+        vectorizer = CountVectorizer()
+        doc_term_matrix = vectorizer.fit_transform(processed_docs)
+        vocab = vectorizer.get_feature_names_out()
+        
+        # Modify the term matrix with seed words
+        modified_term_matrix = self._modify_term_matrix(doc_term_matrix, vocab, seed_words)
+        
+        # Perform LDA
+        lda_model = LatentDirichletAllocation(n_components=n_topics, max_iter=n_iter, random_state=42)
+        lda_output = lda_model.fit_transform(modified_term_matrix)
+        
+        # Assign the most probable topic to each document
+        most_probable_topics = lda_output.argmax(axis=1)
+        
+        # Get the top words for each topic
+        feature_names = vectorizer.get_feature_names_out()
+        top_words = self._get_top_words(lda_model, feature_names)
+        
+        # Map the most probable topic's words to each document
+        topic_words = [', '.join(top_words[topic]) for topic in most_probable_topics]
+        
+        # Add the assigned topic and topic words to the DataFrame
+        df['assigned_topic'] = most_probable_topics
+        df['topic_words'] = topic_words
+        
+        return df
+# Seed words format: {topic_index: [list_of_seed_words]}
+# seed_words = {0: ['word1', 'word2'], 1: ['word3', 'word4']}
+

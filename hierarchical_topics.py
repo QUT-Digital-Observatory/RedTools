@@ -16,6 +16,10 @@ from tqdm.auto import tqdm
 from nltk.corpus import stopwords
 import matplotlib.pyplot as plt
 from topic_window import TopicWindow
+from sklearn.decomposition import PCA
+from sklearn.manifold import TSNE
+from sklearn.metrics.pairwise import cosine_similarity
+import plotly.express as px
 
 
 def load_config(config_path: str) -> dict:
@@ -69,9 +73,10 @@ class HierarchicalTopics:
 
     def get_topic_embeddings(self, data, text_column, date_column, timescale):
         topic_embeddings = []
+        interval_labels = []
         data_exp = self.topic_windows.expand_dataframe_with_sentences(data, text_column)
         frames = self.topic_windows.get_frames(data_exp, date_column, timescale)
-        for frame in tqdm(frames):
+        for i, frame in enumerate(tqdm(frames)):
             model = self.bert_topic.fit(frame[text_column])
             all_topics = sorted(list(model.get_topics().keys()))
             freq_df = model.get_topic_freq()
@@ -80,6 +85,48 @@ class HierarchicalTopics:
             indices = np.array([all_topics.index(topic) for topic in topics])
             embeddings = model.topic_embeddings_[indices]
             topic_embeddings.append(np.array(embeddings))
-        return topic_embeddings
+            interval_labels.extend([f"{timescale.capitalize()} {i+1}"] * len(embeddings))
+        return topic_embeddings, interval_labels
+    
+    def combine_topic_vectors(self, topic_embeddings_list):
+        all_topic_vectors = np.vstack(topic_embeddings_list)
+        return all_topic_vectors
+
+    def reduce_dimensionality(self, topic_vectors, method='pca'):
+        if method == 'pca':
+            pca = PCA(n_components=2)
+            reduced_vectors = pca.fit_transform(topic_vectors)
+        elif method == 'tsne':
+            tsne = TSNE(n_components=2, random_state=42)
+            reduced_vectors = tsne.fit_transform(topic_vectors)
+        else:
+            raise ValueError("Invalid method. Use 'pca' or 'tsne'.")
+        return reduced_vectors
+
+    def calculate_similarity(self, topic_vectors):
+        return cosine_similarity(topic_vectors)
+
+    def visualize_topics(self, reduced_vectors, interval_labels, method='pca'):
+        df = pd.DataFrame(reduced_vectors, columns=[f'{method.upper()}1', f'{method.upper()}2'])
+        df['interval'] = interval_labels
+        
+        if method == 'pca':
+            plt.figure(figsize=(10, 6))
+            scatter = plt.scatter(df[f'{method.upper()}1'], df[f'{method.upper()}2'], c=pd.Categorical(df['interval']).codes, cmap='viridis')
+            plt.colorbar(scatter, ticks=range(len(set(interval_labels))), label='Intervals')
+            for i, interval in enumerate(df['interval']):
+                plt.annotate(interval, (df[f'{method.upper()}1'][i], df[f'{method.upper()}2'][i]))
+            plt.title(f'Topic Evolution Over Time ({method.upper()})')
+            plt.xlabel(f'{method.upper()} Component 1')
+            plt.ylabel(f'{method.upper()} Component 2')
+            plt.show()
+        elif method == 'tsne':
+            fig = px.scatter(df, x=f'{method.upper()}1', y=f'{method.upper()}2', color='interval', text='interval',
+                             title=f'Topic Evolution Over Time ({method.upper()})')
+            fig.update_traces(textposition='top center')
+            fig.update_layout(xaxis_title=f'{method.upper()} Component 1', yaxis_title=f'{method.upper()} Component 2')
+            fig.show()
+        else:
+            raise ValueError("Invalid method. Use 'pca' or 'tsne'.")
 
 
