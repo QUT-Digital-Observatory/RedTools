@@ -8,11 +8,32 @@ from typing import List, Dict
 from datetime import datetime
 import time
 from bertopic import BERTopic
-from cuml.cluster import HDBSCAN
-from cuml.manifold import UMAP
 from typing import Tuple
 import networkx as nx
 import praw
+import yaml
+
+def load_config(config_path: str) -> dict:
+    """
+    Load the configuration file from the specified path.
+    """
+    with open(config_path, 'r') as file:
+        config = yaml.safe_load(file)
+    return config
+
+config_path = 'config.yaml'
+
+config = load_config(config_path)
+hardware = config.get('hardware', 'GPU')
+
+if hardware == 'GPU':
+    from cuml.manifold import UMAP
+    from cuml.cluster import HDBSCAN
+    print("Using GPU for UMAP and HDBSCAN.")
+else:
+    from umap import UMAP
+    from hdbscan import HDBSCAN
+    print("Using CPU for UMAP and HDBSCAN.")
 
 # Create a Reddit instance
 reddit = praw.Reddit(client_id='voiLhjY_Q0uJwzVwU9Xbhg', 
@@ -96,18 +117,67 @@ class Reddit_trees:
             raise ValueError("Invalid file format. Choose from 'csv', 'excel' or 'parquet'.")
 
     def topic_model_comments(self, comments, text_column="body"):
-        umap_model = UMAP(n_components=5, n_neighbors=10, min_dist=0.0, random_state=42)
-        hdbscan_model = HDBSCAN(min_samples=5, gen_min_span_tree=True, prediction_data=True)
-        topic_model = BERTopic(umap_model=umap_model, hdbscan_model=hdbscan_model, verbose=True)
+        umap_params = self.config['umap']
+        hdbscan_params = self.config['hdbscan']
+        bertopic_params = self.config['bertopic']
+        # Initialize models with parameters from config
+        if hardware == 'GPU':
+            umap_model = UMAP(
+            n_components=umap_params['n_components'],
+            n_neighbors=umap_params['n_neighbors'],
+            min_dist=umap_params['min_dist'],
+            random_state=umap_params['random_state']
+        )
+            hdbscan_model = HDBSCAN(
+            min_samples=hdbscan_params['min_samples'],
+            gen_min_span_tree=hdbscan_params['gen_min_span_tree'],
+            prediction_data=hdbscan_params['prediction_data']
+        )
+        else:
+            umap_model = UMAP()
+            hdbscan_model = HDBSCAN()  
+
+        umap_model = umap_model
+        hdbscan_model = hdbcan_model
+        topic_model = BERTopic(
+                    umap_model=umap_model, 
+                    hdbscan_model=hdbscan_model, 
+                    calculate_probabilities=bertopic_params['calculate_probabilities'], 
+                    verbose=bertopic_params['verbose'], 
+                    min_topic_size=bertopic_params['min_topic_size'])
         topics, _ = topic_model.fit_transform(comments[text_column])
         docs = topic_model.get_document_info(comments[text_column], df = comments)
         topic_list = topic_model.get_topic_info()
         return docs, topic_list
     
     def topic_model_submissions(self, submissions, text_column_1="selftext", text_column_2="title"):
-        umap_model = UMAP(n_components=5, n_neighbors=10, min_dist=0.0, random_state=42)
-        hdbscan_model = HDBSCAN(min_samples=5, gen_min_span_tree=True, prediction_data=True)
-        topic_model = BERTopic(umap_model=umap_model, hdbscan_model=hdbscan_model, verbose=True)
+        umap_params = self.config['umap']
+        hdbscan_params = self.config['hdbscan']
+        bertopic_params = self.config['bertopic']
+        # Initialize models with parameters from config
+        if hardware == 'GPU':
+            umap_model = UMAP(
+            n_components=umap_params['n_components'],
+            n_neighbors=umap_params['n_neighbors'],
+            min_dist=umap_params['min_dist'],
+            random_state=umap_params['random_state']
+        )
+            hdbscan_model = HDBSCAN(
+            min_samples=hdbscan_params['min_samples'],
+            gen_min_span_tree=hdbscan_params['gen_min_span_tree'],
+            prediction_data=hdbscan_params['prediction_data']
+        )
+        else:
+            umap_model = UMAP()
+            hdbscan_model = HDBSCAN() 
+        umap_model = umap_model
+        hdbscan_model = hdbscan_model
+        topic_model = BERTopic(
+                    umap_model=umap_model, 
+                    hdbscan_model=hdbscan_model, 
+                    calculate_probabilities=bertopic_params['calculate_probabilities'], 
+                    verbose=bertopic_params['verbose'], 
+                    min_topic_size=bertopic_params['min_topic_size'])
         combined_text = submissions[text_column_1] + submissions[text_column_2]
         topics, _ = topic_model.fit_transform(combined_text)
         docs = topic_model.get_document_info(combined_text, df = submissions)
@@ -124,9 +194,34 @@ class Reddit_trees:
         combined_text = comments[text_column].tolist() + (submissions[text_column_1] + submissions[text_column_2]).tolist()
 
         # Initialize the models
-        umap_model = UMAP(n_components=5, n_neighbors=10, min_dist=0.0, random_state=42)
-        hdbscan_model = HDBSCAN(min_samples=5, gen_min_span_tree=True, prediction_data=True)
-        topic_model = BERTopic(umap_model=umap_model, hdbscan_model=hdbscan_model, verbose=True)
+        umap_params = self.config['umap']
+        hdbscan_params = self.config['hdbscan']
+        bertopic_params = self.config['bertopic']
+        # Initialize models with parameters from config
+        if hardware == 'GPU':
+            umap_model = UMAP(
+            n_components=umap_params['n_components'],
+            n_neighbors=umap_params['n_neighbors'],
+            min_dist=umap_params['min_dist'],
+            random_state=umap_params['random_state']
+        )
+            hdbscan_model = HDBSCAN(
+            min_samples=hdbscan_params['min_samples'],
+            gen_min_span_tree=hdbscan_params['gen_min_span_tree'],
+            prediction_data=hdbscan_params['prediction_data']
+        )
+        else:
+            umap_model = UMAP()
+            hdbscan_model = HDBSCAN()
+            
+        umap_model = umap_model
+        hdbscan_model = hdbscan_model
+        topic_model = BERTopic(
+                    umap_model=umap_model, 
+                    hdbscan_model=hdbscan_model, 
+                    calculate_probabilities=bertopic_params['calculate_probabilities'], 
+                    verbose=bertopic_params['verbose'], 
+                    min_topic_size=bertopic_params['min_topic_size'])
 
         # Fit the model
         topics, _ = topic_model.fit_transform(combined_text)
