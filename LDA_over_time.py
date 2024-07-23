@@ -303,7 +303,7 @@ class LDA_over_time:
 
     def seeded_lda_model(self, df: pd.DataFrame, text_column: str, seed_words: dict, n_topics: int = 10, n_iter: int = 1000) -> pd.DataFrame:
         # Apply preprocessing to each document in the DataFrame
-        processed_docs = df[text_column].apply(self._preprocess)
+        processed_docs = df[text_column].apply(self._preprocess_hlda)
         processed_docs = processed_docs.apply(lambda x: ' '.join(x))
         
         # Vectorize the documents
