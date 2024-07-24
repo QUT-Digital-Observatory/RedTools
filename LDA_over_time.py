@@ -1,5 +1,6 @@
 #LDA over time
 
+from typing import Any
 import numpy as np
 import pandas as pd
 from sentence_splitter import SentenceSplitter
@@ -336,3 +337,12 @@ class LDA_over_time:
 # Seed words format: {topic_index: [list_of_seed_words]}
 # seed_words = {0: ['word1', 'word2'], 1: ['word3', 'word4']}
 
+    def seeded_lda_for_windows(self, windows: list, text_column: str, seed_words: dict, n_topics: int = 10, n_iter: int = 1000):
+        """
+        Fits a seeded LDA model to each window in the input list of windows.
+        """
+        lda_results = []
+        for window in tqdm(windows):
+            df = self.seeded_lda_model(window, text_column, seed_words, n_topics, n_iter)
+            lda_results.append(df)
+        return lda_results    

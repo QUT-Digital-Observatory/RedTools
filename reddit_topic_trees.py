@@ -12,6 +12,9 @@ from typing import Tuple
 import networkx as nx
 import praw
 import yaml
+from sentence_splitter import SentenceSplitter
+import re
+from nltk.corpus import stopwords
 
 def load_config(config_path: str) -> dict:
     """
@@ -45,6 +48,7 @@ reddit = praw.Reddit(client_id='voiLhjY_Q0uJwzVwU9Xbhg',
 class Reddit_trees:
     def __init__(self):
         self.reddit = reddit 
+        self.config = config
     
     def search_subreddit(self, query, subreddit="australia", sort="new"):
         subreddit = self.reddit.subreddit(subreddit)
@@ -115,6 +119,61 @@ class Reddit_trees:
             df.to_parquet(filename, engine='pyarrow')
         else:
             raise ValueError("Invalid file format. Choose from 'csv', 'excel' or 'parquet'.")
+        
+    def __pre_process__(self, text: str) -> str:  
+        text = re.sub(r"&gt;", "", text)
+        text = text.lower()
+        text = re.sub(r"http\S+", "", text)
+        text = re.sub(r"@\w+", "", text)
+        text = re.sub(r"[^a-zA-Z\s]", "", text)
+        text = text.replace("\n", "").replace("\t", "").strip()
+        return text
+    
+    def __sentence_chunker__(self, text: str) -> list:
+    
+        splitter = SentenceSplitter(language="en")
+        return splitter.split(text)
+    
+    #You can process 1) a dataframe that you want to split into sentences and pre_process, 2) a dataframe that is not split into sentences but is pre_processed, 3) a dataframe that is not split into sentences and is not pre_processed
+
+    def expand_dataframe_with_sentences(self, df: pd.DataFrame, text_column: str) -> pd.DataFrame:
+        """
+        Expands a DataFrame by splitting the text in a specified column into sentences,
+        preprocesses them, and each sentence retains metadata from the original row.
+        """
+        # Apply sentence_chunker to the text column and explode the result into new rows
+        df[text_column] = df[text_column].astype(str)
+        df.dropna(subset=[text_column], inplace=True)
+        df['sentences'] = df[text_column].apply(self.__sentence_chunker__)
+        df_expanded = df.explode('sentences')
+
+        df_expanded = df_expanded[df_expanded['sentences'].str.strip() != '']
+        df_expanded['sentences'] = df_expanded['sentences'].apply(self.__pre_process__)
+        df_expanded[text_column] = df_expanded['sentences']
+        df_expanded.drop(columns=['sentences'], inplace=True)
+
+        df_expanded = df_expanded[df_expanded[text_column].str.strip() != '' ]
+        
+        df_expanded.reset_index(drop=True, inplace=True)
+
+        return df_expanded
+    
+    def processed_text_column(self, df: pd.DataFrame, text_column: str) -> pd.DataFrame:
+        """
+        Preprocesses the text in the specified column of the input DataFrame.
+        """
+        # Apply the pre_process function to the text column
+        df[text_column] = df[text_column].astype(str)
+        df[text_column] = df[text_column].apply(self.__pre_process__)
+        return df
+
+    def remove_stopwords(self, df: pd.DataFrame, text_column: str) -> pd.DataFrame:
+        """
+        Removes stopwords from the text in the specified column of the input DataFrame.
+        """
+        # Remove stopwords from the text column
+        df[text_column] = df[text_column].apply(lambda x: ' '.join([word for word in x.split() if word not in (stopwords.words('english'))]))
+        return df    
 
     def topic_model_comments(self, comments, text_column="body"):
         umap_params = self.config['umap']
@@ -138,7 +197,7 @@ class Reddit_trees:
             hdbscan_model = HDBSCAN()  
 
         umap_model = umap_model
-        hdbscan_model = hdbcan_model
+        hdbscan_model = hdbscan_model
         topic_model = BERTopic(
                     umap_model=umap_model, 
                     hdbscan_model=hdbscan_model, 
@@ -268,6 +327,5 @@ class Reddit_trees:
         adj_list_df_tree = pd.DataFrame(adj_data)
     
         return G_tree, adj_list_df_tree 
-    
 
-reddit_trees = Reddit_trees()
+        
