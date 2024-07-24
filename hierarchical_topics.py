@@ -20,7 +20,9 @@ from sklearn.decomposition import PCA
 from sklearn.manifold import TSNE
 from sklearn.metrics.pairwise import cosine_similarity
 import plotly.express as px
-
+from scipy.spatial.distance import cosine
+from scipy.spatial.distance import pdist, squareform
+from sklearn.manifold import MDS
 
 def load_config(config_path: str) -> dict:
     """
@@ -106,7 +108,7 @@ class HierarchicalTopics:
     def calculate_similarity(self, topic_vectors):
         return cosine_similarity(topic_vectors)
 
-    def visualize_topics(self, reduced_vectors, interval_labels, method='pca'):
+    def visualize_topic_clusters(self, reduced_vectors, interval_labels, method='pca'):
         df = pd.DataFrame(reduced_vectors, columns=[f'{method.upper()}1', f'{method.upper()}2'])
         df['interval'] = interval_labels
         
@@ -130,3 +132,64 @@ class HierarchicalTopics:
             raise ValueError("Invalid method. Use 'pca' or 'tsne'.")
 
 
+    def compute_topic_positions(self, embeddings):
+        """Compute y-positions of topics based on their inter-topic distances."""
+        distances = pdist(embeddings, metric='cosine')
+        dist_matrix = squareform(distances)
+    
+    # Use multidimensional scaling to position topics
+        mds = MDS(n_components=1, dissimilarity='precomputed', random_state=42)
+        positions = mds.fit_transform(dist_matrix).flatten()
+    
+    # Normalize positions to [0, 1] range
+        positions = (positions - positions.min()) / (positions.max() - positions.min())
+        return positions
+
+    def plot_topic_evolution(self, embeddings_list, cutoff_similarity=0.75, all_links=True):
+        num_intervals = len(embeddings_list)
+        fig, ax = plt.subplots(figsize=(max(12, num_intervals * 3), 10))
+    
+    # Compute positions for all time intervals
+        all_positions = [self.compute_topic_positions(embeddings) for embeddings in embeddings_list]
+    
+    # Plot topics for each time interval
+        for i, positions in enumerate(all_positions):
+            ax.scatter([i] * len(positions), positions, s=50, label=f'Interval {i+1}')
+            for j, pos in enumerate(positions):
+                ax.annotate(f'T{i+1}_{j+1}', (i, pos), xytext=(5, 0), 
+                        textcoords='offset points', fontsize=8, alpha=0.7)
+    
+    # Draw links between adjacent intervals
+        for i in range(num_intervals - 1):
+            embeddings1 = embeddings_list[i]
+            embeddings2 = embeddings_list[i+1]
+            positions1 = all_positions[i]
+            positions2 = all_positions[i+1]
+        
+            for j, topic1 in enumerate(embeddings1):
+                links = []
+                for k, topic2 in enumerate(embeddings2):
+                    similarity = 1 - np.linalg.norm(topic1 - topic2)  # Cosine similarity
+                    if similarity >= cutoff_similarity:
+                        links.append((k, similarity))
+            
+                if all_links:
+                    for k, sim in links:
+                        ax.plot([i, i+1], [positions1[j], positions2[k]], 'k-', 
+                                alpha=0.3, linewidth=sim)
+                elif links:
+                    k, sim = max(links, key=lambda x: x[1])
+                    ax.plot([i, i+1], [positions1[j], positions2[k]], 'k-', 
+                            alpha=0.5, linewidth=sim)
+    
+        ax.set_xlim(-0.5, num_intervals - 0.5)
+        ax.set_xticks(range(num_intervals))
+        ax.set_xticklabels([f'Interval {i+1}' for i in range(num_intervals)])
+        ax.set_ylim(-0.1, 1.1)
+        ax.set_yticks([])
+    
+        ax.set_title('Topic Evolution Across Time Intervals')
+        ax.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
+    
+        plt.tight_layout()
+        plt.show()
