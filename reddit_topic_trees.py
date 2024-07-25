@@ -329,5 +329,5 @@ class Reddit_trees:
         return G_tree, adj_list_df_tree 
 
 #TODO: Add a function to visualize the tree graph
-#TODO: set ture/false flag for graph function to include or exclude the topic column - for trees without topic models
+#TODO: set true/false flag for graph function to include or exclude the topic column - for trees without topic models
 #TODO: LDA modellling for topic trees         
