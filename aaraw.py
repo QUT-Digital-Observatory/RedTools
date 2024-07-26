@@ -9,8 +9,18 @@ from datetime import datetime, timedelta
 
 base_url = 'https://ausreddit.digitialobservatory.net.au/api/v1'
 
-class AusReddit:
+import requests
+import pandas as pd
+from datetime import datetime
 
+class APIError(Exception):
+    """Custom exception class to handle API errors"""
+    def __init__(self, status_code, message):
+        self.status_code = status_code
+        self.message = message
+        super().__init__(f"API Error {status_code}: {message}")
+
+class APIWrapper:
     def __init__(self, base_url, jwt_file_path):
         self.base_url = base_url
         self.jwt_file_path = jwt_file_path
@@ -41,25 +51,47 @@ class AusReddit:
     def _get_auth_header(self):
         if not self._is_token_valid():
             self._load_jwt()
-        return {"Authorization": f"Bearer {self.token}"}    
-
+        return {"Authorization": f"Bearer {self.token}"}
+    
     def _make_request(self, endpoint, params=None, method='GET', data=None):
         url = f"{self.base_url}/{endpoint}"
         headers = self._get_auth_header()
         
-        if method == 'GET':
-            response = self.session.get(url, params=params, headers=headers)
-        elif method == 'POST':
-            response = self.session.post(url, params=params, headers=headers, json=data)
-        else:
-            raise ValueError(f"Unsupported HTTP method: {method}")
-        
-        response.raise_for_status()
-        return response.json()
-    
+        try:
+            if method == 'GET':
+                response = self.session.get(url, params=params, headers=headers)
+            elif method == 'POST':
+                response = self.session.post(url, params=params, headers=headers, json=data)
+            else:
+                raise ValueError(f"Unsupported HTTP method: {method}")
+            
+            response.raise_for_status()
+            return response.json()
+        except requests.exceptions.HTTPError as http_err:
+            # Here, we're sure that 'response' exists because HTTPError is only raised after a response is received
+            if response and response.status_code == 422:  # type: requests.Response
+                error_detail = response.json().get('detail', 'No detail provided')
+                raise APIError(422, f"Unprocessable Entity: {error_detail}")
+            elif response and 400 <= response.status_code < 500:
+                raise APIError(response.status_code, f"Client Error: {response.text}")
+            elif response and 500 <= response.status_code < 600:
+                raise APIError(response.status_code, f"Server Error: {response.text}")
+            else:
+                raise APIError(http_err.response.status_code, f"HTTP Error: {str(http_err)}")
+        except requests.exceptions.ConnectionError as conn_err:
+            raise APIError(None, f"Connection Error: {str(conn_err)}")
+        except requests.exceptions.Timeout as timeout_err:
+            raise APIError(None, f"Timeout Error: {str(timeout_err)}")
+        except requests.exceptions.RequestException as req_err:
+            raise APIError(None, f"Request Error: {str(req_err)}")
+
     def list_subreddits(self, meta=False):
-        response = self._make_request('subreddits', params={'meta': meta})
-        return self._process_subreddit_response(response)
+        try:
+            response = self._make_request('subreddits', params={'meta': meta})
+            return self._process_subreddit_response(response)
+        except APIError as e:
+            print(f"Error listing subreddits: {e}")
+            return pd.DataFrame()  # Return an empty DataFrame on error
 
     def _process_subreddit_response(self, response):
         # Assuming the response is a list of subreddit dictionaries
@@ -90,3 +122,4 @@ class AusReddit:
         if timestamp is not None:
             return datetime.utcfromtimestamp(int(timestamp))
         return None
+
