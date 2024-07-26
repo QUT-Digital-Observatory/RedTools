@@ -9,10 +9,6 @@ from datetime import datetime, timedelta
 
 base_url = 'https://ausreddit.digitialobservatory.net.au/api/v1'
 
-import requests
-import pandas as pd
-from datetime import datetime
-
 class APIError(Exception):
     """Custom exception class to handle API errors"""
     def __init__(self, status_code, message):
