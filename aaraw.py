@@ -5,7 +5,7 @@ import json
 import time
 import os
 import pandas as pd
-from datetime import datetime, timedelta
+from datetime import datetime, timezone
 
 base_url = 'https://ausreddit.digitialobservatory.net.au/api/v1'
 
@@ -116,6 +116,69 @@ class APIWrapper:
 
     def _parse_unix_timestamp(self, timestamp):
         if timestamp is not None:
-            return datetime.utcfromtimestamp(int(timestamp))
+            return datetime.fromtimestamp(int(timestamp), tz=timezone.utc)
         return None
 
+    def get_submissions(self, subreddit_id: str):
+        try:
+            response = self._make_request(f'submissions/{subreddit_id}')
+            return self._process_submission_response(response)
+        except APIError as e:
+            print(f"Error getting submissions: {e}")
+            return pd.DataFrame()
+        
+    def _process_submission_response(self, response):
+        # Assuming the response is a list of submission dictionaries
+        submissions = response.get('submissions', [])
+            
+        processed_data = []
+        for submission in submissions:
+            processed_submission = {
+                'id': submission.get('id'),
+                'title': submission.get('title'),
+                'selftext': submission.get('selftext'),
+                'author': submission.get('author'),
+                'created_utc': self._parse_unix_timestamp(submission.get('created_utc')),
+                'retrieved_utc': self._parse_unix_timestamp(submission.get('retrieved_utc')),
+                'permalink': submission.get('permalink'),
+                'url': submission.get('url'),
+                'score': int(submission.get('score', 0)),
+                'over_18': submission.get('over_18', False),
+                'subreddit_id': submission.get('subreddit_id'),
+                'subreddit': submission.get('subreddit'),
+                'comment_count': int(submission.get('comment_count', 0))
+            }
+            processed_data.append(processed_submission)
+        
+        return pd.DataFrame(processed_data)
+    
+    def get_comments(self, submission_id):
+        try:
+            response = self._make_request(f'comments/{submission_id}')
+            return self._process_comment_response(response)
+        except APIError as e:
+            print(f"Error getting comments: {e}")
+            return pd.DataFrame()
+        
+    def _process_comment_response(self, response):
+        # Assuming the response is a list of comment dictionaries
+        comments = response.get('comments', [])
+            
+        processed_data = []
+        for comment in comments:
+            processed_comment = {
+                'id': comment.get('id'),
+                'author': comment.get('author'),
+                'body': comment.get('body'),
+                'created_utc': self._parse_unix_timestamp(comment.get('created_utc')),
+                'link_id': comment.get('link_id'),
+                'parent_id': comment.get('parent_id'),
+                'score': int(comment.get('score', 0)),
+                'subreddit_id': comment.get('subreddit_id'),
+                'subreddit': comment.get('subreddit'),
+                'permalink': comment.get('permalink'),
+                'retrieved_utc': self._parse_unix_timestamp(comment.get('retrieved_utc'))
+            }
+            processed_data.append(processed_comment)
+        
+        return pd.DataFrame(processed_data)

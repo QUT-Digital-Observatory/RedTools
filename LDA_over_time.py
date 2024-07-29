@@ -34,8 +34,6 @@ nltk.download('wordnet')
 
 class LDA_over_time:
     def __init__(self):
-        self.vectorizer = None
-        self.lda_model = None
         self.stopwords = set(stopwords.words('english'))
         self.lemmatizer = WordNetLemmatizer()
 
