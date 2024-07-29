@@ -15,6 +15,8 @@ import yaml
 from sentence_splitter import SentenceSplitter
 import re
 from nltk.corpus import stopwords
+import matplotlib.pyplot as plt
+from LDA_over_time import LDA_over_time
 
 def load_config(config_path: str) -> dict:
     """
@@ -49,6 +51,7 @@ class Reddit_trees:
     def __init__(self):
         self.reddit = reddit 
         self.config = config
+        self.lda_modeling = LDA_over_time()
     
     def search_subreddit(self, query, subreddit="australia", sort="new"):
         subreddit = self.reddit.subreddit(subreddit)
@@ -293,7 +296,14 @@ class Reddit_trees:
 
         return docs, topic_list
     
-    def tree_graph_and_adj_list(self, df: pd.DataFrame) -> Tuple[nx.DiGraph, pd.DataFrame]:
+    def lda_dataframe(self, df, text_column, num_topics):
+        lda_model, doc_term_matrix = self.lda_modeling.create_lda_model(df[text_column], num_topics)
+        topic_words = self.lda_modeling.get_topic_words()
+        df['assigned_topic'] = self.lda_modeling.assign_topics_to_docs(doc_term_matrix)
+        df['topic_words'] = df['assigned_topic'].map(topic_words)
+        return df, lda_model
+    
+    def tree_graph_and_adj_list(self, df: pd.DataFrame, incl_topic: bool = True, topic_column = 'Topic') -> Tuple[nx.DiGraph, pd.DataFrame]:
         # Create directed graph
         G_tree = nx.DiGraph()
 
@@ -302,10 +312,18 @@ class Reddit_trees:
             node_id = row['id']
             author = row['author']
             body = row['body']
-            topic = row['Topic']
             link_id = row['link_id']
             time_created = datetime.fromtimestamp(row['created_utc']).isoformat()
-            G_tree.add_node(node_id, author=author, body=body, topic=topic, link_id=link_id, time_created=time_created)
+            node_data = {
+                'author': author,
+                'body': body,
+                'link_id': link_id,
+                'time_created': time_created
+            }
+            if incl_topic:
+                node_data['topic'] = row[topic_column]
+            
+            G_tree.add_node(node_id, **node_data)
 
         # Add edges to the graph and build adjacency list data
         adj_data = {'Source': [], 'Target': [], 'TimeCreated': [], 'LinkID': []}
@@ -323,10 +341,18 @@ class Reddit_trees:
                 adj_data['TimeCreated'].append(time_created)
                 adj_data['LinkID'].append(link_id)
 
-            # Create adjacency list DataFrame
+        # Create adjacency list DataFrame
         adj_list_df_tree = pd.DataFrame(adj_data)
     
-        return G_tree, adj_list_df_tree 
+        return G_tree, adj_list_df_tree
+
+    def plot_basic_graph(self, G: nx.DiGraph, title: str):
+        # Plot the graph
+        plt.figure(figsize=(20, 20))
+        pos = nx.spring_layout(G, seed=42)
+        nx.draw(G, pos, with_labels=True, node_size=50, font_size=8, font_color='black')
+        plt.title(title)
+        plt.show() 
 
 #TODO: Add a function to visualize the tree graph
 #TODO: set true/false flag for graph function to include or exclude the topic column - for trees without topic models
