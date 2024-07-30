@@ -1,7 +1,6 @@
 # Hierarchical topics
 
 import numpy as np
-from openai import models
 import pandas as pd
 import re
 from bertopic import BERTopic
