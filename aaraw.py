@@ -2,7 +2,6 @@
 
 import requests
 import json
-import time
 import os
 import pandas as pd
 from datetime import datetime, timezone
@@ -182,3 +181,52 @@ class APIWrapper:
             processed_data.append(processed_comment)
         
         return pd.DataFrame(processed_data)
+
+    def search_submissions(self, query, author, method, start, end, score_min, score_max, subreddit, subreddit_id, limit, context, search_in, restricted, comments_min, comments_max):
+        params = {
+            'query': query,
+            'author': author,
+            'method': method,
+            'start': start,
+            'end': end,
+            'score_min': score_min,
+            'score_max': score_max,
+            'subreddit': subreddit,
+            'subreddit_id': subreddit_id,
+            'limit': limit,
+            'context': context,
+            'search_in': search_in,
+            'restricted': restricted,
+            'comments_min': comments_min,
+            'comments_max': comments_max
+        }
+        try:
+            response = self._make_request('search/submissions', params=params)
+            return self._process_submission_response(response)
+        except APIError as e:
+            print(f"Error searching submissions: {e}")
+            return pd.DataFrame()
+        
+    def search_comments(self, query, author, method, start, end, score_min, score_max, subreddit, subreddit_id, limit, context, search_in, restricted):
+        params = {
+            'query': query,
+            'author': author,
+            'method': method,
+            'start': start,
+            'end': end,
+            'score_min': score_min,
+            'score_max': score_max,
+            'subreddit': subreddit,
+            'subreddit_id': subreddit_id,
+            'limit': limit,
+            'context': context,
+            'search_in': search_in,
+            'restricted': restricted,
+                
+        }
+        try:
+            response = self._make_request('search/comments', params=params)
+            return self._process_comment_response(response)
+        except APIError as e:
+            print(f"Error searching comments: {e}")
+            return pd.DataFrame()
