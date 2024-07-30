@@ -193,6 +193,3 @@ class HierarchicalTopics:
     
         plt.tight_layout()
         plt.show()
-
-
-
