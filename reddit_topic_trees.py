@@ -354,6 +354,4 @@ class Reddit_trees:
         plt.title(title)
         plt.show() 
 
-#TODO: Add a function to visualize the tree graph
-#TODO: set true/false flag for graph function to include or exclude the topic column - for trees without topic models
-#TODO: LDA modellling for topic trees         
+      
