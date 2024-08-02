@@ -354,4 +354,8 @@ class Reddit_trees:
         plt.title(title)
         plt.show() 
 
-      
+    def save_graph(self, G: nx.DiGraph, filename: str):
+        nx.write_graphml(G, filename)
+
+    def save_adj_list(self, df: pd.DataFrame, filename: str):
+        df.to_csv(filename, index=False)          
