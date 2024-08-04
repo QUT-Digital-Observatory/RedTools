@@ -5,7 +5,7 @@ umap:
   random_state: 42
 
 hdbscan:
-  min_samples: 10
+  min_samples: 5
   gen_min_span_tree: True
   prediction_data: True
 
