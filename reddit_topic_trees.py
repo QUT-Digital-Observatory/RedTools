@@ -296,12 +296,55 @@ class Reddit_trees:
 
         return docs, topic_list
     
-    def lda_dataframe(self, df, text_column, num_topics):
+    def lda_comments(self, df, text_column, num_topics):
         lda_model, doc_term_matrix = self.lda_modeling.create_lda_model(df[text_column], num_topics)
         topic_words = self.lda_modeling.get_topic_words()
         df['assigned_topic'] = self.lda_modeling.assign_topics_to_docs(doc_term_matrix)
         df['topic_words'] = df['assigned_topic'].map(topic_words)
         return df, lda_model
+    
+    def lda_submissions(self, submissions, text_column_1="selftext", text_column_2="title", num_topics=10):
+        combined_text = submissions[text_column_1] + submissions[text_column_2]
+        lda_model, doc_term_matrix = self.lda_modeling.create_lda_model(combined_text, num_topics)
+        topic_words = self.lda_modeling.get_topic_words()
+        submissions['assigned_topic'] = self.lda_modeling.assign_topics_to_docs(doc_term_matrix)
+        submissions['topic_words'] = submissions['assigned_topic'].map(topic_words)
+        return submissions, lda_model
+    
+    def lda_combined(self, comments: pd.DataFrame, submissions: pd.DataFrame, text_column: str = 'body', text_column_1: str = "selftext", text_column_2: str = "title", num_topics: int = 10) -> pd.DataFrame:
+        # Ensure that the input columns are strings
+        comments[text_column] = comments[text_column].astype(str)
+        submissions[text_column_1] = submissions[text_column_1].astype(str)
+        submissions[text_column_2] = submissions[text_column_2].astype(str)
+    
+        # Combine text from comments and submissions
+        combined_text = comments[text_column].tolist() + (submissions[text_column_1] + submissions[text_column_2]).tolist()
+    
+        # Create the LDA model
+        lda_model, doc_term_matrix = self.lda_modeling.create_lda_model(combined_text, num_topics)
+    
+        # Get the topic words
+        topic_words = self.lda_modeling.get_topic_words()
+    
+        # Assign topics to documents
+        all_assigned_topics = self.lda_modeling.assign_topics_to_docs(doc_term_matrix)
+    
+        # Split assigned topics for comments and submissions
+        comments['assigned_topic'] = all_assigned_topics[:len(comments)]
+        submissions['assigned_topic'] = all_assigned_topics[len(comments):]
+    
+        # Map topic words to the assigned topics
+        comments['topic_words'] = comments['assigned_topic'].map(topic_words)
+        submissions['topic_words'] = submissions['assigned_topic'].map(topic_words)
+    
+        # Add a column to indicate the source of the data
+        comments['source'] = 'comment'
+        submissions['source'] = 'submission'
+    
+        # Combine the comments and submissions DataFrames
+        combined_df = pd.concat([comments, submissions], ignore_index=True)
+    
+        return combined_df
     
     def tree_graph_and_adj_list(self, df: pd.DataFrame, incl_topic: bool = True, topic_column = 'Topic') -> Tuple[nx.DiGraph, pd.DataFrame]:
         # Create directed graph
