@@ -400,4 +400,19 @@ class Reddit_trees:
         nx.write_graphml(G, filename)
 
     def save_adj_list(self, df: pd.DataFrame, filename: str):
-        df.to_csv(filename, index=False)          
+        df.to_csv(filename, index=False)
+
+    def count_branches_and_ends(self, G: nx.DiGraph) -> Tuple[int, int]:
+        # Initialize counters
+        branches = 0
+        ends = 0
+
+        # Iterate through the nodes
+        for node in G.nodes:
+            successors = list(G.successors(node))
+            if len(successors) > 1:
+                branches += 1
+            elif len(successors) == 0:
+                ends += 1
+
+        return branches, ends
