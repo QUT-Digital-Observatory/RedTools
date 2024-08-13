@@ -39,7 +39,6 @@ else:
     from hdbscan import HDBSCAN
     print("Using CPU for UMAP and HDBSCAN.")
 
-reddit = praw.Reddit()
 
 class Reddit_trees:
     def __init__(self):
