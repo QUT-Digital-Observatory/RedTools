@@ -39,13 +39,6 @@ else:
     from hdbscan import HDBSCAN
     print("Using CPU for UMAP and HDBSCAN.")
 
-# Create a Reddit instance
-reddit = praw.Reddit(client_id='voiLhjY_Q0uJwzVwU9Xbhg', 
-                    client_secret='dP7Ws55HLQUoSYpXkOzkzEPjqyuGtg', 
-                    redirect_uri='http://127.0.0.1:3000/profile',                     
-                    user_agent='r_aus_astro by Due_recordings9516')
-
-
 class Reddit_trees:
     def __init__(self):
         self.reddit = reddit 
