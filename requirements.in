@@ -15,4 +15,5 @@ wordcloud
 praw
 networkx
 typing
+pyarrow
 # End of requirements.in
