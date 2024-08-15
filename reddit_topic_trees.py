@@ -409,4 +409,4 @@ class Reddit_trees:
             elif len(successors) == 0:
                 ends += 1
 
-        return branches, ends
+        return branches, ends    
