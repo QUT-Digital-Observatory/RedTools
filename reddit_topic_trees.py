@@ -41,9 +41,20 @@ else:
 
 
 class Reddit_trees:
-    def __init__(self):
-        self.reddit = reddit 
-        self.config = config
+    def __init__(self, config_path='config.yaml'):
+        # Load the configuration
+        with open(config_path, 'r') as config_file:
+            self.config = yaml.safe_load(config_file)
+        
+        # Initialize Reddit instance
+        self.reddit = praw.Reddit(
+            client_id=self.config['reddit']['client_id'],
+            client_secret=self.config['reddit']['client_secret'],
+            redirect_uri=self.config['reddit']['redirect_uri'],
+            user_agent=self.config['reddit']['user_agent']
+        )
+        
+        # Initialize LDA modeling
         self.lda_modeling = LDA_over_time()
     
     def search_subreddit(self, query, subreddit="australia", sort="new"):
