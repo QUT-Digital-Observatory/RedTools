@@ -442,7 +442,15 @@ class Reddit_trees:
         pos = nx.spring_layout(G, seed=42)
         nx.draw(G, pos, with_labels=True, node_size=50, font_size=8, font_color='black')
         plt.title(title)
-        plt.show() 
+        plt.show()
+
+    def plot_kk_graph(self, G: nx.DiGraph, title: str):
+        # Plot the graph
+        plt.figure(figsize=(20, 20))
+        pos = nx.kamada_kawai_layout(G)
+        nx.draw(G, pos, with_labels=True, node_size=50, font_size=8, font_color='black')
+        plt.title(title)
+        plt.show()        
 
     def save_graph(self, G: nx.DiGraph, filename: str):
         nx.write_graphml(G, filename)
