@@ -24,4 +24,4 @@ reddit:
   user_agent: 'your_user_agent'
 
 lexicon:
-  lexicon_filepath: ../NRC-Emotion-Intensity-Lexicon-v1.txt  
+  lexicon_filepath: ../data/NRC-Emotion-Intensity-Lexicon-v1.txt  
