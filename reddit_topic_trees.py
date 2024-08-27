@@ -451,7 +451,7 @@ class Reddit_trees:
 
         # Add nodes to the graph
         for index, row in df.iterrows():
-            node_id = row['commentId']
+            node_id = row['id']
             author = row['username']
             body = row['text']
             link_id = row['threadId']
