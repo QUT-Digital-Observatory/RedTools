@@ -452,10 +452,10 @@ class Reddit_trees:
         # Add nodes to the graph
         for index, row in df.iterrows():
             node_id = row['id']
-            author = row['username']
-            body = row['text']
-            link_id = row['threadId']
-            time_created = row['date']
+            author = row['author']
+            body = row['body']
+            link_id = row['link_id']
+            time_created = datetime.fromtimestamp(row['created_utc']).isoformat()
             node_data = {
                 'author': author,
                 'body': body,
@@ -476,11 +476,11 @@ class Reddit_trees:
         # Add edges to the graph and build adjacency list data
         adj_data = {'Source': [], 'Target': [], 'TimeCreated': [], 'LinkID': []}
         for index, row in df.iterrows():
-            parent_id = str(row['responseTo']) if pd.notna(row['responseTo']) else ''
+            parent_id = str(row['parent_id']) if pd.notna(row['parent_id']) else ''
             source = parent_id.replace('t3_', '').replace('t1_', '')
-            targets = row['commentId']
-            time_created = row['date']
-            link_id = row['threadId']
+            targets = row['id']
+            time_created = datetime.fromtimestamp(row['created_utc']).isoformat()
+            link_id = row['link_id']
 
             if source and targets in G_tree.nodes:
                 G_tree.add_edge(source, targets, time_created=time_created, link_id=link_id)
