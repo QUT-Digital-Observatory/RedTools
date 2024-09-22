@@ -3,7 +3,7 @@
 import pandas as pd
 import numpy as np
 from tqdm import tqdm
-from typing import List, Dict
+from typing import Any, List, Dict, Optional, Union
 from datetime import datetime
 import time
 from bertopic import BERTopic
@@ -120,6 +120,50 @@ class Reddit_trees:
             time.sleep(2)
 
         return pd.DataFrame(comments_data)
+    
+    def format_url_for_search(self, url: Any) -> Union[str, None]:
+        if url is None:
+            return None
+        try:
+            # Convert to string if it's not already
+            url_str = str(url).strip()
+            if not url_str:
+                return None
+            # Remove 'https://' or 'http://' from the URL
+            url_str = re.sub(r'^https?://', '', url_str)
+            # Escape any special characters in the URL
+            url_str = re.escape(url_str)
+            return f"url:'{url_str}'"
+        except Exception as e:
+            print(f"Error formatting URL {url}: {str(e)}")
+            return None
+
+    def search_urls_for_ids(self, urls: List[Any], subreddit: str, sort: str) -> pd.DataFrame:
+        all_submissions = []
+        
+        for url in tqdm(urls, desc="Searching URLs"):
+            formatted_query = self.format_url_for_search(url)
+            if not formatted_query:
+                print(f"Skipping empty or invalid URL: {url}")
+                continue
+            
+            try:
+                # Search for the specific URL
+                search_results = self.reddit.subreddit(subreddit).search(formatted_query, sort=sort, limit=None)
+                
+                # Collect submission information
+                for submission in search_results:
+                    submission_info = {
+                        "id": submission.id,
+                        "search_url": str(url)
+                    }
+                    all_submissions.append(submission_info)
+                
+            except Exception as e:
+                print(f"Error searching for URL {url}: {str(e)}")
+        
+        # Convert the list of dictionaries to a DataFrame
+        return pd.DataFrame(all_submissions)
     
     def save_to_file(self, df: pd.DataFrame, filename: str, file_format: str = 'csv'):
         if file_format == 'csv':
