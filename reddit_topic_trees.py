@@ -348,16 +348,16 @@ class Reddit_trees:
     def lda_comments(self, df, text_column, num_topics):
         lda_model, doc_term_matrix = self.lda_modeling.create_lda_model(df[text_column], num_topics)
         topic_words = self.lda_modeling.get_topic_words()
-        df['assigned_topic'] = self.lda_modeling.assign_topics_to_docs(doc_term_matrix)
-        df['topic_words'] = df['assigned_topic'].map(topic_words)
+        df['Topic'] = self.lda_modeling.assign_topics_to_docs(doc_term_matrix)
+        df['topic_words'] = df['Topic'].map(topic_words)
         return df, lda_model
     
     def lda_submissions(self, submissions, text_column_1="selftext", text_column_2="title", num_topics=10):
         combined_text = submissions[text_column_1] + submissions[text_column_2]
         lda_model, doc_term_matrix = self.lda_modeling.create_lda_model(combined_text, num_topics)
         topic_words = self.lda_modeling.get_topic_words()
-        submissions['assigned_topic'] = self.lda_modeling.assign_topics_to_docs(doc_term_matrix)
-        submissions['topic_words'] = submissions['assigned_topic'].map(topic_words)
+        submissions['Topic'] = self.lda_modeling.assign_topics_to_docs(doc_term_matrix)
+        submissions['topic_words'] = submissions['Topic'].map(topic_words)
         return submissions, lda_model
     
     def lda_combined(self, comments: pd.DataFrame, submissions: pd.DataFrame, text_column: str = 'body', text_column_1: str = "selftext", text_column_2: str = "title", num_topics: int = 10) -> pd.DataFrame:
@@ -379,12 +379,12 @@ class Reddit_trees:
         all_assigned_topics = self.lda_modeling.assign_topics_to_docs(doc_term_matrix)
     
         # Split assigned topics for comments and submissions
-        comments['assigned_topic'] = all_assigned_topics[:len(comments)]
-        submissions['assigned_topic'] = all_assigned_topics[len(comments):]
+        comments['Topic'] = all_assigned_topics[:len(comments)]
+        submissions['Topic'] = all_assigned_topics[len(comments):]
     
         # Map topic words to the assigned topics
-        comments['topic_words'] = comments['assigned_topic'].map(topic_words)
-        submissions['topic_words'] = submissions['assigned_topic'].map(topic_words)
+        comments['topic_words'] = comments['Topic'].map(topic_words)
+        submissions['topic_words'] = submissions['Topic'].map(topic_words)
     
         # Add a column to indicate the source of the data
         comments['source'] = 'comment'
