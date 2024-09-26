@@ -17,9 +17,6 @@ from nltk.corpus import stopwords
 import matplotlib.pyplot as plt
 from LDA_over_time import LDA_over_time
 from emo_intensity_over_time import EmoIntensityOverTime
-import spacy
-
-nlp = spacy.load("en_core_web_trf")
 
 def load_config(config_path: str) -> dict:
     """
@@ -406,19 +403,7 @@ class Reddit_trees:
         df = emo_intensity.analyse_sentences(df, lexicon, text_column)
         return df
     
-    def named_entity(self, df: pd.DataFrame, text_column: str, entity_column = 'entities', entity_types: List[str] = ['PERSON', 'ORG']) -> pd.DataFrame:
-    # Apply the NER model to the text column
-        def extract_entities(text):
-            doc = nlp(text)
-            if entity_types:
-                return [(ent.text, ent.label_) for ent in doc.ents if ent.label_ in entity_types]
-            else:
-                return [(ent.text, ent.label_) for ent in doc.ents]
-
-        df[entity_column] = df[text_column].apply(extract_entities)
-    
-        return df
-    
+        
     def tree_graph_and_adj_list(self, df: pd.DataFrame, incl_topic: bool = True, topic_column = 'Topic') -> Tuple[nx.DiGraph, pd.DataFrame]:
         # Create directed graph
         G_tree = nx.DiGraph()
@@ -554,48 +539,7 @@ class Reddit_trees:
     
         return G_tree, adj_list_df_tree
     
-    def tree_graph_and_adj_list_ner(self, df: pd.DataFrame) -> Tuple[nx.DiGraph, pd.DataFrame]:
-        # Create directed graph
-        G_tree = nx.DiGraph()
-
-        # Add nodes to the graph
-        for index, row in df.iterrows():
-            node_id = row['id']
-            author = row['author']
-            body = row['body']
-            link_id = row['link_id']
-            time_created = datetime.fromtimestamp(row['created_utc']).isoformat()
-            node_data = {
-                'author': author,
-                'body': body,
-                'link_id': link_id,
-                'time_created': time_created,
-                'entities': row['entities']
-            }
-            
-            G_tree.add_node(node_id, **node_data)
-
-        # Add edges to the graph and build adjacency list data
-        adj_data = {'Source': [], 'Target': [], 'TimeCreated': [], 'LinkID': []}
-        for index, row in df.iterrows():
-            parent_id = str(row['parent_id']) if pd.notna(row['parent_id']) else ''
-            source = parent_id.replace('t3_', '').replace('t1_', '')
-            targets = row['id']
-            time_created = datetime.fromtimestamp(row['created_utc']).isoformat()
-            link_id = row['link_id']
-
-            if source and targets in G_tree.nodes:
-                G_tree.add_edge(source, targets, time_created=time_created, link_id=link_id)
-                adj_data['Source'].append(source)
-                adj_data['Target'].append(targets)
-                adj_data['TimeCreated'].append(time_created)
-                adj_data['LinkID'].append(link_id)
-
-        # Create adjacency list DataFrame
-        adj_list_df_tree = pd.DataFrame(adj_data)
-    
-        return G_tree, adj_list_df_tree
-    
+       
 
     def plot_basic_graph(self, G: nx.DiGraph, title: str):
         # Plot the graph
