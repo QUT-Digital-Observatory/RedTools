@@ -1,0 +1,1237 @@
+title,id,comment_count,selftext,created_utc,created_time,url
+TVP confirmed that they haven't still make decision about Eurovision 2025 participation,1f81v9o,31,"Ladies and Gentlemen,
+
+In response to numerous questions regarding Telewizja Polska's preparations for the Eurovision Song Contest 2025, we would like to inform you that Telewizja Polska is not conducting any talks with artists on this matter and has not yet made any decisions regarding their participation in the Contest.
+
+We will inform you about the involvement of Telewizja Polska in the preparations for this year's Eurovision Song Contest as soon as possible through the official TVP news channels, including the website https://eurowizja.tvp.pl/.
+
+Currently, Telewizja Polska is producing the ""Junior Eurovision Song Contest 2024"". We invite you to TVP2 on September 29 this year for the final of the Polish Junior Eurovision pre-selection, which will be hosted by Artur Orzech, and on November 16 for the final in Madrid.",1725375025.0,2024-09-04T00:50:25,https://i.redd.it/0ocawu9sxlmd1.png
+Concept Design for Eurovision 2025,1f7i29w,34,"So I did some digging in Eurovision Official channel. I got colors from banner, and I used the Cyprus 2025 artist annoucment video. If you take a look you will see what graphics will look like. So I combined all of theese and made this. Let me know what do you think! PS: I used Gimp and Inkscape to make this",1725311433.0,2024-09-03T07:10:33,https://i.redd.it/kucgmcyoogmd1.png
+🇬🇪 Georgia: GPB confirms participation at Eurovision 2025. ,1f727qf,35,,1725267902.0,2024-09-02T19:05:02,https://esctoday.com/195967/georgia-gpb-confirms-participation-at-eurovision-2025/
+It is time for YOU to start filling out the Eurovision 2025 season iceberg!,1f6nw8o,37,"Hello r/eurovision and happy ESC new year!
+
+We are still far from the beginning of all the juicy content which 2025 will offer, but to commemorate the beginning of the season, the Eurovision 2025 season iceberg has been opened for suggestions! An essential part of the iceberg are the suggestions sent in by you, the users, so do keep them coming throughout the year!
+
+[https://icebergcharts.com/i/Eurovision\_2025](https://icebergcharts.com/i/Eurovision_2025)
+
+A reminder on how to submit entries ✨
+
+* Go to the link above
+* Scroll all the way to the bottom
+* Write in an entry name, and ideally also a brief description and source/link, and press ""propose entry""
+* Await a review. This may take a while as, for the sake of space efficiency and clarity, I very often have to edit entry names and descriptions, on top of also researching them.
+
+See you in January for the first iceberg post ;)
+
+* u/AmazingDeeer
+
+*PS: Whoever went ahead and stole the name ""Eurovision 2025 Season"" so that I couldn't have naming continuity with the last three* *years... I hope* *both sides of* *your* *pillow are warm tonight*",1725221547.0,2024-09-02T06:12:27,https://www.reddit.com/r/eurovision/comments/1f6nw8o/it_is_time_for_you_to_start_filling_out_the/
+When will more countries announce participation?,1f6bdnp,21,"Hi, I'm in my third year of being a eurovision fan now and haven't ever really followed along with how countries announce their participation. Countries like Bulgaria, North macedonia and monaco & a whole 13 others that participated last year haven't said anything yet on their participation in 2025 so I was wondering when do you think they will make an announcement on the subject?",1725186793.0,2024-09-01T20:33:13,https://www.reddit.com/r/eurovision/comments/1f6bdnp/when_will_more_countries_announce_participation/
+Happy new year! User flair overhaul,1f60lvx,523,"Hi! 
+
+Starting today, 1 September, any new released song is eligible to be entered as an entry for the contest. 
+That means the 2025 season starts today!
+
+A few days ago it was made known that [Basel will host Eurovision 2025](https://www.reddit.com/r/eurovision/comments/1f4psni/basel_will_host_eurovision_2025/), on 13, 15 and 17 May.  
+Tickets will go on sale later this year. Keep an eye out on https://eurovision.tv/tickets. We'll have our usual stickied thread once the time comes about ticket and travel information.  
+
+[So far 24 countries have been confirmed](https://www.reddit.com/r/eurovision/comments/1f37k9x/eurovision_2025_participations_update_as_of/)
+
+---
+
+#User flair overhaul  
+
+TLDR: `!setflair <country> <year>`
+
+With the new year we also want to try a new approach to user flairs. A few months ago [we had a reddit experiment with the leaderboard thread](https://redd.it/1cicmwe) were people could vote on their favourite 2024 song. Voting also changed your user flair (without asking) to the country you voted on. To the understandable confusion and annoyance of many.  
+
+It raised the question whether the user flair is meant to show where you are from, or whom you support.  
+Many use it as the former, but it was always intended to be the latter. Hence only the flairs of the competing countries were available.
+
+Unfortunately many incorrect assumptions about someone's nationality have been made based on their flair, some of which have led to personal attacks.
+
+In order to combat this we are embracing the original purpose of user flairs, which is to show support for your (current) favourite song.  
+The available flairs that can be picked the usual way will be  
+- The neutral flairs already available: the rainbow heart, empty white and black ESC hearts, and TANZEN!   
+- The entries of the current year in the form of `<country heart> <song title>`. Obviously since the year just started, none of those are available yet. We'll be adding them in as they are released. Who is going to be the first?  
+
+This means all country only flairs will be deprecated.  
+
+---
+
+What about the other 1758 eurovision songs that might actually be your favourite of all time? Unfortunately there is a limit to 300 user flairs we can pre-define.  
+Fortunately there is a handy bot active on this subreddit that scans for `<country> <year>` combinations already! (`((country)+ (year)+)|((year)+ (country)+)`\* technically, but who knows how regex works anyway. \*simplified, delimiters not included).  
+
+u/ESC-song-bot has been updated so that if your message contains the `!setflair` string, it will, instead of replying with the song to your message, set your flair to the title of that song, and then remove your comment to prevent off-topic `!setflair` comments.  
+So the simplest is to just comment `!setflair <country> <year>` on any post on r/eurovision. Although for now we prefer if you do so in this thread (where your comment wouldn't be removed either).  
+It might take up to a minute to apply the flair. (If it doesn't, then the bot is down or something else is wrong, feel free to send me a pm in that case and I'll investigate)
+
+u/ESC-song-bot already had a sneak-peak on how this would look the last month, as it has been changing its own flair to the last song it commented. Its flair is now permanently set to `!setflair <country> <year>` as a reminder of the new functionality.   
+
+If you want to set your flair to a 1956 song, but u/ESC-song-bot sets it to the other song, please contact the mod team via modmail.  
+
+This only works on r/eurovision, r/nilpoints has fully custom flairs already.
+
+---
+
+We realise there might still be controversial flairs and this does not fully solve the flair-based harassment. Please keep this in mind when choosing your flair. Also keep reporting any (flair-based) harassment/discrimination, so the offenders can be banned swiftly. Of course we are hoping no such action from our side is needed.",1725147035.0,2024-09-01T09:30:35,https://www.reddit.com/r/eurovision/comments/1f60lvx/happy_new_year_user_flair_overhaul/
+This years aftermath was quite something....,1f5hiss,52,,1725088453.0,2024-08-31T17:14:13,https://i.redd.it/7m8xfmjn9yld1.jpeg
+Netherlands in Junior Eurovision 2025?,1f57ont,13,"After Joost Klein’s disqualification in this year’s contest, and that the Netherlands are taking part in this years Junior Eurovision in Spain, do you think AVROTROS would withdraw? 
+
+The Netherlands have been in every edition of the Junior Eurovision Song Contest but with the tension between the EBU and AVROTROS, has made it even more worse. 
+
+Personally, I think they would stay. Their national final “Junior Songfestivaal” is very popular on Youtube, and presumably on Dutch TV as well, and thousands of children applied to be on the show. But I am not sure on the viewing figures on the entire contest and their national final. I also think that AVROTROS would not let young children down to take part in the next years contest. 
+
+Thoughts?
+",1725055866.0,2024-08-31T08:11:06,https://www.reddit.com/r/eurovision/comments/1f57ont/netherlands_in_junior_eurovision_2025/
+Eurovision 2025- Basel.  Tickets,1f506us,17,"How and when will tickets be sold?  Also, who sells them?  Thanks!",1725036949.0,2024-08-31T02:55:49,https://www.reddit.com/r/eurovision/comments/1f506us/eurovision_2025_basel_tickets/
+🇨🇭Basel will host Eurovision 2025,1f4psni,239,,1725004933.0,2024-08-30T18:02:13,https://eurovision.tv/story/basel-will-host-eurovision-song-contest-2025
+Netta predicts the host city of Eurovision 2025 ,1f3zd6k,137,,1724928673.0,2024-08-29T20:51:13,https://v.redd.it/8w8bgtsj2lld1
+Eurovision 2025 Participations Update (as of August 28th) ,1f37k9x,186,,1724843845.0,2024-08-28T21:17:25,https://i.redd.it/2309w9bb2eld1.jpeg
+Eurovision 2025 Host City reveal this Friday at 10:00 CEST 🤩,1f1jew8,54,What do you guys think? Will it be Basel or Geneva? 🇨🇭🫕,1724662150.0,2024-08-26T18:49:10,https://v.redd.it/ay7e5w512zkd1
+"AVROTROS: 'Eurovision organization takes objections seriously, participation in 2025 still uncertain'",1ezi4bu,75,,1724432938.0,2024-08-24T03:08:58,https://www.rtl.nl/boulevard/entertainment/artikel/5467218/avrotros-songfestivalorganisatie-neemt-bezwaren-serieus
+I made my own Eurovision 2025 design :),1eve4dn,26,"**Hey Eurovision reddit!** I've seen quite a few custom designs for Eurovision 2025 on social media, and loads more since becoming a fan of Eurovision in 2014. So, I decided to make my own! I was debating about whether to post it or not but this is definitely my favourite of the ones I've made. I chose Basel as the host city just because out of the two cities left, it's fair to say Geneva is the predicted winner so I wanted to give the underdog a chance.
+
+The design I've made is based off the Swiss flag, with the colours of the design being based on the non-binary flag, since Nemo was the first non-binary contestant to win the contest. There also are loads of designs that feature blue or green so I didn't want to include those colours. The design also takes inspirations from the Swiss Alps/mountains (inspired by host country Switzerland), podiums (inspired by the contest itself) and soundwaves (inspired by the contest's slogan and the purpose of the contest - music)
+
+I really hope you guys like it :)
+
+[Main theme art with \\""United by Music\\"" slogan and SRG SSR and EBU logos](https://preview.redd.it/j8mbpy70xfjd1.png?width=1920&format=png&auto=webp&s=03bf9db42350b4b2c988d1c3fa3745bdafa2527e)
+
+[Colour palette and inspiration for design](https://preview.redd.it/qpo49cn3xfjd1.png?width=1920&format=png&auto=webp&s=34a3cd11011779954859b7e483e91a36f375bbed)
+
+[Thumbnails - I personally love how these came out](https://preview.redd.it/a36gw4pfyfjd1.png?width=1920&format=png&auto=webp&s=2f765fb1695a702fb05040c704c4c9437f164b97)
+
+[Official website - eurovision.tv](https://preview.redd.it/053v3ge3zfjd1.png?width=1920&format=png&auto=webp&s=59945c3c5d0b869756626ecd466fb6eda2448d68)
+
+[Running Order \(Grand Final\)](https://preview.redd.it/ti07gyxvdgjd1.png?width=1920&format=png&auto=webp&s=3dfc6322a9ba313d7dd00c030c5a701d5c84a3f3)
+
+[Postcard Title](https://preview.redd.it/0tffenng5gjd1.png?width=1920&format=png&auto=webp&s=46b3f0ac476c14c4efd963c31452a83e56610041)
+
+[Song Title \(I got the stage online - full credit to H.designs, it's awesome \(https:\/\/www.youtube.com\/watch?v=aOY0ucmaPSo\)](https://preview.redd.it/zncu9e076gjd1.png?width=1920&format=png&auto=webp&s=502b29e7f6199b9712042023f9d6cba1564841fc)
+
+[Recap](https://preview.redd.it/dvaxla8obgjd1.png?width=1920&format=png&auto=webp&s=5843aba910d8612860ec5fe0ee86cb2bf40839f9)
+
+[Scoreboard](https://preview.redd.it/ayyzab828gjd1.png?width=1920&format=png&auto=webp&s=ebc2be32cc271a5855b8a1f077bc953ae5bce116)
+
+  
+
+
+",1724000403.0,2024-08-19T03:00:03,https://www.reddit.com/r/eurovision/comments/1eve4dn/i_made_my_own_eurovision_2025_design/
+My Logo Idea For 2025 :),1eujuoi,31,,1723907136.0,2024-08-18T01:05:36,https://i.redd.it/r19jebxso8jd1.png
+"San Marino: Auditions for ""Una Voce per San Marino 2025"" to Begin Next Month! - Eurovision 2025",1esrv97,8,"In the article there are links to the rules of participation and the website where you can send your information to, the dates of the auditions, the fee that you need to pay to participate and all the information needed to audition. 
+
+Singers from all over the world are invited to apply, so maybe we will see someone from this community?🤔",1723718204.0,2024-08-15T20:36:44,https://en.euromix.co.il/2024/08/14/san-marino-auditions-for-una-voce-per-san-marino-2025-to-begin-next-month/
+🇲🇪 It’s now official! Montenegro returns to Eurovision 2025 and has opened song submissions for Montesong 2024. ,1esonsu,109,,1723705095.0,2024-08-15T16:58:15,https://www.rtcg.me/magazin/eurosong/588190/crna-gora-ce-imati-predstavnika-na-evroviziji-raspisan-konkurs.html
+🇵🇹 Portugal: RTP confirms participation in Eurovision 2025,1erxtsw,16,,1723630121.0,2024-08-14T20:08:41,https://www.instagram.com/reel/C-pWn5NMxwp/?igsh=MWRoamU4ZXd3bXM2bA==
+"""Yelled like an Angry Dog"": The Croatian Representative Against the Irish Representative at Eurovision - Eurovision 2025",1erxoxi,248,,1723629633.0,2024-08-14T20:00:33,https://en.euromix.co.il/2024/08/14/yelled-like-an-angry-dog-the-croatian-representative-against-the-irish-representative-at-eurovision/
+Eurovision participation as of 13th August ,1erj3ry,67,"As of 13th August 2024, 25 countries have Confirmed or shown interest in participating in Eurovision 2025. This map shows countries status on the subject as of this date. (Australia is still yet to speak on their participation)",1723583705.0,2024-08-14T07:15:05,https://i.redd.it/wrivdtt9zhid1.png
+🇱🇹 Lithuania: LRT Confirms Participation at Eurovision 2025 ,1er2f3x,29,,1723536889.0,2024-08-13T18:14:49,https://esctoday.com/195850/lithuania-lrt-confirms-participation-at-eurovision-2025/
+How many do you think will compete in 2025?,1eqre0a,68,"So we've got 25 countries confirmed for 2025, do you think there will be any more? I'm new to eurovision so I'm not sure if countries usually confirm participation later in the year. But 25 does seem rather small to me. ",1723501770.0,2024-08-13T08:29:30,https://www.reddit.com/r/eurovision/comments/1eqre0a/how_many_do_you_think_will_compete_in_2025/
+🇽🇰 Kosovo: Application for Eurovision 2025 Rejected ,1enype9,74,,1723207348.0,2024-08-09T22:42:28,https://eurovoix.com/2024/08/09/kosovo-application-for-eurovision-2025-rejected/
+My wish for Eurovision 2025,1enfg57,68,I have created these myself for fun and It would be nice to see as many countries as possible In the next few years of Eurovision these are some of the ones I think may have a chance at joining next year. Obviously I can't be sure but it's possible! These are what I believe to be some of the most underrated countries in Eurovision and hope to see them take a win at some point if they do return #bringthebalkansback #&monaco🇲🇪🇲🇨🇷🇴🇲🇰🇧🇬,1723146526.0,2024-08-09T05:48:46,https://i.redd.it/swelwdbbvhhd1.png
+🇲🇪 Montenegro: Eurovision 2025 Return Likely with New National Final ,1em6kxt,54,,1723019497.0,2024-08-07T18:31:37,https://eurovoix.com/2024/08/07/montenegro-eurovision-2025-return-likely-with-new-national-final/
+"New songwriting camps for 2025 in Austria, Latvia and Luxembourg – what's your opinion and how do you think they're connected to Nemo's win?",1elpdzc,18,"Austria, Latvia and Luxembourg will all launch songwriting camps for Eurovision next year. While the participants in Austria will be determined internally and seem to be Austrians only, there's an open call for Latvian musicians in Latvia and international ones in Luxembourg with some musicians getting invited. 
+
+What's your opinion on the increase of songwriting camps, for example with regards to creativity and local/international involvement? Keeping in mind that Nemo's winning song got created at the SUISA songwriting camp, how much of an impact do you think this has had on the increased number of camps? How do you wish for songwriting camps to develop in the future?
+
+Here are sources and more information on the [Austrian](https://www.kleinezeitung.at/kultur/medien/18604028/orf-haette-gern-etwas-kantiges-fuer-den-esc), [Latvian](https://auss.studio/piesakies-eirovizijas-dziesmu-rakstisanas-nometnei/) and [Luxembourgish](https://rocklab.lu/shows/eurovision-songwriting-camp/) camps. As the sources for Austria and Latvia are in their native languages, here are translations:
+
+  
+**Austria:**
+
+>A three-day songwriting camp is planned for the second half of August in a Viennese recording studio complex (Villa LaLa).
+
+>Such camps have become fashionable in recent years; different artists from several nations work on a song together. The winning song “The Code” by Nemo was created this way. Possible names – both for the camp and as ESC performers in 2025 – are Starmania participant Philip Piller from Vienna (2021 season), who made it to the final of ""Die große Chance"" this year, Austro-Icelander Thorstein Einarsson and Valerie Huber, who is actually known as an actress (films such as ""Klammer"") and is now celebrating a second career as a singer (Ö3 hit song ""Hell""). Amadeus Austrian Music Award winners Ina Regen and Julian le Play are in the running for the songwriting process.
+
+  
+**Latvia:**
+
+>Are you a singer, songwriter or producer? Get a chance to win the Eurovision Song Contest 2025!
+
+>- takes place from August 26th to 29th  
+>- application until August 23rd  
+>- 199 EUR\*  
+>- early registration until August 12th
+
+>Cultural space ""Auss"" invites singers, songwriters and producers to join the Eurovision Songwriting Camp and get a chance to win the Eurovision Song Contest in 2025. The camp will take place from August 26th to 29th in the largest recording studio ""Auss"" in the Baltics, in Riga, and during it the participants of the camp will be able to cooperate with other talented musicians from both Latvia and Sweden and realize their ideas.
+
+>The studio is equipped with modern production and recording facilities, as well as a Steinway Royal grand piano. Everything you need to create new music is available there.
+
+>Between sessions, you will have the opportunity to stay in the lounge, where drinks and snacks will be provided, and you will be able to get to know and make lasting contact with other artists.
+
+>This camp is more than a place to write songs: it is a commune where you will have the opportunity to collaborate and develop your music career. At the end, each participant will have developed a song ready for submission to the selection of the 2025 Eurovision Song Contest.",1722969185.0,2024-08-07T04:33:05,https://www.reddit.com/r/eurovision/comments/1elpdzc/new_songwriting_camps_for_2025_in_austria_latvia/
+🇦🇿 Azerbaijan confirms Eurovision 2025 participation and opens submission window,1ejabth,37,,1722709575.0,2024-08-04T04:26:15,https://www.instagram.com/p/C-NrThUNUUz/
+France 🇫🇷: France Télévisions confirms participation for Eurovision 2025 in Switzerland.,1ehde43,59,,1722508468.0,2024-08-01T20:34:28,https://eurofestivales.blogspot.com/2024/08/francia-participara-en-eurovision-2025.html
+🇨🇭SRG SSR has confirmed that the Eurovision 2025 host city will be revealed on Friday 30 August. ,1efoms5,60,Source: https://x.com/ESCdiscord/status/1818208309238759730?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Etweet,1722330167.0,2024-07-30T19:02:47,https://i.redd.it/wfchg2vufmfd1.jpeg
+ESC 2025 theme art idea,1ef40ob,4,"https://preview.redd.it/4wwh80uwihfd1.png?width=2000&format=png&auto=webp&s=6ed1f391eddf9dbfe54cea3601c6236f409d20a6
+
+Here's my idea for an ESC 2025 theme art, I am wanting to create a complete idea/proposal of a theme art, rn things are in an early stage I,ve made this idea in 30 minutes, and I am now looking for ideas from anyone who want to help, and maybe in the end post a full idea, theme art, logo, semi-final, stage ready etc. ",1722270777.0,2024-07-30T02:32:57,https://www.reddit.com/r/eurovision/comments/1ef40ob/esc_2025_theme_art_idea/
+Eurovision 2025 Participants,1ef1ysd,105,,1722265825.0,2024-07-30T01:10:25,https://i.redd.it/zh25e58j4hfd1.jpeg
+Who should represent Sweden at Eurovision 2025? And who do you want?,1ectjrk,82,Write in the comments? ,1722014153.0,2024-07-27T03:15:53,https://www.reddit.com/r/eurovision/comments/1ectjrk/who_should_represent_sweden_at_eurovision_2025/
+Who should represent Italy in Eurovision 2025?,1echmvz,88,"write in the comments  
+",1721976996.0,2024-07-26T16:56:36,https://www.reddit.com/r/eurovision/comments/1echmvz/who_should_represent_italy_in_eurovision_2025/
+San Marino will participate in Eurovision 2025,1ec4uav,66,"https://preview.redd.it/fuw8yzeg3qed1.png?width=1179&format=png&auto=webp&s=e62d600dd56168585a828ece12acb5069ee0f3f0
+
+inst: unavocepersanmarino",1721938628.0,2024-07-26T06:17:08,https://www.reddit.com/r/eurovision/comments/1ec4uav/san_marino_will_participate_in_eurovision_2025/
+Eurovision 2025 Participations Update (as of July 24th) ,1eayj97,304,,1721818600.0,2024-07-24T20:56:40,https://i.redd.it/ux9gsjgp6ged1.jpeg
+🇱🇻 Latvia: LTV Announces Supernova as Eurovision 2025 Selection,1eavlen,12,,1721807082.0,2024-07-24T17:44:42,https://eurovoix.com/2024/07/24/latvia-supernova-2025-eurovision/
+🇧🇦 Bosnia & Herzegovina: BHRT will not participate at Eurovision 2025 ,1e5diq4,31,,1721206952.0,2024-07-17T19:02:32,https://esctoday.com/195677/bosnia-herzegovina-bhrt-will-not-participate-at-eurovision-2025/
+What countries are you most curious about for Eurovision 2025?,1e4tkjl,114,"2024 was certainly an interesting year for Eurovision. Obviously there was the negatives but it was without doubt a year where most countries tried something new so what countries are you curious to see the approach take in 2025?
+
+Two countries I am interested to see are Ireland and Luxembourg. Ireland sent an entry unlike anything they ever sent, arguably unlike anything ever sent to ESC, so that along with a slowly yet consistently improving national final has me interested what approach they will take in 2025. Luxembourg I’m curious to see how they’ll move from an entry as divisive as Fighter and if they’ll take in the criticism given by fans for their national final.",1721148577.0,2024-07-17T02:49:37,https://www.reddit.com/r/eurovision/comments/1e4tkjl/what_countries_are_you_most_curious_about_for/
+🇱🇻 Latvia: LTV Confirms participation at Eurovision 2025 ,1e4t1zj,22,,1721147368.0,2024-07-17T02:29:28,https://eurovoix.com/2024/07/16/latvia-eurovision-2025-participation/
+A1 to Eurovision?,1e4jqnq,57,"https://metro.co.uk/2024/07/15/chart-topping-90s-boyband-pitch-represent-uk-eurovision-2025-perfect-song-21229365/
+
+This would be brilliant. Would love to see Ben back in the Contest again. Please make it happen, BBC!",1721119733.0,2024-07-16T18:48:53,https://www.reddit.com/r/eurovision/comments/1e4jqnq/a1_to_eurovision/
+15 year old going to Eurovision 2025,1e470ae,29,"hello, im actually a 15 year old but I turn 16 before may I really wanted to go to eurovision I have been a fan since after the contest in turin in 2022, I live in the USA but im going to switzerland and france the same time as eurovision and my parents are okay with it but feel it would be super awkward since I would be going alone without my parents because they dont care for it and while I am not worried about safety as a 16 year old going solo I just feel like it would be awkard especially not going with anybody or knowing anybody.",1721079422.0,2024-07-16T07:37:02,https://www.reddit.com/r/eurovision/comments/1e470ae/15_year_old_going_to_eurovision_2025/
+How Many Countries Have WON Eurovision?,1e2fnwj,26,"So over 68 editions of the ESC, we've had 52 countries take part at least once. But how many have won?
+
+The first country to win the Eurovision Song Contest is Switzerland. Their victory was in the inaugural edition of the ESC back in 1956, beating 6 other countries to claim the top spot. They won with the song ‘Refrain’, performed by Lys Assia. They would win again 32 years later in 1988, by just one point, with the song ‘Ne partez pas sans moi’ performed by the one and only Celine Dion. Their third and most recent victory came this year in 2024, as Nemo broke the Code, and the trophy, as they reached the top of the scoreboard.
+
+The second country to win Eurovision is the Netherlands. They won in the second edition of the contest in 1957, beating 9 other countries with the song ‘Net als toen’ performed by Corry Brokken. Their second victory would come shortly afterwards, in the 1959 contest. There they won with the song ‘Een beetje’, performed by Teddy Scholten. A decade later, they would win for a third time, alongside three other competing countries. The 1969 contest was… a strange one, to say the least, and we’ll explore its complications a little bit later. The winning Dutch entrant was Lenny Kuhr, with her song, ‘De troubadour’. In 1975, the Netherlands would win for a fourth time, with the now classic Eurovision tune, ‘Ding-a-dong’, performed by Teach-In, definitely a marmite winner at the time. After more than 40 years without a win, Duncan Laurence would secure the Netherlands fifth and latest victory, with the iconic smash, ‘Arcade’, which is one of the most streamed Eurovision songs ever.  
+
+The third country to win Eurovision is France. They won at the third edition of the ESC in 1958, beating 9 other countries with the song ‘Dors mon amour’, performed by André Claveau. Like the Netherlands, France’s second win would come thick and fast, with them top dogs of the 1960 contest, with the song ‘Tom Pillibi’ performed by Jacqueline Boyer. France would be the first nation to win Eurovision for a third time, triumphing at the 1962 contest, with the song, ‘Un premier amour’ by Isabelle Aubret landing at the top of the scoreboard. Like the Netherlands, France would be one of four winners at the 1969 edition of Eurovision, with Frida Boccara sharing the glory, with her song ‘Un jour, un enfant’. France’s fifth and latest victory occurred all the way back in 1977, when Marie Myriam beat all other competitors to the trophy with her timeless track, ‘L’Oiseau et I’Enfant’.
+
+The fourth country to win Eurovision is Luxembourg. They would win for the first time in 1961, with the song ‘Nous les amoureux’ performed by Jean-Claude Pascal. A couple of years later, France Gall would provide a very contemporary track for Luxembourg’s second win, that being ‘Poupée de cire, poupée de son’, which sounds just about as 1965 as it comes. Luxembourg’s third victory would come in 1972, shining over with the song ‘Après toi’ performed by Vicky Leandros, one of my all-time favourites. Luxembourg would become the first country to score two consecutive wins under its belt, without having to share the victory either. For 1973’s winner would be Anne-Marie David, with the song ‘Tu te reconnaîtras’ notching a fourth star for Luxembourg’s winners table. 10 years later, in 1983, Luxembourg would secure its fifth and latest victory, triumphing over all other entrants with ‘Si la vie est cadeau’, performed by Corinne Hermés.
+
+The fifth country to win Eurovision is Denmark. Their first victory came quite controversially in 1963, with the song Dansevise, performed by Grethe and Jørgen Ingmann beating out 15 other countries, including front-runners, Switzerland. We’ve got a whole little documentary on that particular ESC, which you can check out if you love a good story. It would be nearly 40 years before Denmark would secure another victory. It finally came in 2000, as the Olsen Brothers defied the odds, to win with ‘Fly on the Wings of Love’. 50 years after their first win, in 2013, Denmark would win for a third time. Emmelie de Forest claimed the crown with her song ‘Only Teardrops’ which has since gone on to become a Eurovision anthem.
+
+The sixth country to win Eurovision is Italy. They would win for the first time in 1964, with the beautiful song ‘Non ho l’eta’, performed by Gigliola Cinquetti. A second victory would come in 1990, with Toto Cutugno claiming a surprising win with the unifying track, ‘Insieme: 1992’. After taking an extended break away from the ESC, Italy would eventually return in 2011, regularly placing within the Top 10. Their efforts finally paid off in 2021, with rock band Måneskin taking the trophy with ‘Zitti e buoni’, showing rock is still alive and well at the Contest.
+
+The seventh country to win Eurovision is Austria. They would win at the 1966 edition of the Contest, with the song ‘Merci, Chérie’, performed by Udo Jürgens. It wouldn’t be for nearly another half century before the Austrians could claim another win at Eurovision. Finally, in 2014, that curse was broken by the iconic Conchita Wurst, with their powerful, bold and emotional anthem, ‘Rise Like a Phoenix’. Need we say more?
+
+The eighth country to win Eurovision is the United Kingdom. Despite having one of the most successful music industries on Earth, it wouldn’t be until 1967 for the Brits to triumph at the ESC. They won with ‘Puppet on a String’ performed by 60s legend, Sandie Shaw. Two years later, the UK would win again, alongside three others in the 1969 contest. Don’t worry, I haven’t forgotten about the madness of this one, we’ll get to it. The Brits quarter of the victory came from Lulu and her bouncy track, ‘Boom Bang-a-bang’. The UK would score its third win in 1976, when ‘Save Your Kisses for Me’ by Brotherhood of Man, would not only win, but become the most successful Eurovision single of all time. The 80s started strongly with a 4^(th) British victory, with Bucks Fizz provided a provocative performance with ‘Making Your Mind Up’. Our fifth and latest win came in 1997, when Katrina and the Waves belted out ‘Love Shine a Light’, a song that would hold particular resonance in the decades that followed.
+
+The ninth country to win Eurovision is Spain, who claimed their first win in 1968. Controversially pipping Cliff Richard to the post by one point, as Massiel sang, many times, ‘La La La’. Technically, Spain would be the first country to win two consecutive years in a row, however, their second win would be shared out. As you’ve probably remembered, the 1969 Eurovision was won by 4 countries, namely Spain, France, the Netherlands and the United Kingdom. Spain’s share of that victory came from Salomé, who performed the song, ‘Vivo cantando’. So how did this happen? In a nutshell, all four winning countries received the same amount of points. And what was the tie-break solution? Well, there wasn’t one. The thought of a tie-break simply hadn’t occurred to the organisers back in 1969, so in a mad rush, all four entrants were declared the winner. Such an event would never happen again in Eurovision history.
+
+The tenth country to win Eurovision is Ireland, who would win over 11 other countries in 1970 to take their first of many victories. ‘All Kinds of Everything’ was the first song to do the trick, sung by a young girl, named Dana. 10 years later, at the 1980 Contest, Johnny Logan would woo audiences all over the world, with the beautiful ballad, ‘What’s Another Year?’. Seven years later, in 1987, Logan would return once again to represent Ireland and made ESC history, by being the first artist to win the Contest twice, with the song ‘Hold Me Now’, giving Ireland their third victory. The 1990s would prove to be an unprecedented decade for Ireland at Eurovision. 1992 would be the first year, with Linda Martin giving Ireland its fourth win with the song, ‘Why Me?’. They’d win for a second consecutive year in 1993, with Niamh Kavanagh representing with the song ‘In Your Eyes’, securing a fifth win for the Emerald Isle. The following year, in 1994, Ireland would break several ESC records. Not only did they win for a sixth time, the first country to do so, but they were the first to win the Eurovision for three years in a row. The song to do it would be ‘Rock ‘n’ Roll Kids’, performed by Paul Harrington and Charlie McGettigan. After taking a year of winning in 1995, the Irish would return in force for 1996, Eimear Quinn bagging them their seventh and most recent win, with the haunting track, ‘The Voice’. For over 25 years, Ireland held the title of most Eurovision wins. One other county has since joined their ranks, and we’ll touch on them a little later.
+
+The eleventh country to win Eurovision is Monaco. One of the smallest nations to take part, they were a regular fixture at the Contest for many of its early years. Monaco’s one and only victory would arrive in 1971, with Séverine delivering the song, ‘Un banc, un arbre, une rue’. Monaco would briefly return in the 2000’s, but after 2006, they have yet to make an appearance in Eurovision again.
+
+The twelfth country to win Eurovision is Sweden. Their first win would be one of the most famous ever in ESC history, when ABBA lit up the stage, with Waterloo. It would be 10 years later when a second win would befall the Swedes, with Herreys wearing their golden shoes, singing ‘Diggi-Loo Diggi-Ley’. In 1991, Carola would give them their third win with ‘Fångad av en stormvind’, one of my favourites, though it had the same points as France’s entry, only winning as it received more 12 points. In 1999, Sweden won for a fourth time with ‘Take Me To Your Heaven’, performed by Charlotte Nilsson. 2012 would be a monumental one for Sweden, with Loreen absolutely dominating the scoreboard with anthemic, ‘Euphoria’. Just a few years later in 2015, Måns Zelmerlöw claimed a sixth victory for Sweden, with the song ‘Heroes’. In 2023, Loreen pulled a Johnny Logan, and won the ESC for a second time, giving Sweden their seventh win, equalising Ireland’s record, one it now shares. The song to take the Swedes there, was ‘Tattoo’.
+
+The thirteenth country to win Eurovision is Israel. Their first win would come in 1978, with Izhar Cohen and the Alpha-Beta singing A-Ba-Ni-Bi. The following year in 1979, Israel would win the ESC for a second consecutive year, providing one of the most remembered winning songs, ‘Hallelujah’ performed by Milk & Honey. A third victory wouldn’t arrive until 1998, with Dana International and their song Diva pushing boundaries, as the first transgender winner of the Eurovision Song Contest. 20 years later, in 2018, Israel would bag a fourth win with the track Toy, performed by Netta. This stands are their most recent victory at the Contest.
+
+The fourteenth country to win Eurovision is Germany. Despite having been on the inaugural nations to take part in the ESC, they wouldn’t win until 1982. Nicole was the artist to take them their, with ‘A Little Peace’ holding a special place amongst Eurovision fans for decades to come, including myself. 2010 would be the year in which they finally bagged a second victory, the song to do it being ‘Satellite’, performed by Lena. A bouncy catch ear-worm that isn’t going to leave your head for a while.
+
+The fifteenth country to win Eurovision is Norway. For the longest time, they had the infamous reputation of coming last the most amount of times. That all changed in 1985, as they finally got their first win with the song ‘Let It Swing’, performed by Bobbysocks. 10 years later, it was Norway that broke up Ireland’s winning streak, briefly, by winning with ‘Nocturne’, a very strange song, performed by Secret Garden. In 2009, Alexander Rybak produced one of the highest-scoring results in Eurovision history at that time, with the song, ‘Fairytale’.
+
+The sixteenth country to win Eurovision is Belgium. Similar to Germany, despite having been involved since the beginning, it would take 30 years before a win would bear the Belgian flag. The winner would be Sandra Kim, and her song, ‘J’aime le vie’. Whilst celebrations were due in Belgium, this win wasn’t without its critics. Mainly being centred around Sandra’s age, as she was 13 at the time, despite all the press lines saying she was 15. To this day, Sandra Kim is, and is likely to always be the youngest winner, of the Eurovision Song Contest.
+
+The seventeenth country to win Eurovision is Yugoslavia. The Eastern European powerhouse had been a regular in the ESC since the 60s, but it wouldn’t be until 1989 before they would actually win. The song to do it would be ‘Rock Me’, performed by Riva. Some at the time claimed this song wasn’t a worthy winner, not that those in Yugoslavia cared, for this would be the only win they would gain, before dissolving during the early 90s.
+
+The eighteenth country to win Eurovision is Estonia. Joining a long list of former Soviet Union states that were now able to join the ESC, Estonia would be the first of the Baltic states to win in 2001. Tanel Padar, Dave Benton & 2XL, performing the song, ‘Everybody’ would provide Estonia with their first, and so far only victory.
+
+The nineteenth country to win Eurovision is Latvia, becoming the second of the Baltic States to win in 2002. Following on from Estonia’s victory the year before, ‘I Wanna’ performed by Marie N, would continue the trend that would run through the 2000s, of countries old and new to Eurovision finally securing a win at the Contest.
+
+The twentieth country to win Eurovision is Turkey. They’d been taking part regularly since the 1970s, but a win had always seemed elusive. But the moment would finally arrive in 2003, where after a closely fought battle with Belgium and Russia, Turkey would seize victory with the song, ‘Everyway That I Can’, performed by Sertab Erener. A crowning moment for sure, but Turkey would not see another win at Eurovision, their latest year of participation being 2012. They are yet to return to the Contest.
+
+The twenty-first country to win Eurovision is Ukraine, who managed to win during their second year of taking part, in 2004. Ruslana would be the artist to bring it home, delivering an instant classic in the form of the song, ‘Wild Dances’. Ukraine would continuously do well in the ESC, being the only country to consistently always qualify from the semi-finals and often find themselves within the Top 10. In 2016, a second victory would be acquired, with Jamala delivering the powerful and ethereal, 1944. Ukraine’s third and latest win would come in 2022, with Kalush Orchestra taking the trophy by performing their song, ‘Stefania’.
+
+The twenty-second country to win Eurovision is Greece, bagging their first and so far only win more than 30 years from their debut in the ESC. 2005 would be their magical year, with Helena Paparizou performing the suitably titled, ‘My Number One’. Any victory in Eurovision is cause for celebration, though Greece, as like many others, have yet to win for a second time.
+
+The twenty-third country to win Eurovision is Finland, who after years of poor results, finally won in 2006. Bet they didn’t just win with any kind of bog standard pop, for they’d take the trophy with the hard rock stylings, of Lordi. Hard Rock Hallelujah was unlike any winner Eurovision had seen before, and they still stand as one of the most legendary acts to grace the ESC stage. Finland have come close a few times since then, but so far, 2006 remains as their only win.
+
+The twenty-fourth country to win Eurovision is Serbia. The first year they entered under their own name, they were able to secure the win, with the song ‘Molitva’, performed by Marija Šerifović. To date, this is their one and only ESC win, they have managed to come close a few times, including with this beauty.
+
+The twenty-fifth country to win Eurovision is Russia. After many years of constantly finishing within the Top 5, Russia managed to claim a win at the Contest in 2008. The song was ‘Believe’, performed by Dima Bilan. Russia would continue to perform well in the Contest up until 2022, from which they would be banned, largely due to their invasion of Ukraine, a ban which remains in place to this day.
+
+The twenty-sixth country to win Eurovision is Azerbaijan. Having debuted in the late 2000s, it wouldn’t take long before Azerbaijan won at the ESC, with their victory coming in 2011. ‘Running Scared’, performed by Ell and Nikki, would beat out all the other competitors, and it remains Azerbaijan’s one and only win, to this day.
+
+The twenty-seventh country to win Eurovision is Portugal. Having taken part regularly since the 1960s, Portugal became one of the oldest countries in the ESC without ever taking the trophy home. This all finally changed in 2017, when the simple, but beautiful piano playing of Salvador Sobral, would see one of the highest-scoring wins ever, and the first-ever Portuguese win. The song of course, is ‘Amar pelos dois’ 
+
+So 27 countries out of the 52 that have taken part at least once have managed to win the ESC. Will 2025 give us a 28th winner I wonder, would be the first new winner in 8 years if it did...
+
+",1720891208.0,2024-07-14T03:20:08,https://www.reddit.com/r/eurovision/comments/1e2fnwj/how_many_countries_have_won_eurovision/
+Cyprus: CyBC confirms participation at Eurovision 2025,1e1h8g6,17,,1720789598.0,2024-07-12T23:06:38,https://esctoday.com/195648/cyprus-cybc-confirms-participation-at-eurovision-2025/
+🇮🇹 Italy: Eurovision 2025 Participation Confirmed,1e0mxpq,27,,1720698310.0,2024-07-11T21:45:10,https://eurovoix.com/2024/07/11/italy-eurovision-2025-participation-confirmed/
+"Tickets for national selections (NFs): how, where, when?",1dxmzza,9,"After watching all national finals (NFs) of the 2024 season, I've now come up with a crazier idea for 2025: *visit* *as many national selections as I can*! Interrailing through Europe and letting the NF schedule decide my itinerary.
+
+However, I have seen little info about how tickets for NFs work. The most on-topic post I've found in this sub is about UMK 2024 (Finland) [selling out](https://www.reddit.com/r/eurovision/comments/170f2tz/finlands_2024_national_selection_show_umk_sold/) in an hour, and a comment about Eurosong 2024 (Ireland) having [a capacity of only 250](https://www.reddit.com/r/eurovision/comments/170f2tz/comment/k3lomw0/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button). I assume those are extremes, but they do make me curious about how tickets for NFs work in different countries.
+
+* **When do NF tickets go on sale and how fast do they sell out?** Is there often a run on tickets many months ahead with high chance of selling out? Or can I still buy tickets a few weeks or days in advance?
+* **Where is information about NF tickets published?** Should I be checking broadcasters' websites or different channels? Is there a platform/website that compiles all that info and posts updates when tickets go on sale? (Eurovisionworld shows some dates and venues but iirc has been wrong in the past, and I haven't seen ticket info there. Idk about other websites or the ESC Discord.)
+* **Are NF tickets sold to everyone or to a restricted audience only?** Are any NFs invitation-only without public ticket sale (say, Italy's prestigious Sanremo festival)? Or are some NF's tickets restricted/available to local citizens or through local payment methods only?
+* **How much do NF tickets roughly cost?** Are we talking a few dozen euros per show, or is it more in the range of €50+ or €100+?
+
+Thanks a lot for your experiences, stories and feedback!",1720376203.0,2024-07-08T04:16:43,https://www.reddit.com/r/eurovision/comments/1dxmzza/tickets_for_national_selections_nfs_how_where_when/
+"Hi guys! I'm a UI design student, for my latest project, I created the non-official visual branding for Eurovision: Zurich 2025. Inspired by Edelweiss flowers, Swiss music box, and the Swiss Alps, I aimed to capture the essence of the contest and Swiss culture. Thanks for checking out my work!",1dwqhyf,14,,1720275060.0,2024-07-07T00:11:00,https://youtu.be/peOiVh_5EgA
+"I asked 82 eurofans how likely they believe each country is to participate at Eurovision 2025, and which artists they think will represent them. Here are the results",1dw4nso,71,,1720203617.0,2024-07-06T04:20:17,https://threadreaderapp.com/thread/1807754564017262862.html
+Eurovision 2025 Participations Update (as of July 5th) ,1dvxwld,74,,1720185812.0,2024-07-05T23:23:32,https://i.redd.it/n5lruh7lbpad1.jpeg
+ Netherlands: AVROTROS yet to decide on Eurovision 2025 participation,1dub4uv,14,,1720002846.0,2024-07-03T20:34:06,https://esctoday.com/195580/netherlands-avrotros-yet-to-decide-on-eurovision-2025-participation/
+Joost Klein does not want to represent the Netherlands in 2025 but ... Belgium! - Eurovision News | Music | Fun,1dsmmil,91,,1719817169.0,2024-07-01T16:59:29,https://eurovisionfun.com/en/2024/06/joost-klein-does-not-want-to-represent-the-netherlands-in-2025-but-belgium/
+More of my custom Zurich 2025 visual identity!,1dpxkon,293,"This is a companion post to the previous Zurich 2025 custom identity I had created before, featuring more of the expected Eurovision screens and design tropes you'd come to expect!
+
+Featured here is a participants poster, made of stylised icons of all 41 participants, a pre-postcard graphic that'd animated right after a performance and just before a postcard, the stage ready visual (with a placeholder Rotterdam 2021 stage), the qualifying results format, the country qualified graphic (with Fyr og Flamme as a placeholder for Denmark, as they deserved it), and then the final results!",1719510872.0,2024-06-28T03:54:32,https://www.reddit.com/gallery/1dpxkon
+What is the odds of Monaco joining Eurovision?,1dpkp1c,20,"Monaco at Eurovision was pretty good
+So why not to participate at Eurovision 2025",1719470137.0,2024-06-27T16:35:37,https://www.reddit.com/r/eurovision/comments/1dpkp1c/what_is_the_odds_of_monaco_joining_eurovision/
+Andorra: RTVA will not participate at Eurovision 2025,1dowdw5,50,,1719401627.0,2024-06-26T21:33:47,https://esctoday.com/195514/andorra-rtva-will-not-compete-at-eurovision-2025/
+Joost Klein renamed his Instagram broadcast channel “Eurovision 2025”,1dmq6dm,190,,1719160487.0,2024-06-24T02:34:47,https://i.redd.it/xknm1carmc8d1.jpeg
+How much it will approximately cost me to watch Eurovision 2025 in Switzerland?,1dke42d,21,"Hello everyone, if i be able to buy the tickets, how much it will approximately cost me to watch Eurovision 2025 in Switzerland?
+
+Do not include the plane ticket prices please. I'm just asking for an approximate cost of a ticket with a good stage view and hotel. 
+
+I want to stay 3 nights there. Are there any affordable hotels near Zurich? (I know venue is not selected yet but planning for Zurich for now).
+
+If i can be able to buy the tickets, it will be my first Eurovision experience so i need your help, and i want to start planning early. Thank you.",1718896482.0,2024-06-21T01:14:42,https://www.reddit.com/r/eurovision/comments/1dke42d/how_much_it_will_approximately_cost_me_to_watch/
+Sweden: SVT confirms participation at Eurovision 2025,1dk6cxt,39,,1718870856.0,2024-06-20T18:07:36,https://esctoday.com/195473/sweden-svt-confirms-participation-at-eurovision-2025/
+Eurovision in Just Dance - A Rant,1djx1xh,13,"I am a Just Dance fan along with being a major fan of Eurovision, so whenever a Eurovision song or even a song by a Eurovision artist is announced to be in one of the games, I always die. Every. Single. Time. So with the announcement of Just Dance 2025, I'm writing this as a sort of manifestation for a Eurovision song to get into this year's edition (The Code and Dos Extranos from Benidorm Fest this year are both rumored to be in the game, but so were Tattoo and Unicorn back in 2023 and they didn't make it in).
+
+Let's start at the very beginning then, shall we? The first song that can be related to the Eurovision Song Contests was on Just Dance 2. It was Big Girl (You Are Beautiful) by Eurovision 2022 co-host Mika. It was 2010, so the animation quite obviously wasn't great, and the choreo was quite repetitive, but I promise it gets better. Mika also appeared in Just Dance 3 with his song Lollipop, along with Satellite by Lena (Germany 2010), the winner of it's contest, which was a PAL exclusive song (Europe only).
+
+After Just Dance 3, we had the GLORIOUSLY ICONIC game ABBA: You Can Dance featuring the music of the iconic band ABBA, who won Eurovision for Sweden in 1974. It does indeed include Waterloo, along with 25 of their other songs. It's a pretty solid game for Just Dance standards, although still very repetitive.
+
+Just Dance 4 released a PAL version of Emma's (Italy 2014) Cercavo Amore, and it still remains one of my favorite dances (and if you want to stretch it with saying that the band Europe, who had minor cameos in ESC 2016 and had their song The Final Countdown featured in Just Dance 4, counts)! Just Dance 2014 brought along ABBA's (Sweden 1974) song Gimme! Gimme! Gimme! (A Man After Midnight). It's okayish. Not the best, but pretty high up there in my ranking of the game's dances. You could also download the song My Main Girl by MainStreet, who competed in the Junior Songfestival 2012 to select the Dutch entry to the Junior Eurovision Song Contest. They came third in their national final.
+
+Just Dance 2015 had Holding Out for a Hero by Bonnie Tyler, who represented the United Kingdom in 2013 with the song Believe In Me. Rita Ora, who was an interval act for Eurovision 2023, was also featured on the song Black Widow of the same game. Just Dance 2016 featured no Eurovision related artists.
+
+In Just Dance 2017, Melodifestivalen 2017 interval act (can you tell I'm grasping at straws?) Zara Larsson's sogn Ain't My Fault was a featured song, and it's probably one of the best of the edition. Just Dance 2018's Just Dance Unlimited (paid subscription for a bunch of older songs and occasionally some new ones) saw Abba's (Sweden 1974) Dancign Queen grace the screen.
+
+Just Dance 2019 is where it really starts picking up. Stella Mwangi (Norway 2011) had her song Not Your Ordinary featured as a track in the game. It was joined by Flo Rida's (San Marino 2021) Sweet Sensation and the controversial Netta's (Israel 2018) Eurovision winning song Toy. I would've been happier with Fuego, but I don't make the decisions at EBU. Zara Larsson is yet again featured, this time as a Just Dance Unlimited track with her song Lush Life.
+
+On Just Dance 2020, we're paid visits from Netta's (Israel 2018) Bassa Sababa, Stella Mwangi's (Norway 2011) Ma Itū, and Little Big's (Russia 2020) Skibidi. Yes, the song is titled Skibidi. Ma Itū was by far the best track of the three, and is a banger, so you should check it out! Moving on to Just Dance 2021, we are finally given the iconic UNO by Little Big (Russia 2020), I was really rooting for this song to win. We also get the first of K3's many songs in Just Dance, this one being Dans van de Farao. Yet another stretch, K3 attempted to represent Belgium in the Eurovision Song Contest 1999 with the song Heyah Mama. It obviously didn't make it to ESC, and K3, the ""flemish version of Spice Girls"", probably isn't going to be making a Eurovision comeback anytime soon. We also get Flash (Just Dance Version), one of the many singers on the song being Bilal Hassani, who represented France in 2019 with her song Roi.
+
+Okay, 2022: we got Zara Larsson's Poster Girl on the main soundtrack and K3's Waterval on Just Dance unlimited. We also got the winner in our hearts of 2020, Daði Freyr (Iceland 2020 and 2021), and his song Think About Things from our missing 2020 year. I know I said that I was rooting for UNO, but I would have accepted this if it won also. Just Dance 2023 had the song Witch, which featured the withdrawn entry from Ukraine in 2022, Alina Pash. Just Dance Unlimited is also now replaced with Just Dance +, so keep that in mind.
+
+Finally, we have made it to the latest game, Just Dance 2024. The main game only features yet another Zara Larsson song, this time Can't Tame Her, danced by Just Dance youtuber littlesiha (pretty famous in the Just Dance community). Just Dance made up for it with an entire season of Just Dance + dedicated to Eurovision! We got three iconic Eurovision songs: Euphoria by Loreen(Sweden 2012),  Trenulețul by Zdob și Zdub & Advahov Brothers (Moldova 2022), SloMo by Chanel (Spain 2022), and Give That Wolf A Banana by Subwoolfer (Norway 2022). Also featured was the song Beggin' by Måneskin, the winners of ESC 2021 for Italy. Just Dance's social media people held a vote for who the fans thought would have won the competition, and SloMo came out on top (obviously). I think it was a deserved win, it retains almost all of the on stage choreo from 2022!
+
+EDIT: The Eurovision season was in the 2023 edition guys, screwed up big time
+
+And that's it. Fingers crossed for Rim Tim Tagi Dim in Just Dance this year, folks!",1718839010.0,2024-06-20T09:16:50,https://www.reddit.com/r/eurovision/comments/1djx1xh/eurovision_in_just_dance_a_rant/
+I created a custom visual identity for 2025!,1dhdowi,130,"Some of you may have seen a custom Zagreb 2025 theme art created by me during Eurovision week. Since that didn't particularly age well with Switzerland's victory, I decided to create a new one for Zurich.
+
+The theme (ridding of United By Music) is Reach Your Peak, with the main logo being a stylised mountain range, inspired by the Matterhorn and the Alps, made up of a mix of soundwaves and sheet paper. Here is the main poster, album cover, voting scoreboard, and isolated logo.
+
+If you all like it, I'll continue on and make even more branding!",1718561921.0,2024-06-17T04:18:41,https://www.reddit.com/gallery/1dhdowi
+RTK's Director General has sent a formal letter to the EBU requesting an invitation to participate at Eurovision 2025,1dei5q2,83,,1718227877.0,2024-06-13T07:31:17,https://www.rtklive.com/sq/news-single.php?ID=668744
+🇨🇭 Eurovision 2025: St. Gallen Will Not Bid to Host Eurovision,1deaags,16,,1718208254.0,2024-06-13T02:04:14,https://eurovoix.com/2024/06/12/%F0%9F%87%A8%F0%9F%87%AD-eurovision-2025-st-gallen-will-not-bid-to-host-eurovision/
+"According to BNT's now infamous Twitter/X account, a Bulgarian return to Eurovision in 2025 is being ""seriously considered"", with a final decision to be taken in autumn",1ddmkl0,34,,1718133595.0,2024-06-12T05:19:55,https://i.redd.it/vcuav777tz5d1.png
+Eurosong Greatest Hits - Zagreb (08.06.2024) - review,1dby7as,29,"Boogaloo club Zagreb hosted the Eurosong Greatest Hits show on July 8th. Seeing, as nobody did a review as of know, I'll write one myself, and please feel free to add your own opinions, pictures, videos, etc. in the comments below.
+
+I won't add a setlist since you can find it in the post here - [https://www.reddit.com/r/eurovision/comments/1dbpb3f/eurosong\_zagreb\_8624\_setlist\_need\_help\_filling\_in/](https://www.reddit.com/r/eurovision/comments/1dbpb3f/eurosong_zagreb_8624_setlist_need_help_filling_in/)
+
+The event was organised by Unity of Colors, and the event page is Eurosong.Cro (https://www.instagram.com/eurosong.cro). They'll probably have better quality videos there since I can only add one here.
+
+The show itself was planned before Dora even took place, so it should've been a niche, little, fan-event in a smaller space. However, we all know how ESC exploded in Croatia after BL got in, so they changed it to a bigger venue. The price remained the same, 35.70€ which was a real bargain for a 3 hour show we got, plus an after party in the club for all those that wished to stay. I presume that many local performers decreased their fees or performed pro-bono for such an event to happen, but that is my speculation, so please don't take it as a fact.
+
+The show lasted for 3 hours with a lot of performers and many ESC hits, and I'll try to do an objective write up.
+
+Emmelie de Forest opened the show which was surprising. I was expecting to see her much later in the show. I would've loved if she opened with a ESC classic instead of her own song simply because the crowd would have a chance to warm up. She then performed Eres Tu, after which she asked should she perform in heels or barefooted. It was obvious what the crowd wanted, but she forbade us to take pictures of her feet because she didn't paint her toenails (Lena would be disappointed), and the reason why that's important is that when she had rehearsals in Malmo in 2013 she slammed her toe into a metal fence and her toe has been fucked up ever since. She actually forgot a part of the lyrics for the first time because she was taken aback by how the crowd sang Only Teardrops with her, and knew the lyrics. I feel that there were some problems with the sound in the beginning, so it's a shame that Emmelie went first, but all in all, a fun performance and a good start.
+
+https://preview.redd.it/w30pyu5xok5d1.jpg?width=3000&format=pjpg&auto=webp&s=b4cc6c57d21ed72779ccbe67a77448d9ab47afd0
+
+After her another ESC winner with almost an identical name took the stage, this time Emilija Kokić that won in 1989 with Riva. The win was under Yugoslavia, but it's a Croatian bend, and they won the Yu competition for a Croatian broadcaster so we're counting it as a win for us, however, we're still waiting for a first one since gaining independence. Emilija is a seasoned veteran and did her job with ease. She sang Euphoria because she could choose, also My Number One, Hajde Da Ludujemo (Croatia as part of Yugoslavia 1990) and finished with Rock Me for which she won. She was great, but I'm surprised that the two winners we had this evening were the opening acts. I would've definitely put them later in the show, but they did heat up the atmosphere from the start.
+
+https://preview.redd.it/atu4syb2pk5d1.jpg?width=3000&format=pjpg&auto=webp&s=41509bb7605012adbf0cf368d66a378de00efd11
+
+Albina and Eugen followed with their ESC/Dora songs, and some ESC classics. Both did a good job.
+
+https://preview.redd.it/idks3jgdsk5d1.jpg?width=3000&format=pjpg&auto=webp&s=02591585c1b24245c19297238c5df0f2ccd556a9
+
+Selestia and Marko Bošnjak (Dora 2022) were hosts. They were fun, relaxed, and did a good job, and both did a few songs. Selestia did a medley of a few Croatian ESC songs, while Marko performed Moli Za Nas, his Dora 2022 song, Dancing Lasha Tumbai and Lejla. They were followed by Domenica and Indigo, her Dora 2019 song.
+
+After a domestic break, another heavy hitter took the stage. Efendi of course did Cleopatra and Mata Hari, and by hearing them live, it's evident that Cleopatra was the superior ESC entry. I felt kind of stupid by asking myself which ESC song she would perform, as there was any doubt in that she would perform Running Scared, the winning song for Azerbaijan 2011. She was fire on stage, were likeable, and the crowd loved her.
+
+https://preview.redd.it/qr65y4vbsk5d1.jpg?width=3000&format=pjpg&auto=webp&s=40fdf9647c40eda2bb3f44ad0cbc7bece408531b
+
+Jorge Gonzalez came next and communicated with the crowd in Spanish. Now, Croatian don't speak Spanish, but we have seen enough telenovelas that we understand enough to communicate with Jorge. He was energetic, he sang dance, did his new single, and Caliente, but amazingly, also performed Soldi.
+
+https://preview.redd.it/tbh0tws9sk5d1.jpg?width=3000&format=pjpg&auto=webp&s=b09b18bd0c20e7eae14585a77aaab67cda2fe7be
+
+Now we had a break with Devin Juraj and Lara Demarin. Lara did her Dora 2024 debut song, Arcade, Waterloo (with backup singers) and Wild Dance. She was full of energy, and the crowd loved her, but she was kind of overshadowed by Devin.
+
+https://preview.redd.it/4mxa8w97sk5d1.jpg?width=4000&format=pjpg&auto=webp&s=891306b7908eb74991b2ac08923f7d5728bd013a
+
+Now, Devin is a cabaret dancer, and is known for being a dancer for Albina in ESC 2021, so I wasn't expecting much, and I must say that I think he needs to be arrested, because Devin stole the entire fucking show. Since he took the stage with his Adam Lambert-like look (Lambert from some 10+ years ago), he was in command. He opened with Llámame and showed that he can dance, followed by Cha Cha Cha. Now, if there was any doubt that Croatia doesn't love Kaarija and that there was any animosity because of the Kaarija-BL comparisons, they were dispelled as soon as he started. The crowd went batshit insane, even singing the song outside of screaming Cha Cha Cha. After the song we even had a bra hitting the stage which was fitting since he turned the show into his own personal metal/rock concert. He followed up with his author song Can't Leave You (I think that was the name) which wasn't a pop song, but nu-metalesque performance that started with a growl. He hammered his show home with Zitti e Buoni. If BL wasn't coming later, there is no doubt in my mind that his performance would be a high point of the evening.
+
+https://preview.redd.it/9b99xwu3sk5d1.jpg?width=3000&format=pjpg&auto=webp&s=b9f008761b0024ae992b586e73a748839719e5d5
+
+Then came Jovanka Broz Titutka who is most known as being a part of Let 3's Mama Šč video. She came on and said she's not doing Mama Šč, no way. She didn't do any ESC songs which I found disrespectful to the crowd that came for the ESC, and not her. She did her own songs for which I don't feel that they belonged on that stage. I have nothing against drag, but I really didn't find it appropriate her on he back with her legs spread in the air singing ""Who'll be fucking me"" when the entire first row was filled with what to me seemed like 12 year old kids. There is a place for everything, and if I wanted that kind of show, I'd go see it. This for me was the low point of the show, and just felt completely out of place. With the energy Jovanka has, Dancing Lasha Tumbai would be ideal for her, so maybe if it was saved for her, it could've ended on a high note.
+
+She was followed by drag queens from House of Flamingo who did a dance on Loco Loco which was great. They looked fabulous, so there worth checking out for sure. I would've preferred if they also sang, but it was great either way.
+
+Alessandra was supposed to be one of the highlights of the show, but she only performed Queen of Kings without even trying to hit the high note, and then she left the stage. It was a solid performance, but I was really disappointed with only one song.
+
+Marcela showed us she knows how to sing. She did Gasoline and her new single. If she keeps making music like this, she'll definitely have a chance to go to ESC herself.
+
+https://preview.redd.it/q8zkhdqvrk5d1.jpg?width=3000&format=pjpg&auto=webp&s=5b77b83c5251dddf0c326f615922362cdb753bf2
+
+In the end we all wanted to see Baby Lasagna. He entered after the ESC postcard and a prolonged intro. The crowd exploded and he didn't even need to sing, we all knew the lyrics. We asked for an encore and he did RTTD again. It was a great performance, but I think a lot of us wanted to hear IG Boi, DHYBDLYTM, or some other new song.
+
+https://reddit.com/link/1dby7as/video/qoisbg23rk5d1/player
+
+All in all, it was a great evening, and an amazing show. Hopefully we get an even bigger one next year. We might not be able to host ESC 2025, but this we'll be the next best thing. Kudos to the organisers, everything was amazing, and any criticism should be taken as constructive.
+
+See you next year, Meow Meow.",1717951689.0,2024-06-10T02:48:09,https://www.reddit.com/r/eurovision/comments/1dby7as/eurosong_greatest_hits_zagreb_08062024_review/
+Norway may not participate in ESC 2025,1dbnskw,286,"https://www.vg.no/rampelys/i/3M6P6q/aftenposten-nrk-avventer-med-aa-melde-seg-paa-neste-aars-eurovision
+
+NRK says they are waiting to apply to the ESC 2025. Stig Karlsen, the head of the norwegian delegation, says that they haven't confirmed Norways participation yet. He says they have to consider the assessments to apply to the competition seriously. 
+Karlsen says they have intentions too apply, but that it depends on what changes the EBU are willing to make. He says: -We can't have a new year with the same level of conflict and unrest. The polarisation that was present in this years competition.",1717916672.0,2024-06-09T17:04:32,https://www.reddit.com/r/eurovision/comments/1dbnskw/norway_may_not_participate_in_esc_2025/
+Basel will apply to host the Eurovision Song Contest 2025,1daz3nz,22,,1717839189.0,2024-06-08T19:33:09,"https://www.regierungsrat.bs.ch/nm/2024-basel-bewirbt-sich-als-standort-fuer-den-eurovision-song-contest-2025-rr.html#:~:text=Der%20Kanton%20Basel-Stadt%20wird,Bev%C3%B6lkerung%20in%20der%20Stadt%20geplant."
+Germany: NDR will remain responsible for ESC in 2025,1da7430,68,"In 2025, the NDR will remain responsible for the ""Eurovision Song Contest"" within the ARD. The NDR has now confirmed corresponding information from the ""ESC kompakt"" website to DWDL.de. The NDR's continued leadership of the competition had recently been in question, not least after the poor results in the years before 2024.",1717755071.0,2024-06-07T20:11:11,https://www.dwdl.de/nachrichten/98321/ndr_verantwortet_den_esc_auch_2025_innerhalb_der_ard/?s=09
+2025 Tickets - do I still have a chance?,1d8ir9d,57,"So my husband and I are not the biggest Eurovision fans ever, but we do like Eurovision a lot, been watching every year for decades. We were living in Sweden when Loreen first won, so we said right, next year we're going to Eurovision. But then they held it in Malmö, which was hundreds of kms away, so we said okay fine, let's not go.
+
+Many years passed, we kept moving around in Europe for work related reasons and Maneskin won and we were living in actual Torino at the time. So we said okay, it's now or never, we must go to see the final once in life! I was on the ticket website an hour before the ticket sales began, by the time the system let me in there were no more tickets left. I read afterwards that tickets for the live final are first offered to members of Eurovision fan clubs and it was them who bought them all before the sale even actually begun. What a bummer.
+
+Anyway, guess where we've moved since.
+
+So can you please point me towards the aforementioned fan clubs? Or is that even true? Or is there anything I can do now to make sure I at least have a chance of obtaining two tickets for the actual live Eurovision final of 2025? Plz help, how do I make sure I can go to next year's Eurovision final because from outside our house we can literally see the stadium where it possibly will be held and I'm not sure what it would do to my mental health if I was denied a ticket yet again.
+
+EDITS: typos. Lots of them. Sorry.
+
+  
+EDIT2: pls stop recommending going to the jury show, family show, dress rehearsal, semi-finals, ESC village watch ect instead. Yes, we could have bought tickets for those for Turin, but were not interested, we somehow still aren't. For us, it's either the live final or staying at home to watch it on TV - it might not be a rational or fangirly enough approach and I also know it will most probably leave us without tickets, but that's where we're at, pls don't hate.",1717567009.0,2024-06-05T15:56:49,https://www.reddit.com/r/eurovision/comments/1d8ir9d/2025_tickets_do_i_still_have_a_chance/
+🇨🇭 Eurovision 2025: Reto Peritz and Moritz Stadler Announced as Executive Producers - Eurovoix,1d7wo2j,27,,1717506321.0,2024-06-04T23:05:21,https://eurovoix.com/2024/06/04/eurovision-2025-reto-peritz-moritz-stadler-announced-executive-producers/
+What’s happened to Australia in Eurovision?,1d715nq,203,"What’s happened to Australia in Eurovision?
+
+Not on the basis of them not qualifying this year, I thought it was brilliant, but there was never much hype around their entry this year.
+
+They started off so well giving us Guy Sebastian, Dami Im and then the incredible Kate Miller-Heidke but after that their entries haven’t been nearly as competitive? It seemed like SBS was super into doing well in their first five years and ever since they’ve gone a complete different direction regarding their entries? A big artist like Jessica Mauboy flopped but SBS did a lot that year (although not where it mattered; staging was very poor).
+
+And I know Voyager did well - it just seems to me as if SBS’ approach to Eurovision isn’t what it was when they first started competing.
+
+I hope the Aussies return for 2025!",1717410388.0,2024-06-03T20:26:28,https://www.reddit.com/r/eurovision/comments/1d715nq/whats_happened_to_australia_in_eurovision/
+"Moldova, please send Tudor Bumbac next year! 🙏",1d6am8d,12,"2025 will be the 10th anniversary of Tudor's first attempt to represent Moldova at the Eurovision Song Contest. This would be the perfect opportunity to finally make this man's dream come true. His 2024 entry ""Tudorel"" would've definitely scored higher than Natalia Barbu's ""In the Middle"". Tudor is loved in the Eurovision community bubble, and I'm sure the rest of Europe would also like him. So, maybe Moldovan broadcaster could consider a possibility of picking this man to represent them next year?
+
+Would you like to see Tudor Bumbac on the Eurovision stage? I think it would contribute to Moldova's image of thinking out of the box and sending interesting and unusual entries, the reason why Moldova is loved so much in the Eurovision community. I would lie if I said that I didn't like ""Tudorel""",1717325308.0,2024-06-02T20:48:28,https://www.reddit.com/r/eurovision/comments/1d6am8d/moldova_please_send_tudor_bumbac_next_year/
+Swiss Hosting: Affordability Idea,1d4yqyv,19,"With Switzerland hosting the Eurovision next year (huge congrats to them), a lot of Eurofans who would normally like to attend the contest are scratching their heads over how they’re going to be able to afford it - it’s no secret that Switzerland is expensive enough as it is, let alone once all the prices get inflated due to Eurovision.
+
+Now they could choose to host a smaller-scale show in 2025, which fewer fans would be able to attend, and embrace that this is the reality. But Eurovision is such a ripe opportunity to draw in tourists and stimulate spending, which makes hosting the contest actually rewarding for a city, and which a smaller-scale event could lose out on.
+
+Furthermore, it is my understanding that the city of Malmö experienced fewer profits this year compared to previous host cities, in large part due to many fans choosing to stay in Copenhagen instead and to spend most of their money there. Switzerland could be susceptible to a similar problem, due to the proximity of many Swiss cities to cheaper towns in Germany and France.
+
+So I’d like to put forward an idea that I think could both make the contest more accessible to fans who want to attend, and that could also ensure 2025’s host city experiences a decent enough inflow from which the profits actually stay in Switzerland. I’m not sure just how viable this will be, I’m merely putting it up for discussion and development.
+
+What if there was a “EuroCamp” somewhere just outside the host city, with tents to hire at significantly reduced prices—provided you have a valid ticket to any one of the Eurovision shows. This could be set up to operate like the facilities you would find at overnight music festivals, with regular shuttles to and from Euro Village and the city centre, that also run at night.
+
+Firstly, EuroCamp would undoubtedly turn into a mini-Eurovision Village itself, embracing a festival atmosphere. If you’re like me and you don’t typically enjoy camping, you might be a lot more willing to rough it for a week to be in this atmosphere, while also having the accessibility that you might miss in other campgrounds. I imagine this won’t be for everybody, hence why those who can afford to do so would probably still book hotel rooms, putting money into that part of the tourist sector that would otherwise be overfilled next May. But for those who can’t afford those Airbnbs, this still provides an avenue.
+
+Secondly, this means you’re bringing in way more tourists than you would otherwise get who will be contributing to the local economy once they’re in the city. Food and drinks will still be expensive, but you’ll be a lot more prepared to shell out for a Swiss cocktail if you’ve just saved hundreds of Euros on accommodation.
+
+Thirdly, by offering these discounted prices to those who have a Eurovision ticket, you’re removing the incentive for people to seek out arrangements across the border. I realise that setting up and maintaining EuroCamp would bring in many extra costs for the hosts, but if tents were priced at a point that simply made the camp breakeven on these costs, you could still reap the rewards of the extra traffic in the rest of the economy.
+
+Finally, I argue this could provide a lot of positive marketing for Switzerland. You’re inviting in many more people who otherwise may not be able to visit your beautiful country any time soon, who will then go away and tell their friends and family how amazing and hospitable Switzerland was. And for bonus, you can also use this to market your city as one that promotes inclusivity by opening your doors to so many people to celebrate a festival that was built to champion peace and unity.  
+
+
+EDIT: maybe the ""Eurovision ticket"" rule could also be broadened to members of OGAE and/or other fan clubs who will still be keen to partake in the events and visit the city, whether or not they get into a show--just because of how much of a quagmire ticket sales can be, with some people only managing to get tickets once they're in the host city already.",1717170374.0,2024-06-01T01:46:14,https://www.reddit.com/r/eurovision/comments/1d4yqyv/swiss_hosting_affordability_idea/
+Host City for ESC 2025 will be announced by the end of August,1d45kwe,30,"Swiss Broadcaster SRG gives cities time until the end of June to apply as host, and two months later they plan to announce their final decision, according to Swiss newspaper Tagesanzeiger (article in German):
+
+[Die Städte haben bis Ende Juni Zeit, ihre Dossiers einzureichen](https://www.tagesanzeiger.ch/eurovision-2025-in-der-schweiz-wo-die-srg-mit-dem-hoselupf-steht-941450254523)
+
+So, for everyone wanting to go, hope this helps with your plans!",1717079867.0,2024-05-31T00:37:47,https://www.reddit.com/r/eurovision/comments/1d45kwe/host_city_for_esc_2025_will_be_announced_by_the/
+Germany: ARD confirms participation at Eurovision 2025,1d1x7v9,72,,1716831617.0,2024-05-28T03:40:17,https://esctoday.com/195255/germany-ard-confirms-participation-at-eurovision-2025/
+🇨🇭 Eurovision 2025: Zurich to Decide Whether to Submit Bid in June - Eurovoix,1d122z7,7,,1716732248.0,2024-05-27T00:04:08,https://eurovoix.com/2024/05/25/eurovision-2025-zurich-decide-whether-submit-bid-in-june/
+Eurovision all time artists announced tours 2024,1d0n3kp,77,"Yay, tour season!
+
+I thought it might be easier to compile under a single thread all info available about any Eurovision ex-contestant´s upcoming tours/concerts (and maybe find fellow friends to go to concerts together)
+
+A little index, as this is getting huge (scroll down for links + info):
+
+ 
+
+***FESTIVALS*** (including multiple artists)
+
+*- Rock for people (Czechia) --> 12-15 june*
+
+*- PinkPop (The Netherlands) --> 21-23 june*
+
+*- Provinssi (Finland) --> 27-29 june*
+
+*- Splash! Festival (Germany) --> 3-6 july*
+
+*- Ruis Rock (Finland) --> 5-7 july*
+
+*- Exit (Serbia) --> 10-14 july*
+
+*- Beach Grind (Estonia) --> 12-13 july*
+
+*- Brava Madrid (Spain) --> 20-21 sept*
+
+*- Eurovision on tour (European tour) --> oct 2024 - jan 2025*
+
+ 
+
+***ESC 2024***
+
+*- Nemo*
+
+*- Baby Lasagna*
+
+*- Alyona Alyona & Jerry Hail*
+
+*- Slimane*
+
+*- Angelina Mango*
+
+*- Joost Klein*
+
+*- Marina Satti*
+
+*- Bambie Thug*
+
+*- Gåte*
+
+*- 5Miinust x Puuluup*
+
+*- Windows 95 man*
+
+*- Raiven*
+
+*- Ladaniva*
+
+*- Aiko*
+
+ 
+
+***PREVIOUS ESC***
+
+*- Loreen*
+
+*- Käärijä*
+
+*- Joker Out*
+
+*- Teya & Luke Black*
+
+*- Tvorchi*
+
+*- Kalush Orchestra*
+
+*- Mahmood*
+
+*- Måneskin*
+
+*- Barbara Pravi*
+
+*- GO\_A*
+
+*- Blind Channel*
+
+*- Fyr og Flamme*
+
+*- Daði Freyr*
+
+*- Little Big*
+
+*- Hooverphonic*
+
+*- Loic Nottet*
+
+*- The Common Linnets*
+
+*- Anouk*
+
+*- Lena*
+
+*- maNga*
+
+# FESTIVALS (only with +2 artists)
+
+**ROCK FOR PEOPLE - Czechia**  
+12-15 june  
+[https://rockforpeople.cz/en/lineup/](https://rockforpeople.cz/en/lineup/)
+
+* Puuluup
+* Bambie Thug
+* Pam Rabbit (ESCZ 2023)
+
+https://preview.redd.it/qchfcrt6jn2d1.png?width=482&format=png&auto=webp&s=dea3b6d26be0aed999af6d73f47e72c5b2fd4682
+
+**PINKPOP - The Netherlands**  
+21-23 june
+
+[https://pinkpop.nl/](https://pinkpop.nl/)
+
+* Joost
+* Loreen (ESC 2012, 2023)
+* S10 (ESC 2022)
+* Maneskin (ESC 2021)
+* Douwe Bob (ESC 2016)
+* Ilse DeLange (The Common Linnets ESC 2014)
+* Anouk (ESC 2013)
+
+https://preview.redd.it/8dsjuov2co2d1.png?width=706&format=png&auto=webp&s=3a4e94521d3d57aff5de1867ee7c4980b8b3b18c
+
+**PROVINSI - Finland**  
+27-29 june
+
+[https://www.provinssi.fi/en/](https://www.provinssi.fi/en/)
+
+* Kaarija (ESC 2023)
+* Maneskin (ESC 2021)
+* Blind Channel (ESC 2021)
+* Sexmane (UMK 2024)
+* Kuumaa (UMK 2023)
+
+https://preview.redd.it/80pthbhnbr2d1.png?width=797&format=png&auto=webp&s=3c81335573f1ccdedb55f22dfc272604f38e8840
+
+**SPLASH! FESTIVAL – Germany**  
+3-6 july
+
+[https://www.songkick.com/es/festivals/48286-splash/id/41832349-splash-festival-2024](https://www.songkick.com/es/festivals/48286-splash/id/41832349-splash-festival-2024)
+
+* Joost Klein
+
+https://preview.redd.it/91q7fdq4yn2d1.png?width=615&format=png&auto=webp&s=a00e6f3757b17747d89592c71a122ba64d0372f5
+
+**RUISROCK - Finland**  
+5-7 july
+
+[https://ruisrock.fi/en/](https://ruisrock.fi/en/)
+
+* Windows95man
+* Kaarija (ESC 2023)
+* Joker Out (ESC 2023)
+
+https://preview.redd.it/1vc20xrsar2d1.png?width=440&format=png&auto=webp&s=a68570f234abe451eec7413620d0392f40d4e9f2
+
+**EXIT - Serbia**  
+10-14 july
+
+[https://www.exitfest.org/](https://www.exitfest.org/)
+
+* Baby Lasagna
+* Teya Dora
+* Joker Out (ESC 2023)
+
+https://preview.redd.it/9ianjc5lkg3d1.png?width=635&format=png&auto=webp&s=08c968c62e35a047012402ee5792d4a8555b3797
+
+**BEACH GRIND - Estonia**  
+12-13 july
+
+[https://www.beachgrind.ee/](https://www.beachgrind.ee/)
+
+* 5Miinust x Puuluup
+* Ollie (Eesti Laul 2023/2024)
+* Bedwetters (Eesti Laul 2023/2024)
+* Nublu & Mikael Gabriel (UMK 2024)
+
+https://preview.redd.it/ngs7806jyn2d1.png?width=806&format=png&auto=webp&s=c5c2df36534935840cacebaedb0d096d30139219
+
+**SZIGET FESTIVAL - Hungary**  
+7-12 aug.  
+[https://szigetfestival.com/en/tickets](https://szigetfestival.com/en/tickets)
+
+* Joost
+* Yagody (Vidbir 2024)
+* Joker Out (ESC 2023)
+* Victoria (Maneskin - ESC 2021)
+* EurofansClub
+
+https://preview.redd.it/1ggici282o2d1.png?width=802&format=png&auto=webp&s=495a1d325dca7486db8f579b8923eed7f0890120
+
+**BRAVA MADRID - Spain**  
+20-21 sept.  
+[https://www.instagram.com/brava\_madrid/](https://www.instagram.com/brava_madrid/)
+
+* Nemo
+* Baby Lasagna
+* Angelina Mango
+* Nebulossa
+* Edurne (ESC 2015)
+* Angy (Benidorm fest 2024)
+
+[https:\/\/linktr.ee\/bravamadrid](https://preview.redd.it/59mhkviv7n2d1.png?width=634&format=png&auto=webp&s=415161b1f953469553ec35d4cc1f9144f5147881)
+
+**EUROVISION ON TOUR 2024 - European tour**  
+25 oct 2024 – 12 jan 2025
+
+[https://www.eurovisionontour.tv/ticket/](https://www.eurovisionontour.tv/ticket/)
+
+* The Roop (ESC 2020, 2021)
+* Destiny (2020, 2021)
+* Suzy (ESC 2014)
+* Emmelie De Forest (2013)
+* Senhit (ESC 2011, 2020, 2021)
+* OVI & ILINCA (ESC 2010, 2014, 2017)
+* SUNSTROKE PROJECT (ESC 2010, 2017)
+* Esther Hart (ESC 2003)
+* Rosa Lopez (ESC 2002)
+* Nicki French (ESC 2000)
+* Jalisse (ESC 1997)
+* Linda Martin /ESC 1984, 1992)
+* Carola (ESC 1983, 1991, 2006) & More
+
+https://preview.redd.it/ust4joef0o2d1.png?width=886&format=png&auto=webp&s=e2381b4738fb8b19e3190825fef282ae20942118
+
+# 
+
+# ESC 2024
+
+**NEMO**  
+Switzerland tour
+
+[https://www.nemothings.com/](https://www.nemothings.com/)  
+[https://www.songkick.com/artists/181378-nemo](https://www.songkick.com/artists/181378-nemo)
+
+ 
+
+**BABY LASAGNA**  
+Croatia + Poland + Slovenia + Austria
+
+[https://www.instagram.com/the\_baby\_lasagna\_/](https://www.instagram.com/the_baby_lasagna_/)
+
+* 8 june Zagreb - Eursong najveći hitovi, Boogaloo
+* 10 july Serbia (EXIT festival)
+* 1 sept. Karlovac (Dani piva)
+* 3 sept. Wroclaw
+* 4 sept. Warszawa
+* 12, 13, 14 sept. Zagreb
+* 17 sept. Ljubljana
+* 24 sept. Vienna
+
+ 
+
+**ALYONA ALYONA & JERRY HEIL**  
+ALYONA ALYONA:  
+Ukraine + Estonia + Latvia + Lithuania + Poland  
+[https://www.instagram.com/p/C7MJbIFNOuU/?igsh=MWJ0NnE5YmV4cG9jdA%3D%3D](https://www.instagram.com/p/C7MJbIFNOuU/?igsh=MWJ0NnE5YmV4cG9jdA%3D%3D)
+
+Jerry Heil:  
+Ukrainian tour + Poland (Warsaw 15.06)  
+[https://bit.ly/m/jerryheilconcert](https://bit.ly/m/jerryheilconcert)
+
+ 
+
+**SLIMANE**  
+World tour  
+[https://www.instagram.com/slimane/p/C68QwtXNXzI/](https://www.instagram.com/slimane/p/C68QwtXNXzI/)
+
+ 
+
+**ANGELINA MANGO**  
+IT tour: 31 may - 15 june - [https://www.instagram.com/p/C7J-2AOIi7M/](https://www.instagram.com/p/C7J-2AOIi7M/)  
+IT tour: 11-24 oct - [https://www.instagram.com/angelinamango\_/p/C2c0tgboTW5/?hl=it](https://www.instagram.com/angelinamango_/p/C2c0tgboTW5/?hl=it)  
+European tour: 30 oct - 11 nov - [https://www.instagram.com/angelinamango\_/p/C6n3cppoCny/?hl=it&img\_index=1](https://www.instagram.com/angelinamango_/p/C6n3cppoCny/?hl=it&img_index=1)
+
+ 
+
+**JOOST KLEIN**  
+European tour  
+[https://www.mojo.nl/over-mojo/mojo-nl-nieuws/joost-klein-europapa-tour-2025](https://www.mojo.nl/over-mojo/mojo-nl-nieuws/joost-klein-europapa-tour-2025)
+
+ 
+
+**MARINA SATTI**  
+Festivals & european gigs  
+[https://www.songkick.com/artists/10122258-marina-satti](https://www.songkick.com/artists/10122258-marina-satti)  
+[https://marinasatti.com/tour/](https://marinasatti.com/tour/)
+
+ 
+
+**BAMBIE THUG**  
+European tour  
+[https://www.instagram.com/p/C7WpFywtfLo/](https://www.instagram.com/p/C7WpFywtfLo/)
+
+ 
+
+**GATE**  
+Norway + European tour  
+[https://www.instagram.com/p/C6oh4P7LiIf/https://www.xn--gte-ula.com/concerts](https://www.instagram.com/p/C6oh4P7LiIf/https://www.xn--gte-ula.com/concerts)
+
+ 
+
+**5MIINUST x PUULUUP** 
+
+PUULUUP:
+
+[https://www.puuluup.ee/en/concerts/](https://www.puuluup.ee/en/concerts/)
+
+5 MINUUST:
+
+Estonia + Finland
+
+[https://www.facebook.com/5miinust/events/https://tavastiaklubi.fi/en/event/100302/](https://www.facebook.com/5miinust/events/https:/tavastiaklubi.fi/en/event/100302/)
+
+5Miinust x Puuluup + Windows 95 man / Käärijä
+
+[https://www.eurotuur.ee/](https://www.eurotuur.ee/)
+
+ 
+
+**WINDOWS 95 MAN**  
+Finland  
+[https://www.setlist.fm/setlists/windows95man-63fcc6ff.html](https://www.setlist.fm/setlists/windows95man-63fcc6ff.html)
+
+ 
+
+**RAIVEN**  
+Slovenia  
+[https://www.instagram.com/p/C7MjtlfI0qJ/?hl=it](https://www.instagram.com/p/C7MjtlfI0qJ/?hl=it)
+
+ 
+
+**LADANIVA**  
+World tour  
+[https://www.instagram.com/ladaniva.ladaniva/p/C46I6zfL5LN/?img\_index=2](https://www.instagram.com/ladaniva.ladaniva/p/C46I6zfL5LN/?img_index=2)
+
+ 
+
+**AIKO**  
+European tour  
+[https://bnds.us/hsfqqc](https://bnds.us/hsfqqc)
+
+ 
+
+ 
+
+**PREVIOUS ESC**
+
+**LOREEN**  
+European tour  
+[https://www.instagram.com/p/C6qOjRbCW7P/](https://www.instagram.com/p/C6qOjRbCW7P/)
+
+ 
+
+**KÄÄRIJÄ**  
+Finland + Estonia + Latvia + Spain  
+[https://www.instagram.com/p/C7TiX7VoB4h/](https://www.instagram.com/p/C7TiX7VoB4h/)
+
+European tour  
+[https://www.instagram.com/p/C7jhHVXoVJj/](https://www.instagram.com/p/C7jhHVXoVJj/)
+
+ 
+
+**JOKER OUT**  
+Summer festivals tour  
+[https://www.instagram.com/p/C7MpEKlt4jP/](https://www.instagram.com/p/C7MpEKlt4jP/)
+
+ 
+
+**TEYA & LUKE BLACK**  
+European tour  
+[https://www.instagram.com/p/C6bNjQnt\_Eg/?hl=it&img\_index=2](https://www.instagram.com/p/C6bNjQnt_Eg/?hl=it&img_index=2)
+
+LUKE BLACK  
+UK gigs  
+[https://ffm.bio/lukeblack](https://ffm.bio/lukeblack)
+
+ 
+
+**TVORCHI**  
+NA tour  
+[https://bomond.com/events/tvorchi-north-american-tour-2024](https://bomond.com/events/tvorchi-north-american-tour-2024)
+
+ 
+
+**KALUSH ORCHESTRA**  
+Ukraine + European tour  
+[https://www.instagram.com/p/C7Wc46Qormz/?img\_index=2](https://www.instagram.com/p/C7Wc46Qormz/?img_index=2)
+
+ 
+
+**MAHMOOD**  
+Italy  
+[https://www.friendsandpartners.it/in-tour/mahmood-tour-2024](https://www.friendsandpartners.it/in-tour/mahmood-tour-2024)
+
+ 
+
+**S10**  
+The Netherlands  
+[https://www.festivalinfo.nl/artist/106537/S10/](https://www.festivalinfo.nl/artist/106537/S10/)
+
+ 
+
+**MANESKIN**  
+World tour  
+[https://maneskin.com/](https://maneskin.com/)
+
+Festivals (Germany, Austria, Belgium, Portugal, France, Spain, The Netherlands, Poland, Finland, Japan, Greece, Mexico)  
+[https://www.instagram.com/stories/highlights/18009957095094741/](https://www.instagram.com/stories/highlights/18009957095094741/)
+
+ 
+
+**BARBARA PRAVI**  
+France + Belgium + The Netherlands  
+[https://bio.to/TOUR2024\_2025](https://bio.to/TOUR2024_2025)
+
+Bugaria: Francofolies de  
+Bulgarie – 22.06  
+[https://www.kupibileti.bg/bg/artist/94](https://www.kupibileti.bg/bg/artist/94)
+
+ 
+
+**GO\_A**  
+European tour  
+[https://www.instagram.com/p/C7OiAXnNK-p/](https://www.instagram.com/p/C7OiAXnNK-p/)
+
+ 
+
+**BLIND CHANNEL**  
+UK + Ireland  
+[https://www.instagram.com/p/C6Dt5nkAkEa/](https://www.instagram.com/p/C6Dt5nkAkEa/)
+
+ 
+
+**FYR OG FLAMME**  
+Denmark + festvals  
+[https://www.instagram.com/p/C6qbe7boMjX/https://www.instagram.com/p/C3hfQwIsXfb/](https://www.instagram.com/p/C6qbe7boMjX/https:/www.instagram.com/p/C3hfQwIsXfb/)
+
+ 
+
+**DADI FREYR**  
+Europe festivals + NA  
+[https://tour.dadifreyr.com/](https://tour.dadifreyr.com/)
+
+ 
+
+**LITTLE BIG**  
+USA + Mexico  
+[https://littlebig.band/tour](https://littlebig.band/tour)
+
+ 
+
+**HOOVERPHONIC**  
+Belgium + The Netherlands  
+[https://hooverphonic.com/tour/](https://hooverphonic.com/tour/)
+
+ 
+
+**LOIC NOTTET**  
+France + Blegium  
+[https://linktr.ee/loicnottet\_officiel](https://linktr.ee/loicnottet_officiel)
+
+ 
+
+**THE COMMON LINNETS**  
+WAYLON - The Netherlands  
+[https://www.festivalinfo.nl/artist/38515/Waylon/](https://www.festivalinfo.nl/artist/38515/Waylon/)
+
+ILSE DE LANGE - The Netherlands + Germany  
+[https://www.songkick.com/artists/319252-ilse-delange](https://www.songkick.com/artists/319252-ilse-delange)
+
+ 
+
+**ANOUK**  
+Festivals + The Netherlands + Germany  
+[https://www.songkick.com/artists/147440-anouk](https://www.songkick.com/artists/147440-anouk)
+
+ 
+
+**LENA**  
+Germany  
+[https://www.lena-meyer-landrut.de/](https://www.lena-meyer-landrut.de/)
+
+ 
+
+**MANGA**  
+Turkey  
+[https://linktr.ee/mangamusic](https://linktr.ee/mangamusic)",1716675654.0,2024-05-26T08:20:54,https://www.reddit.com/r/eurovision/comments/1d0n3kp/eurovision_all_time_artists_announced_tours_2024/
+"So, who should the UK send in 2025? Here's my suggestion.",1czq00o,485,"It's a query that enters my mind as a Brit at the end of May each year as my country curls up and licks its wounds from yet another inevitably piss-poor performance at the ESC, and this year more than most it's one I think most British Eurovision fans are going to be asking a lot more than usual.
+
+As someone who was an early advocate for Olly to represent us, I can't lie and say I'm not disappointed; Olly is a massive Eurovision nerd and was evidently ecstatic to be given the chance to pursue a life-long dream but, ultimately, ""Dizzy"" failed to resonate and, combined with staging that seemed to go down worse with Europe than a cup of cold sick and a vocal performance that did not not up to expectations, the UK found itself languishing inoffensively below a mid-table position. Not terrible by any means (certainly not our worst result), but nothing to write home about either.
+
+And so, as we turn our sights to the 2025 contest, I think its safe to say that the UK needs to desperately try a new tack. The BBC needs to diversify its scope when scouting artists, exploring new genres beyond sterile, radio-friendly pop and dated X Factor finals power ballads. We need fresh sounds, fresh blood and a fresh outlook. 
+
+I've been doing my own scouting over the last couple of days, seeking out some names in the British music scene that may have potential and I have come across somebody who I feel ticks a lot of the boxes I - and hopefully many other British fans - have been wanting. And wouldn't you know, they've already been involved with Eurovision!
+
+Cassyette is a 31 year old singer-songwriter who co-wrote and provided backing vocals on the 2024 Irish entry, *""Doomsday Blue""* by Bambie Thug. Born in Essex, Cassyette has supported acts such as Bring Me The Horizon and My Chemical Romance. Many Eurovision fans have clamoured for the UK to send a rock act, and Cassyette absolutely fills that brief, fusing old-school rock with elements of metal. Her singles [""Petrichor""](https://www.youtube.com/watch?v=eaflDFZbLH0) and [""When She Told Me""](https://www.youtube.com/watch?v=cKwcpmDr4p8) feel especially suited to Eurovision. 
+
+Am I convinced that the BBC will go down this route and select, if not Cassyette, then another rock entry? Not at all. Doesn't mean I can't still put my suggestions out there. Let me know what you think and if there are any artists you think could realistically be an option for the UK's 2025 representative.
+
+",1716571016.0,2024-05-25T03:16:56,https://www.reddit.com/r/eurovision/comments/1czq00o/so_who_should_the_uk_send_in_2025_heres_my/
+Kosovo prepares its participation in the Eurovision Song Contest 2025,1cx73bz,207,"I have just seen this article on ESC kompakt. I think it would be wonderful if Kosovo could take part. What do you think?
+
+Article is in German: https://esc-kompakt.de/der-kosovo-bereitet-seine-teilnahme-am-eurovision-song-contest-2025-vor/",1716295750.0,2024-05-21T22:49:10,https://www.reddit.com/r/eurovision/comments/1cx73bz/kosovo_prepares_its_participation_in_the/
+What countries might skip Eurovision 2025?,1cwdoa4,449,"So, Eurovision 2025 is going to be in Switzerland, which is super exciting but also kinda worrying. We all know Switzerland is beautiful and all, but it's also really expensive. This got me thinking: which countries might not be able to afford to participate next year?",1716205919.0,2024-05-20T21:51:59,https://www.reddit.com/r/eurovision/comments/1cwdoa4/what_countries_might_skip_eurovision_2025/
+special guests for Eurovision 2025,1cu8sj6,71,"Which swiss performers could be invited as special guests for next year's edition ?
+
+I think Nemo and Gjon's Tears since they provided the best recent results.
+
+I really think Celine Dion will leave the EBU on read, we will at best get a short video message from her. ",1715961341.0,2024-05-18T01:55:41,https://www.reddit.com/r/eurovision/comments/1cu8sj6/special_guests_for_eurovision_2025/
+So I have a theory for next year (we need you Moldova),1ctfn4x,33,"So I had to consult the ancient scrolls for this one, but hear me out.
+
+In 2010 we got Run Away, in 2017 the legends returned with Hey Momma. 2020 didn't exist. This means that the 7 year euro cycle is in 2025.
+
+Eurovision 2025: Sunstroke Project (Epic Sax Guy) return.",1715873347.0,2024-05-17T01:29:07,https://www.reddit.com/r/eurovision/comments/1ctfn4x/so_i_have_a_theory_for_next_year_we_need_you/
+"If any show deserves to open with a reprise of the previous year’s winner, The Code is the perfect choice",1csp72r,22,"I liked what the BBC did with the opening of the Liverpool 2023 show with the VT, and then going immediately into Stefania. I think SSR should recreate this
+
+It would be perfect as the first verse includes lines like “Welcome to the show, let everybody know” and “You better buckle up”, it just seems to be perfect to be the opening to the 2025 final.
+
+Side note: if they don’t get Gjon’s Tears to be an interval act in any of the shows, I’ll be disappointed, he deserves to be there. Switzerland have always been one of my favourites and Gjon’s Tears just stood out to me as a new Eurovision fan in 2021",1715790884.0,2024-05-16T02:34:44,https://www.reddit.com/r/eurovision/comments/1csp72r/if_any_show_deserves_to_open_with_a_reprise_of/
+Superfans believe it's possible the UK could win Eurovision 2025,1crnvmn,62,,1715678548.0,2024-05-14T19:22:28,https://metro.co.uk/2024/05/13/can-uk-win-eurovision-nil-points-superfans-know-20826822/
+ESC 2025 hopes?,1cra2t7,122,"After the train wreck which was 2024, we can now look to 2025 and hope what could happen. Hear are some scenarios I have come up with:
+
+Participating countries?: I now that the Switzerland is very expensive, and that most countries in the Balkans Can't afford it, but I have hopes we can reach 39ish, maybe 40 if we are really lucky with the return of Bosnia(which would be unlikely) Romania, Montenegro and north Macedonia.
+
+Host city: I really think that it should go to Zurich or Geneva, but I don't really mind who gets the city, any you want?
+
+Singers: Any musicians from your music scene you want to go to Eurovision?
+
+Interval acts: Switzerland has quite a few actually such as Serbalter ( Switzerland 2014) Luca Hanni( Switzerland 2019) Gijon's tear's (Switzerland 2021) and Nemo (Switzerland 2024) She might not go due to health reasons, but we could also get Celine Dion (Switzerland 1987 AND winner before Nemo)
+
+Any other thoughts? Let me know down below.
+
+ ",1715633429.0,2024-05-14T06:50:29,https://www.reddit.com/r/eurovision/comments/1cra2t7/esc_2025_hopes/
+Eurovision 2025 ,1cr8yxz,34,"9 confirmed countries already and most possible to be held on the week of 13th May 
+
+
+Edit: I misspoke, 9 countries have expressed their interest, not confirmed so are subject to change 
+
+https://eurovisionworld.com/eurovision/2025/event",1715630740.0,2024-05-14T06:05:40,https://www.reddit.com/r/eurovision/comments/1cr8yxz/eurovision_2025/
+Eurovision  69 (nice) - where will it be held in 2025?,1cr5x9w,24,"As a Swiss resident I am actually contemplating going next year! Feels like the contest could use a bit of Swiss neutrality...  
+  
+""So far three cities in Switzerland have expressed their intention to host Eurovision 2025. As we informed you yesterday with our article ([here](https://eurovisionfun.com/en/2024/05/geneva-interested-to-host-eurovision-2025/)), the first city that has expressed interest is Geneva. Basel and Saint Gallen followed later who also wish to host the European competition.""  
+[Eurovision 2025: The first official meeting for its hosting!](https://eurovisionfun.com/en/2024/05/eurovision-2025-the-first-official-meeting-for-its-hosting/)
+
+Please not St Gallen though...",1715623450.0,2024-05-14T04:04:10,https://www.reddit.com/r/eurovision/comments/1cr5x9w/eurovision_69_nice_where_will_it_be_held_in_2025/
+🇱🇺 Luxembourg: Eurovision 2025 Participation Confirmed - Eurovoix,1cqwrup,19,,1715599036.0,2024-05-13T21:17:16,https://eurovoix.com/2024/05/12/%f0%9f%87%b1%f0%9f%87%ba-luxembourg-eurovision-2025-participation-confirmed/
+Next year I'm not going to consume any eurovision content before the contest. Who is with me?,1cq5i6b,22,"I love eurovision but I've come to the conclusion that it takes up so much of my mind that it's crazy and it can affect my mental health too. Also, I really want to experiment and see how the average casual viewer experiences the show. Of course it will be hard but in the end I think it will be worth it. After having listened to all the songs so many times, watching the actual show is not that exciting anymore and that's why I want a change for next year. The rules I will set for myself are: 
+
+**No listening or looking at eurovision 2025 songs**
+
+**No listening or looking at national final songs**
+
+**No eurovision consumption on any social media**
+
+**No looking at the odds**
+
+Who's with me?",1715512349.0,2024-05-12T21:12:29,https://www.reddit.com/r/eurovision/comments/1cq5i6b/next_year_im_not_going_to_consume_any_eurovision/
+What makes you vote for a song ,1cotafe,57,"Hey all!!
+
+Pretty new to reddit, but I’ve been a Eurovision watcher since I was little. The Danish Junior version was even the reason I myself got into singing and songwriting (Doing it semi-professionally rn, with a supporting side job)
+
+I am contemplating trying to get into the Danish qualification show 2025 
+
+I was wondering what makes you guys like/love a song/entry? What means something to you when voting? What stands OUT for YOU?
+
+Best regards! 
+Harley Nova",1715357486.0,2024-05-11T02:11:26,https://www.reddit.com/r/eurovision/comments/1cotafe/what_makes_you_vote_for_a_song/
+Tommy Cash says he'll go to Eurovision in 2025,1cool2y,39,👀👀👀👀,1715344771.0,2024-05-10T22:39:31,https://x.com/eestilaulupdate/status/1788829759394250892?s=46&t=4ysoqoJu-XYNF8IDDxbWeg
+🇧🇪 Belgium: Eurosong Returns to Select Eurovision 2025 Entry - Eurovoix,1cn78fj,13,,1715181727.0,2024-05-09T01:22:07,https://eurovoix.com/2024/05/08/belgium-eurosong-to-select-eurovision-2025-act/
+🇪🇸 Spain: Eurovision 2025 Participation Confirmed as Benidorm Fest 2025 is Announced,1cn2614,9,,1715167539.0,2024-05-08T21:25:39,https://eurovoix.com/2024/05/08/spain-eurovision-2025-participation-confirmed-as-benidorm-fest-2025-is-announced/
+What it would mean if Croatia wins,1cm9trz,318,"I am getting goosebumps thinking about Croatia winning. It would 100% be the best scanario for following reasons:
+
+* Possible comebacks from Bosnia & Herzegovina, Montenegro and North Macedonia as they surely wouldn't miss ESC in the Balkans no matter their previous reasons of withdrawal.
+* A country that has never won on its own, no repetition of the Sweden-Ukraine circle. Very refreshing. The other favourites (Italy, Netherlands) hosted recently while Switzerland would be extremely expensive which leads us to:
+* Financially affordable Eurovision for fans, in a warm country and a beautiful city. Croatians are very passionate when it comes to winning and hosting (in sports f.e.). The arena in Zagreb is already booked and I can assure they would do everything in their power to host a beautiful Eurovision 2025.
+* Marko (Baby Lasagna) is the purest cinderella and underdog story out there. Independent musician without big labels who almost gave up his music career. Only made it into Dora because another participant withdrew. Song has deep lyrics and is insanely memorable with many traditional elements in the staging.
+* Investments into future DORA's are gonna be made and the times of sending Daria Kinzer to Eurovision are over.",1715082053.0,2024-05-07T21:40:53,https://www.reddit.com/r/eurovision/comments/1cm9trz/what_it_would_mean_if_croatia_wins/
+What if Switzerland won this year? - Design Concept for Eurovision 2025,1ccjvtx,65,,1714022271.0,2024-04-25T15:17:51,https://www.reddit.com/gallery/1ccjvtx
+2025 participant speculation/predictions,1cb46yy,107,"I saw a couple of people doing something like this on Twitter/X, and wanted to give it a go and bring it to Reddit to see what others believe!
+
+- Definitely returning: 🇦🇱🇦🇲🇦🇹🇦🇿🇧🇪🇭🇷🇨🇾🇩🇰🇪🇪🇫🇮🇫🇷🇬🇪🇩🇪🇬🇷🇮🇸🇮🇪🇮🇹🇱🇻🇱🇹🇱🇺🇲🇹🇲🇩🇳🇱🇳🇴🇵🇱🇵🇹🇸🇲🇪🇸🇸🇪🇨🇭🇺🇦🇬🇧
+
+- Likely returning: 🇦🇺🇨🇿🇷🇸🇸🇮
+
+- Likely withdrawing: 🇮🇱
+
+- Most likely to return/debut: 🇽🇰🇲🇨🇲🇪🇲🇰🇷🇴
+
+- Maybe?: 🇦🇩🇧🇦🇧🇬🇰🇿🇹🇷
+
+- No chance: 🇧🇾🇫🇴🇭🇺🇲🇦🇷🇺🇸🇰
+
+
+And here’s some of my reasonings:
+- 🇦🇺 depends on the invite, which they’ll likely receive
+- 🇨🇿 and 🇸🇮 have expressed issues with finances for Eurovision, but I still think they’ll make it work
+- 🇷🇸 hinges on Kosovo and what’s going on with them joining
+- 🇮🇱 this year is going to be hell for them, 2025 withdrawal and likely returning in 2026 seems probable. There is also a chance they just ignore the backlash and stay in 2025
+- 🇽🇰 100% the next debut nation, depends on EBU membership and Serbia - which seems 50/50
+- 🇲🇨 back in the EBU, interest expressed already, this feels inevitable
+- 🇲🇪, 🇲🇰, and 🇷🇴 may be reenergised by Baby Lasagna, and especially Montenegro/North Macedonia - nations I see predicted to come back in 2025 anyway. Romania depends on TVR, but surely the negative response to them missing this year will have an impact?
+- 🇧🇦 the only reason B&H are in this category and not “no chance” is because of the prior interest expressed for 2025, and I hope they make a return. EBU debts may be awkward though
+
+All the rest are self explanatory, I’m intrigued to see other perspectives and opinions! :)
+
+(Reposted from a few days ago with a new title so the Mods can approve)",1713877680.0,2024-04-23T23:08:00,https://www.reddit.com/r/eurovision/comments/1cb46yy/2025_participant_speculationpredictions/
+How far Eurovision ‘moved’ every year.,1c9f7q9,20,"Buckle up, this is a long one:
+
+So I was wondering, as I do, how far Eurovision ‘moves’ each year - as in, what‘s the distance between host cities each years. So below, I’ve collated the distance between all the host cities every year. Bear in mind, these aren’t exact measurement; they were done on Google earth and isn’t from arena to arena, but from the centre of the cities. Regardless, they’re still a good accurate measuremnt. At the very bottom (sorry for the scroll), I got the average distance ‘moved’ per year, and then found some cities that distance from Malmö. Happy reading!
+
+1957: Lugano to Frankfurt - 450km
+
+1958: Frankfurt to Hilversum - 340km
+
+1959: Hilversum to Cannes - 975km
+
+*50’s average: 590km (Amsterdam to Berlin)*
+
+1960: Cannes to London - 1040km
+
+1961: London to Cannes - 1040km
+
+1962: Cannes to Luxembourg - 680km
+
+1963: Luxembourg to London - 500km
+
+1964: London to Copenhagen - 950km
+
+1965: Copenhagen to Naples - 1650km
+
+1966: Naples to Luxembourg - 1160km
+
+1967: Luxembourg to Vienna - 760km
+
+1968: Vienna to London - 1230km
+
+1969: London to Madrid - 1270km
+
+*60’s average: 1030km (Barcelona to Brussels)*
+
+1970: Madrid to Amsterdam - 1480km
+
+1971: Amsterdam to Dublin - 760km
+
+1972: Dublin to Edinburgh - 350km
+
+1973: Edinburgh to Luxembourg - 950km
+
+1974: Luxembourg to Brighton - 470km
+
+1975: Brighton to Stockholm - 1500km
+
+1976: Stockholm to The Hague - 1180km
+
+1977: The Hague to London - 310km
+
+1978: London to Paris - 350km
+
+1979: Paris to Jerusalem - 3340km
+
+*70’s average: 1070km (Stockholm to Amsterdam)*
+
+1980: Jerusalem to The Hague - 3370km
+
+1981: The Hague to Dublin - 730km
+
+1982: Dublin to Harrogate - 320km
+
+1983: Harrogate to Munich - 1130km
+
+1984: Munich to Luxembourg - 430km
+
+1985: Luxembourg to Gothenburg - 980km
+
+1986: Gothenburg to Bergen - 480km
+
+1987: Bergen to Brussels - 1050km
+
+1988: Brussels to Dublin- 780km
+
+1989: Dublin to Lausanne - 1200km
+
+*80’s average: 1050km (Bucharest to Prague)*
+
+1990: Lausanne to Zagreb - 730km
+
+1991: Zagreb to Rome - 520km
+
+1992: Rome to Malmö - 1530km
+
+1993: Malmö to Millstreet - 1500km
+
+1994: Millstreet to Dublin - 240km
+
+1995: Dublin to Dublin - 0km
+
+1996: Dublin to Oslo - 1270km
+
+1997: Oslo to Dublin - 1270km
+
+1998: Dublin to Birmingham- 300km
+
+1999: Birmingham to Jerusalem- 3770km
+
+*90’s average: 1120km (Paris to Rome)*
+
+2000: Jerusalem to Stockholm - 3320km
+
+2001: Stockholm to Copenhagen - 530km
+
+2002: Copenhagen to Tallinn - 840km
+
+2003: Tallinn to Riga - 280km
+
+2004: Riga to Istanbul - 1800km
+
+2005: Istanbul to Kyiv - 1050km
+
+2006: Kyiv to Athens - 1480km
+
+2007: Athens to Helsinki - 2470km
+
+2008: Helsinki to Belgrade - 1740km
+
+2009: Belgrade to Moscow - 1720km
+
+*2000’s average: 1520km (Lisbon to Geneva)*
+
+2010: Moscow to Oslo - 1650km
+
+2011: Oslo to Düsseldorf - 1000km
+
+2012: Düsseldorf to Baku - 3500km
+
+2013: Baku to Malmö - 3170km
+
+2014: Malmö to Copenhagen - 30km
+
+2015: Copenhagen to Vienna - 870km
+
+2016: Vienna to Stockholm - 1240km
+
+2017: Stockholm to Kyiv - 1270km
+
+2018: Kyiv to Lisbon - 3360km
+
+2019: Lisbon to Tel Aviv - 4010km
+
+*2010’s average: 1890km (Liverpool to Helsinki)*
+
+2020/21: Tel Aviv to Rotterdam - 3300km
+
+2022: Rotterdam to Turin: 780
+
+2023: Turin to Liverpool: 1200km
+
+2024: Liverpool to Malmö: 1060km
+
+*2020’s average: 1585km (Rotterdam to Helsinki)*
+
+The total distance travelled in 67 years is 86,000km (or about double the Equator)
+
+So, the average distance travelled a year is 86,000 divided by 67 (the number of contests), which equals 1290km.
+
+So (based on this maths alone) where could we be going in 2025? Here are some cities that are about 1290km away from Malmö:
+
+Zadar: 1290km 🇭🇷 (although Zagreb would probably host)
+
+Kyiv: 1300km 🇺🇦 (although I don’t think Eurovision could be hosted there 😢)
+
+Belgrade: 1310km 🇷🇸
+
+Florence: 1320km 🇮🇹
+
+Dublin: 1270km 🇮🇪
+
+Lyon: 1230km 🇫🇷
+
+Turin: 1230km 🇮🇹
+
+Milan: 1160km 🇮🇹
+
+Zagreb: 1110km 🇭🇷
+
+Between Croatia and Italy (and France, I suppose), there’s a decent chance that 2025’s host city could be an average distance from Malmö. The wonder of numbers!
+
+Edit: fixed a typo 🤦‍♂️ ",1713697435.0,2024-04-21T21:03:55,https://www.reddit.com/r/eurovision/comments/1c9f7q9/how_far_eurovision_moved_every_year/
+🇧🇦 Bosnia & Herzegovina: BHRT Considering Returning to Eurovision in 2025,1c6wkys,75,,1713422046.0,2024-04-18T16:34:06,https://eurovoix.com/2024/04/18/bosnia-herzegovina-considering-returning-eurovision-in-2025/
+Are we expecting an increase (comeback) or decrease (withdrawal) of participants for 2025 and beyond?,1bzkehl,79,"We have seen a significant and constant decrease of participants since the pandemic (there was a decrease in 2019 but after the 2020 cancellation, the participant count was less than 40 after years that it has been 40+).
+
+Many in the Balkans and Eastern Europe were the main casualties, either due to funding, consistent poor results, suspension, or even withdrawal from the EBU altogether. Slovakia was rumored to come back next year, but after [they confirmed that they won’t come back next year](https://www.reddit.com/r/eurovision/s/ix2toHff6q), we won’t be seeing a Slovak comeback in the foreseeable future. Same case with Hungary. There were also rumors of Romania coming back this year but they withdrew. In addition to that, Montenegro and North Macedonia are also rumored to plan a comeback for next year, but we’re not sure about that yet. (Will a Croatian win encourage them to come back for 2025? Hopefully so, but let’s see.) I’m not sure if Bulgaria is considering to return to Eurovision in the near future.
+
+There’s also the case of Latvia considering being absent for years if they will extend their NQ streak even with sending their biggest singer there. And we don’t know how long will Australia be invited to participate in Eurovision.
+
+Throughout this decade so far, we only saw one return after many years of non-participation: Luxembourg. (I didn’t count those who withdrew for a year then came back immediately afterwards, like Ukraine.)
+
+So now, are we expecting this trend to continue for 2025 and beyond? Will there be an event that will catalyze and worsen this trend, like Israel winning this year? Or we’ll eventually see an increase in participants and have 40+ participants again like in the 2010s?",1712640626.0,2024-04-09T15:30:26,https://www.reddit.com/r/eurovision/comments/1bzkehl/are_we_expecting_an_increase_comeback_or_decrease/
+"According to RTVS's Head of Communication Department, Slovakia WILL NOT participate at Eurovision 2025.",1bytwre,62,,1712569870.0,2024-04-08T19:51:10,https://i.redd.it/8q6xbhih98tc1.jpeg
+Nemo wants Eurovision 2025 to be hosted in their home town Biel,1bwg9da,67,,1712318511.0,2024-04-05T22:01:51,https://open.spotify.com/episode/4ITymkc8d47wh9Mef0Ujtn?si=KcRN0W4STgqecbMLfFahFQ
+Where do you see Eurovision in 30 years time?,1bt2bdi,8,"Picture the scene, it’s 2025, and [X] city has been announced as the host city after [X] country’s win in 2024.
+
+Where do you see the contest then? Not just in terms of who wins, but what rules are still in place, what has been added, or removed? Will the relegation rule become a mainstay? Could Eurovision expand to outside of Europe? Will Ireland ever lose their winning streak? 
+
+Lmk your thoughts ",1711974187.0,2024-04-01T22:23:07,https://www.reddit.com/r/eurovision/comments/1bt2bdi/where_do_you_see_eurovision_in_30_years_time/
