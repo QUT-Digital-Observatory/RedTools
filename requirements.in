@@ -16,4 +16,5 @@ praw
 networkx
 typing
 pyarrow
+orjson
 # End of requirements.in
