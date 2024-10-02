@@ -298,7 +298,7 @@ class AusRedditData:
         
         return pd.DataFrame(processed_data)
 
-    def search_submissions(self, query, author,start, end, score_min, score_max, subreddit, subreddit_id, comments_min, comments_max, over18, method = 'keyword',search_in = 'all', limit = 1000, ):
+    def search_submissions(self, query, author=None,start=None, end=None, score_min=None, score_max=None, subreddit=None, subreddit_id=None, comments_min=None, comments_max=None, over18=None, method = 'keyword',search_in = 'all', limit = 1000, ):
         """
         Search for submissions based on various criteria.
 
