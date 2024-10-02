@@ -15,8 +15,8 @@ from sentence_splitter import SentenceSplitter
 import re
 from nltk.corpus import stopwords
 import matplotlib.pyplot as plt
-from RedTools.code.LDA_over_time import LDA_over_time
-from RedTools.code.emo_intensity_over_time import EmoIntensityOverTime
+from LDA_over_time import LDA_over_time
+from emo_intensity_over_time import EmoIntensityOverTime
 
 def load_config(config_path: str) -> dict:
     """

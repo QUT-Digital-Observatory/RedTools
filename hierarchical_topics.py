@@ -14,7 +14,7 @@ import plotly.graph_objects as go
 from tqdm.auto import tqdm
 from nltk.corpus import stopwords
 import matplotlib.pyplot as plt
-from RedTools.code.topic_window import TopicWindow
+from topic_window import TopicWindow
 from sklearn.decomposition import PCA
 from sklearn.manifold import TSNE
 from sklearn.metrics.pairwise import cosine_similarity
