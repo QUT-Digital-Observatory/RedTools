@@ -6,6 +6,16 @@ import time
 import numpy as np
 from dataclasses import dataclass
 from datetime import datetime, timezone
+import yaml
+
+def load_config(config_path):
+    with open(config_path, 'r') as file:
+        config = yaml.safe_load(file)
+    return config
+
+config_path = 'config.yaml'
+
+config = load_config(config_path)
 
 
 class APIError(Exception):
@@ -23,8 +33,9 @@ class AusRedditComments:
 
 
 class AusRedditData:
-    def __init__(self, apikey: str, base: str | None = None):
-        self.apikey = apikey
+    def __init__(self, base: str | None = None):
+        self.config = config
+        self.apikey = self.config['ausreddit']['apikey']
         if base is None:
             self.base_url = "https://ausreddit.digitalobservatory.net.au/api/v1"
         else:
