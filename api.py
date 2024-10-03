@@ -35,7 +35,7 @@ class AusRedditComments:
 class AusRedditData:
     def __init__(self, base: str | None = None):
         self.config = config
-        self.apikey = self.config['ausreddit']['apikey']
+        self.apikey = self.config['ausreddit']['api_key']
         if base is None:
             self.base_url = "https://ausreddit.digitalobservatory.net.au/api/v1"
         else:

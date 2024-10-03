@@ -26,5 +26,5 @@ reddit:
 lexicon:
   lexicon_filepath: data/NRC-Emotion-Intensity-Lexicon-v1.txt  
 
-ausredit:
+ausreddit:
   api_key: 'your_api_key'
