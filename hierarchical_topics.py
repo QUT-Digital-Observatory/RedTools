@@ -50,9 +50,37 @@ class HierarchicalTopics:
     def __init__(self, config_path: str):
         self.models = []
         self.topic_windows = TopicWindow(config_path)
-        self.bert_topic = BERTopic()
         with open(config_path, 'r') as file:
             self.config = yaml.safe_load(file)
+
+    def _create_model(self):
+        umap_params = self.config['umap']
+        hdbscan_params = self.config['hdbscan']
+        bertopic_params = self.config['bertopic']
+
+        if hardware == 'GPU':
+            umap_model = UMAP(
+                n_components=umap_params['n_components'],
+                n_neighbors=umap_params['n_neighbors'],
+                min_dist=umap_params['min_dist'],
+                random_state=umap_params['random_state']
+            )
+            hdbscan_model = HDBSCAN(
+                min_samples=hdbscan_params['min_samples'],
+                gen_min_span_tree=hdbscan_params['gen_min_span_tree'],
+                prediction_data=hdbscan_params['prediction_data']
+            )
+        else:
+            umap_model = UMAP()
+            hdbscan_model = HDBSCAN()
+
+        return BERTopic(
+            umap_model=umap_model,
+            hdbscan_model=hdbscan_model,
+            calculate_probabilities=bertopic_params['calculate_probabilities'],
+            verbose=bertopic_params['verbose'],
+            min_topic_size=bertopic_params['min_topic_size']
+        )
 
     def get_hierarchical_topics(self, data, text_column, date_column, timescale):
 
@@ -62,7 +90,7 @@ class HierarchicalTopics:
         data_exp = self.topic_windows.expand_dataframe_with_sentences(data, text_column)
         frames = self.topic_windows.get_frames(data_exp, date_column, timescale)
         for frame in tqdm(frames):
-            model = self.bert_topic.fit(frame[text_column])
+            model = self._create_model().fit(frame[text_column])
             docs: list = frame[text_column].tolist()
             h_tops =model.hierarchical_topics(docs)
             hierarchical_topics.append(h_tops)
@@ -78,7 +106,7 @@ class HierarchicalTopics:
         data_exp = self.topic_windows.expand_dataframe_with_sentences(data, text_column)
         frames = self.topic_windows.get_frames(data_exp, date_column, timescale)
         for i, frame in enumerate(tqdm(frames)):
-            model = self.bert_topic.fit(frame[text_column])
+            model = self._create_model().fit(frame[text_column])
             all_topics = sorted(list(model.get_topics().keys()))
             freq_df = model.get_topic_freq()
             freq_df = freq_df.loc[freq_df.Topic != -1, :]
