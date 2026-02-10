@@ -10,7 +10,7 @@ from nltk.corpus import stopwords
 
 
 
-lexicon_filepath = "/mnt/c/Users/fleetr/NRC-Emotion-Intensity-Lexicon-v1.txt"
+lexicon_filepath = "data/NRC-Emotion-Intensity-Lexicon-v1.txt"
 
 class EmoIntensityOverTime:
     def __init__(self):
