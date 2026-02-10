@@ -76,7 +76,8 @@ class EmoIntensityOverTime:
         Removes stopwords from the text in the specified column of the input DataFrame.
         """
         # Remove stopwords from the text column
-        df[text_column] = df[text_column].apply(lambda x: ' '.join([word for word in x.split() if word not in (stopwords.words('english'))]))
+        stop_words = set(stopwords.words('english'))
+        df[text_column] = df[text_column].apply(lambda x: ' '.join([word for word in x.split() if word not in stop_words]))
         return df  
 
     def analyse_sentences(self, df_sentences: pd.DataFrame, lexicon: pd.DataFrame, text_column: str) -> pd.DataFrame:
@@ -140,19 +141,19 @@ class EmoIntensityOverTime:
         title (str): Title of the plot.
         freq (str): Frequency for resampling ('D' for daily, 'W' for weekly, 'M' for monthly).
         """
-    # Convert the date_column to datetime format if it isn't already
+        # Convert the date_column to datetime format if it isn't already
         data[date_column] = pd.to_datetime(data[date_column])
 
-    # Resample the data by the specified frequency and calculate the mean intensity for each period
+        # Resample the data by the specified frequency and calculate the mean intensity for each period
         daily_data = data.resample(freq, on=date_column)[intensity_columns].mean().reset_index()
 
-    # Melt the DataFrame to long format
+        # Melt the DataFrame to long format
         data_melted = daily_data.melt(id_vars=[date_column], value_vars=intensity_columns, var_name='Emotion', value_name='Intensity')
 
-    # Create a line plot using Plotly Express
+        # Create a line plot using Plotly Express
         fig = px.line(data_melted, x=date_column, y='Intensity', color='Emotion', title=title)
-    
-    # Update layout to improve readability
+
+        # Update layout to improve readability
         fig.update_layout(xaxis_title='Date', yaxis_title='Average Intensity', xaxis_tickangle=-45)
 
         return fig
