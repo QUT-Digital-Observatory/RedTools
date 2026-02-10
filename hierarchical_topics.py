@@ -168,7 +168,7 @@ class HierarchicalTopics:
             for j, topic1 in enumerate(embeddings1):
                 links = []
                 for k, topic2 in enumerate(embeddings2):
-                    similarity = 1 - np.linalg.norm(topic1 - topic2)  # Cosine similarity
+                    similarity = 1 - cosine(topic1, topic2)
                     if similarity >= cutoff_similarity:
                         links.append((k, similarity))
             
