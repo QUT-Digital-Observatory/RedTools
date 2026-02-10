@@ -71,8 +71,17 @@ class HierarchicalTopics:
                 prediction_data=hdbscan_params['prediction_data']
             )
         else:
-            umap_model = UMAP()
-            hdbscan_model = HDBSCAN()
+            umap_model = UMAP(
+                n_components=umap_params['n_components'],
+                n_neighbors=umap_params['n_neighbors'],
+                min_dist=umap_params['min_dist'],
+                random_state=umap_params['random_state']
+            )
+            hdbscan_model = HDBSCAN(
+                min_samples=hdbscan_params['min_samples'],
+                gen_min_span_tree=hdbscan_params['gen_min_span_tree'],
+                prediction_data=hdbscan_params['prediction_data']
+            )
 
         return BERTopic(
             umap_model=umap_model,
