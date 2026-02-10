@@ -87,7 +87,7 @@ class HierarchicalTopics:
         hierarchical_topics = []
         topic_trees = []
         figs = []
-        data_exp = self.topic_windows.expand_dataframe_with_sentences(data, text_column)
+        data_exp = self.topic_windows.expand_dataframe_with_sentences(data.copy(), text_column)
         frames = self.topic_windows.get_frames(data_exp, date_column, timescale)
         for frame in tqdm(frames):
             model = self._create_model().fit(frame[text_column])
@@ -103,7 +103,7 @@ class HierarchicalTopics:
     def get_topic_embeddings(self, data, text_column, date_column, timescale):
         topic_embeddings = []
         interval_labels = []
-        data_exp = self.topic_windows.expand_dataframe_with_sentences(data, text_column)
+        data_exp = self.topic_windows.expand_dataframe_with_sentences(data.copy(), text_column)
         frames = self.topic_windows.get_frames(data_exp, date_column, timescale)
         for i, frame in enumerate(tqdm(frames)):
             model = self._create_model().fit(frame[text_column])
