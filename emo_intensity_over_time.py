@@ -83,44 +83,34 @@ class EmoIntensityOverTime:
         """
         Analyse the sentiments of multiple sentences using a given lexicon.
         """
-        # Ensure the lexicon word column is in lower case for matching
+        lexicon = lexicon.copy()
         lexicon['Word'] = lexicon['Word'].str.lower()
-        
-        # Initialize an empty list to store the results
-        results = []
-        
-        # Define a list of possible emotions (extracted from your lexicon or predefined)
         emotions = lexicon['Emotion'].unique().tolist()
 
-        # Iterate over each sentence in the DataFrame
-        for index, row in df_sentences.iterrows():
-            # Tokenize the sentence into lower case words
-            words = row[text_column].lower().split()
-            
-            # Filter the lexicon to only include words found in the current sentence
-            matched_lexicon = lexicon[lexicon['Word'].isin(words)]
-            
-            # Summarize the scores by emotion for the words in the sentence
-            emotion_scores = matched_lexicon.groupby('Emotion').agg({'Score': 'mean'}).transpose()
-            
-            # Check if there are any scores to add
-            if not emotion_scores.empty:
-                result_row = {**row.to_dict(), **emotion_scores.to_dict('records')[0]}
-            else:
-                # If no scores, initialize scores to 0 for each emotion
-                emotion_scores = {emotion: 0 for emotion in emotions}
-                result_row = {**row.to_dict(), **emotion_scores}
-            
-            results.append(result_row)
-        
-        # Convert results list to DataFrame
-        results_df = pd.DataFrame(results)
+        # Assign a unique row index for each sentence
+        df = df_sentences.copy()
+        df['_sent_idx'] = range(len(df))
 
-        # Fill NaN values with 0 for all emotion columns
+        # Tokenize all sentences into individual words
+        words_df = df[['_sent_idx', text_column]].copy()
+        words_df['Word'] = words_df[text_column].str.lower().str.split()
+        words_df = words_df.explode('Word')[['_sent_idx', 'Word']]
+
+        # Merge with lexicon to get emotion scores for matched words
+        matched = words_df.merge(lexicon, on='Word', how='inner')
+
+        # Average score per sentence per emotion, then pivot to wide format
+        scores = matched.groupby(['_sent_idx', 'Emotion'])['Score'].mean().unstack(fill_value=0)
+
+        # Ensure all emotion columns are present
         for emotion in emotions:
-            if emotion in results_df.columns:
-                results_df[emotion] = results_df[emotion].fillna(0)
-        
+            if emotion not in scores.columns:
+                scores[emotion] = 0
+
+        # Join scores back to the original DataFrame
+        results_df = df.join(scores, on='_sent_idx').drop(columns=['_sent_idx'])
+        results_df[emotions] = results_df[emotions].fillna(0)
+
         return results_df
 
     def aggregate_mean_scores(self, df_scores: pd.DataFrame, id_column: str, score_columns: list) -> pd.DataFrame:
