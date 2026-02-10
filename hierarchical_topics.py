@@ -2,23 +2,15 @@
 
 import numpy as np
 import pandas as pd
-import re
 from bertopic import BERTopic
 import yaml
-from datetime import datetime
-from sentence_splitter import SentenceSplitter
-from transformers import pipeline
-from sentence_transformers import SentenceTransformer
 import plotly.express as px
-import plotly.graph_objects as go
 from tqdm.auto import tqdm
-from nltk.corpus import stopwords
 import matplotlib.pyplot as plt
 from topic_window import TopicWindow
 from sklearn.decomposition import PCA
 from sklearn.manifold import TSNE
 from sklearn.metrics.pairwise import cosine_similarity
-import plotly.express as px
 from scipy.spatial.distance import cosine
 from scipy.spatial.distance import pdist, squareform
 from sklearn.manifold import MDS
@@ -147,25 +139,12 @@ class HierarchicalTopics:
     def visualize_topic_clusters(self, reduced_vectors, interval_labels, method='pca'):
         df = pd.DataFrame(reduced_vectors, columns=[f'{method.upper()}1', f'{method.upper()}2'])
         df['interval'] = interval_labels
-        
-        if method == 'pca':
-            plt.figure(figsize=(10, 6))
-            scatter = plt.scatter(df[f'{method.upper()}1'], df[f'{method.upper()}2'], c=pd.Categorical(df['interval']).codes, cmap='viridis')
-            plt.colorbar(scatter, ticks=range(len(set(interval_labels))), label='Intervals')
-            for i, interval in enumerate(df['interval']):
-                plt.annotate(interval, (df[f'{method.upper()}1'][i], df[f'{method.upper()}2'][i]))
-            plt.title(f'Topic Evolution Over Time ({method.upper()})')
-            plt.xlabel(f'{method.upper()} Component 1')
-            plt.ylabel(f'{method.upper()} Component 2')
-            plt.show()
-        elif method == 'tsne':
-            fig = px.scatter(df, x=f'{method.upper()}1', y=f'{method.upper()}2', color='interval', text='interval',
-                             title=f'Topic Evolution Over Time ({method.upper()})')
-            fig.update_traces(textposition='top center')
-            fig.update_layout(xaxis_title=f'{method.upper()} Component 1', yaxis_title=f'{method.upper()} Component 2')
-            fig.show()
-        else:
-            raise ValueError("Invalid method. Use 'pca' or 'tsne'.")
+
+        fig = px.scatter(df, x=f'{method.upper()}1', y=f'{method.upper()}2', color='interval', text='interval',
+                         title=f'Topic Evolution Over Time ({method.upper()})')
+        fig.update_traces(textposition='top center')
+        fig.update_layout(xaxis_title=f'{method.upper()} Component 1', yaxis_title=f'{method.upper()} Component 2')
+        fig.show()
 
 
     def compute_topic_positions(self, embeddings):
