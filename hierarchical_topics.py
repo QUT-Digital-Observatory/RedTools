@@ -178,7 +178,11 @@ class HierarchicalTopics:
         positions = mds.fit_transform(dist_matrix).flatten()
     
     # Normalize positions to [0, 1] range
-        positions = (positions - positions.min()) / (positions.max() - positions.min())
+        pos_range = positions.max() - positions.min()
+        if pos_range == 0:
+            positions = np.full_like(positions, 0.5)
+        else:
+            positions = (positions - positions.min()) / pos_range
         return positions
 
     def plot_topic_evolution(self, embeddings_list, cutoff_similarity=0.75, all_links=True):
