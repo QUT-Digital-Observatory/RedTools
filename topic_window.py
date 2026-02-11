@@ -68,18 +68,18 @@ class TopicWindow:
         """
         # Apply sentence_chunker to the text column and explode the result into new rows
         df[text_column] = df[text_column].astype(str)
-        df.dropna(subset=[text_column], inplace=True)
+        df = df.dropna(subset=[text_column])
         df['sentences'] = df[text_column].apply(self.__sentence_chunker__)
         df_expanded = df.explode('sentences')
 
         df_expanded = df_expanded[df_expanded['sentences'].str.strip() != '']
         df_expanded['sentences'] = df_expanded['sentences'].apply(self.__pre_process__)
         df_expanded[text_column] = df_expanded['sentences']
-        df_expanded.drop(columns=['sentences'], inplace=True)
+        df_expanded = df_expanded.drop(columns=['sentences'])
 
         df_expanded = df_expanded[df_expanded[text_column].str.strip() != '' ]
         
-        df_expanded.reset_index(drop=True, inplace=True)
+        df_expanded = df_expanded.reset_index(drop=True)
 
         return df_expanded
     
@@ -97,8 +97,9 @@ class TopicWindow:
         Removes stopwords from the text in the specified column of the input DataFrame.
         """
         # Remove stopwords from the text column
-        df[text_column] = df[text_column].apply(lambda x: ' '.join([word for word in x.split() if word not in (stopwords.words('english'))]))
-        return df    
+        stop_words = set(stopwords.words('english'))
+        df[text_column] = df[text_column].apply(lambda x: ' '.join([word for word in x.split() if word not in stop_words]))
+        return df
 
     def get_frames(self, data: pd.DataFrame, date_column: str, timescale: str = 'week') -> list:
         """
@@ -119,22 +120,23 @@ class TopicWindow:
         frames = []
         
         if timescale == 'hour':
-            freq = 'H'
+            freq = 'h'
         elif timescale == 'day':
             freq = 'D'
         elif timescale == 'week':
             freq = 'W'
         elif timescale == 'month':
-            freq = 'M'
+            freq = 'ME'
         elif timescale == 'year':
-            freq = 'Y'
+            freq = 'YE'
         else:
             raise ValueError("Invalid timescale. Choose from 'hour', 'day', 'week', 'month', 'year'.")
 
         # Generate time ranges based on the specified frequency
         time_ranges = pd.date_range(start=start_time, end=end_time, freq=freq)
 
-        for start, end in zip(time_ranges[:-1], time_ranges[1:]):
+        time_pairs = list(zip(time_ranges[:-1], time_ranges[1:]))
+        for start, end in tqdm(time_pairs, desc="Splitting into frames"):
             frame = data[(data[date_column] >= start) & (data[date_column] < end)].reset_index(drop=True)
             frames.append(frame)
 
@@ -168,9 +170,7 @@ class TopicWindow:
             hdbscan_model = HDBSCAN()   
 
         frames = self.get_frames(data, date_column, timescale)
-        total_frames = len(frames)
-        for i, frame in enumerate(frames, start=1):
-            print(f"Fitting model for frame {i} of {total_frames}...")
+        for frame in tqdm(frames, desc="Fitting BERTopic to frames"):
             if not frame.empty:
                 model = BERTopic(
                     umap_model=umap_model, 
@@ -223,19 +223,8 @@ class TopicWindow:
         docs_with_topics = []
         for idx, (model, data) in enumerate(zip(merged_topics, merged_data_frames)):
             try:
-            # Ensure text_column data is in list format for BERTopic
                 text_data = data[text_column].tolist()
-            
-            # Debug: Print the first few items of text_data
-                print(f"Model {idx}: First few text data items: {text_data[:5]}")
-            
-            # Get detailed document information, including topics
                 docs = model.get_document_info(text_data, df=data)
-            
-            # Debug: Print the first few rows of the result
-                print(f"Model {idx}: First few rows of document info:\n{docs.head()}")
-            
-            # Append the resulting DataFrame to the list
                 docs_with_topics.append(docs)
             except Exception as e:
                 print(f"Error processing model {idx}: {e}")

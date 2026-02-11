@@ -14,7 +14,7 @@ lexicon_filepath = "data/NRC-Emotion-Intensity-Lexicon-v1.txt"
 
 class EmoIntensityOverTime:
     def __init__(self):
-          pass
+        self.stopwords = set(stopwords.words('english'))
 
     def load_lexicon(self, filepath: str) -> pd.DataFrame:
         """
@@ -47,18 +47,18 @@ class EmoIntensityOverTime:
         """
         # Apply sentence_chunker to the text column and explode the result into new rows
         df[text_column] = df[text_column].astype(str)
-        df.dropna(subset=[text_column], inplace=True)
+        df = df.dropna(subset=[text_column])
         df['sentences'] = df[text_column].apply(self.__sentence_chunker__)
         df_expanded = df.explode('sentences')
 
         df_expanded = df_expanded[df_expanded['sentences'].str.strip() != '']
         df_expanded['sentences'] = df_expanded['sentences'].apply(self.__pre_process__)
         df_expanded[text_column] = df_expanded['sentences']
-        df_expanded.drop(columns=['sentences'], inplace=True)
+        df_expanded = df_expanded.drop(columns=['sentences'])
 
         df_expanded = df_expanded[df_expanded[text_column].str.strip() != '' ]
-        
-        df_expanded.reset_index(drop=True, inplace=True)
+
+        df_expanded = df_expanded.reset_index(drop=True)
 
         return df_expanded
     
@@ -76,8 +76,7 @@ class EmoIntensityOverTime:
         Removes stopwords from the text in the specified column of the input DataFrame.
         """
         # Remove stopwords from the text column
-        stop_words = set(stopwords.words('english'))
-        df[text_column] = df[text_column].apply(lambda x: ' '.join([word for word in x.split() if word not in stop_words]))
+        df[text_column] = df[text_column].apply(lambda x: ' '.join([word for word in x.split() if word not in self.stopwords]))
         return df  
 
     def analyse_sentences(self, df_sentences: pd.DataFrame, lexicon: pd.DataFrame, text_column: str) -> pd.DataFrame:
