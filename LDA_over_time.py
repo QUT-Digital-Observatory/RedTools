@@ -89,7 +89,7 @@ class LDA_over_time:
         Removes stopwords from the text in the specified column of the input DataFrame.
         """
         # Remove stopwords from the text column
-        df[text_column] = df[text_column].apply(lambda x: ' '.join([word for word in x.split() if word not in (stopwords.words('english'))]))
+        df[text_column] = df[text_column].apply(lambda x: ' '.join([word for word in x.split() if word not in self.stopwords]))
         return df
 
     def create_lda_model(self, texts, num_topics=5):
@@ -173,7 +173,7 @@ class LDA_over_time:
             lda_models.append(lda_model)
         return lda_models
     
-    def merge_frames_into_windows(self, frames, window_size):
+    def merge_frames_into_windows(self, frames, window_size, text_column: str = 'body'):
         """
         Merge frames into windows of specified size.
         """
@@ -182,7 +182,7 @@ class LDA_over_time:
         total_frames = len(frames)
         for i in range(0, total_frames - window_size + 1):
             window = pd.concat(frames[i:i + window_size]).reset_index(drop=True)
-            docs = window['body'].tolist()
+            docs = window[text_column].tolist()
             windows.append(window)
         return windows, docs
     
@@ -193,7 +193,7 @@ class LDA_over_time:
         lda_results = []
         lda_models = []
         for window in tqdm(windows):
-            df, lda_model = self.lda_with_dataframe(window[text_column], num_topics)
+            df, lda_model = self.lda_with_dataframe(window, text_column, num_topics)
             lda_results.append(df)
             lda_models.append(lda_model)
         return lda_results, lda_models
