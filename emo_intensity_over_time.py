@@ -10,7 +10,7 @@ from nltk.corpus import stopwords
 
 
 
-lexicon_filepath = "/mnt/c/Users/fleetr/NRC-Emotion-Intensity-Lexicon-v1.txt"
+lexicon_filepath = "data/NRC-Emotion-Intensity-Lexicon-v1.txt"
 
 class EmoIntensityOverTime:
     def __init__(self):
@@ -76,51 +76,42 @@ class EmoIntensityOverTime:
         Removes stopwords from the text in the specified column of the input DataFrame.
         """
         # Remove stopwords from the text column
-        df[text_column] = df[text_column].apply(lambda x: ' '.join([word for word in x.split() if word not in (stopwords.words('english'))]))
+        stop_words = set(stopwords.words('english'))
+        df[text_column] = df[text_column].apply(lambda x: ' '.join([word for word in x.split() if word not in stop_words]))
         return df  
 
     def analyse_sentences(self, df_sentences: pd.DataFrame, lexicon: pd.DataFrame, text_column: str) -> pd.DataFrame:
         """
         Analyse the sentiments of multiple sentences using a given lexicon.
         """
-        # Ensure the lexicon word column is in lower case for matching
+        lexicon = lexicon.copy()
         lexicon['Word'] = lexicon['Word'].str.lower()
-        
-        # Initialize an empty list to store the results
-        results = []
-        
-        # Define a list of possible emotions (extracted from your lexicon or predefined)
         emotions = lexicon['Emotion'].unique().tolist()
 
-        # Iterate over each sentence in the DataFrame
-        for index, row in df_sentences.iterrows():
-            # Tokenize the sentence into lower case words
-            words = row[text_column].lower().split()
-            
-            # Filter the lexicon to only include words found in the current sentence
-            matched_lexicon = lexicon[lexicon['Word'].isin(words)]
-            
-            # Summarize the scores by emotion for the words in the sentence
-            emotion_scores = matched_lexicon.groupby('Emotion').agg({'Score': 'mean'}).transpose()
-            
-            # Check if there are any scores to add
-            if not emotion_scores.empty:
-                result_row = {**row.to_dict(), **emotion_scores.to_dict('records')[0]}
-            else:
-                # If no scores, initialize scores to 0 for each emotion
-                emotion_scores = {emotion: 0 for emotion in emotions}
-                result_row = {**row.to_dict(), **emotion_scores}
-            
-            results.append(result_row)
-        
-        # Convert results list to DataFrame
-        results_df = pd.DataFrame(results)
+        # Assign a unique row index for each sentence
+        df = df_sentences.copy()
+        df['_sent_idx'] = range(len(df))
 
-        # Fill NaN values with 0 for all emotion columns
+        # Tokenize all sentences into individual words
+        words_df = df[['_sent_idx', text_column]].copy()
+        words_df['Word'] = words_df[text_column].str.lower().str.split()
+        words_df = words_df.explode('Word')[['_sent_idx', 'Word']]
+
+        # Merge with lexicon to get emotion scores for matched words
+        matched = words_df.merge(lexicon, on='Word', how='inner')
+
+        # Average score per sentence per emotion, then pivot to wide format
+        scores = matched.groupby(['_sent_idx', 'Emotion'])['Score'].mean().unstack(fill_value=0)
+
+        # Ensure all emotion columns are present
         for emotion in emotions:
-            if emotion in results_df.columns:
-                results_df[emotion] = results_df[emotion].fillna(0)
-        
+            if emotion not in scores.columns:
+                scores[emotion] = 0
+
+        # Join scores back to the original DataFrame
+        results_df = df.join(scores, on='_sent_idx').drop(columns=['_sent_idx'])
+        results_df[emotions] = results_df[emotions].fillna(0)
+
         return results_df
 
     def aggregate_mean_scores(self, df_scores: pd.DataFrame, id_column: str, score_columns: list) -> pd.DataFrame:
@@ -150,19 +141,19 @@ class EmoIntensityOverTime:
         title (str): Title of the plot.
         freq (str): Frequency for resampling ('D' for daily, 'W' for weekly, 'M' for monthly).
         """
-    # Convert the date_column to datetime format if it isn't already
+        # Convert the date_column to datetime format if it isn't already
         data[date_column] = pd.to_datetime(data[date_column])
 
-    # Resample the data by the specified frequency and calculate the mean intensity for each period
+        # Resample the data by the specified frequency and calculate the mean intensity for each period
         daily_data = data.resample(freq, on=date_column)[intensity_columns].mean().reset_index()
 
-    # Melt the DataFrame to long format
+        # Melt the DataFrame to long format
         data_melted = daily_data.melt(id_vars=[date_column], value_vars=intensity_columns, var_name='Emotion', value_name='Intensity')
 
-    # Create a line plot using Plotly Express
+        # Create a line plot using Plotly Express
         fig = px.line(data_melted, x=date_column, y='Intensity', color='Emotion', title=title)
-    
-    # Update layout to improve readability
+
+        # Update layout to improve readability
         fig.update_layout(xaxis_title='Date', yaxis_title='Average Intensity', xaxis_tickangle=-45)
 
         return fig

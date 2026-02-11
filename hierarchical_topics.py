@@ -2,23 +2,15 @@
 
 import numpy as np
 import pandas as pd
-import re
 from bertopic import BERTopic
 import yaml
-from datetime import datetime
-from sentence_splitter import SentenceSplitter
-from transformers import pipeline
-from sentence_transformers import SentenceTransformer
 import plotly.express as px
-import plotly.graph_objects as go
 from tqdm.auto import tqdm
-from nltk.corpus import stopwords
 import matplotlib.pyplot as plt
 from topic_window import TopicWindow
 from sklearn.decomposition import PCA
 from sklearn.manifold import TSNE
 from sklearn.metrics.pairwise import cosine_similarity
-import plotly.express as px
 from scipy.spatial.distance import cosine
 from scipy.spatial.distance import pdist, squareform
 from sklearn.manifold import MDS
@@ -31,7 +23,7 @@ def load_config(config_path: str) -> dict:
         config = yaml.safe_load(file)
     return config
 
-config_path = '/home/fleetr/RedTools/config.yaml'
+config_path = 'config.yaml'
 
 config = load_config(config_path)
 hardware = config.get('hardware', 'GPU')
@@ -50,19 +42,56 @@ class HierarchicalTopics:
     def __init__(self, config_path: str):
         self.models = []
         self.topic_windows = TopicWindow(config_path)
-        self.bert_topic = BERTopic()
         with open(config_path, 'r') as file:
             self.config = yaml.safe_load(file)
+
+    def _create_model(self):
+        umap_params = self.config['umap']
+        hdbscan_params = self.config['hdbscan']
+        bertopic_params = self.config['bertopic']
+
+        if hardware == 'GPU':
+            umap_model = UMAP(
+                n_components=umap_params['n_components'],
+                n_neighbors=umap_params['n_neighbors'],
+                min_dist=umap_params['min_dist'],
+                random_state=umap_params['random_state']
+            )
+            hdbscan_model = HDBSCAN(
+                min_samples=hdbscan_params['min_samples'],
+                gen_min_span_tree=hdbscan_params['gen_min_span_tree'],
+                prediction_data=hdbscan_params['prediction_data']
+            )
+        else:
+            umap_model = UMAP(
+                n_components=umap_params['n_components'],
+                n_neighbors=umap_params['n_neighbors'],
+                min_dist=umap_params['min_dist'],
+                random_state=umap_params['random_state']
+            )
+            hdbscan_model = HDBSCAN(
+                min_samples=hdbscan_params['min_samples'],
+                gen_min_span_tree=hdbscan_params['gen_min_span_tree'],
+                prediction_data=hdbscan_params['prediction_data']
+            )
+
+        return BERTopic(
+            umap_model=umap_model,
+            hdbscan_model=hdbscan_model,
+            calculate_probabilities=bertopic_params['calculate_probabilities'],
+            verbose=bertopic_params['verbose'],
+            min_topic_size=bertopic_params['min_topic_size']
+        )
 
     def get_hierarchical_topics(self, data, text_column, date_column, timescale):
 
         hierarchical_topics = []
         topic_trees = []
         figs = []
-        data_exp = self.topic_windows.expand_dataframe_with_sentences(data, text_column)
+        data_exp = self.topic_windows.expand_dataframe_with_sentences(data.copy(), text_column)
         frames = self.topic_windows.get_frames(data_exp, date_column, timescale)
         for frame in tqdm(frames):
-            model = self.bert_topic.fit(frame[text_column])
+            model = self._create_model().fit(frame[text_column])
             docs: list = frame[text_column].tolist()
             h_tops =model.hierarchical_topics(docs)
             hierarchical_topics.append(h_tops)
@@ -75,10 +104,10 @@ class HierarchicalTopics:
     def get_topic_embeddings(self, data, text_column, date_column, timescale):
         topic_embeddings = []
         interval_labels = []
-        data_exp = self.topic_windows.expand_dataframe_with_sentences(data, text_column)
+        data_exp = self.topic_windows.expand_dataframe_with_sentences(data.copy(), text_column)
         frames = self.topic_windows.get_frames(data_exp, date_column, timescale)
         for i, frame in enumerate(tqdm(frames)):
-            model = self.bert_topic.fit(frame[text_column])
+            model = self._create_model().fit(frame[text_column])
             all_topics = sorted(list(model.get_topics().keys()))
             freq_df = model.get_topic_freq()
             freq_df = freq_df.loc[freq_df.Topic != -1, :]
@@ -110,25 +139,12 @@ class HierarchicalTopics:
     def visualize_topic_clusters(self, reduced_vectors, interval_labels, method='pca'):
         df = pd.DataFrame(reduced_vectors, columns=[f'{method.upper()}1', f'{method.upper()}2'])
         df['interval'] = interval_labels
-        
-        if method == 'pca':
-            plt.figure(figsize=(10, 6))
-            scatter = plt.scatter(df[f'{method.upper()}1'], df[f'{method.upper()}2'], c=pd.Categorical(df['interval']).codes, cmap='viridis')
-            plt.colorbar(scatter, ticks=range(len(set(interval_labels))), label='Intervals')
-            for i, interval in enumerate(df['interval']):
-                plt.annotate(interval, (df[f'{method.upper()}1'][i], df[f'{method.upper()}2'][i]))
-            plt.title(f'Topic Evolution Over Time ({method.upper()})')
-            plt.xlabel(f'{method.upper()} Component 1')
-            plt.ylabel(f'{method.upper()} Component 2')
-            plt.show()
-        elif method == 'tsne':
-            fig = px.scatter(df, x=f'{method.upper()}1', y=f'{method.upper()}2', color='interval', text='interval',
-                             title=f'Topic Evolution Over Time ({method.upper()})')
-            fig.update_traces(textposition='top center')
-            fig.update_layout(xaxis_title=f'{method.upper()} Component 1', yaxis_title=f'{method.upper()} Component 2')
-            fig.show()
-        else:
-            raise ValueError("Invalid method. Use 'pca' or 'tsne'.")
+
+        fig = px.scatter(df, x=f'{method.upper()}1', y=f'{method.upper()}2', color='interval', text='interval',
+                         title=f'Topic Evolution Over Time ({method.upper()})')
+        fig.update_traces(textposition='top center')
+        fig.update_layout(xaxis_title=f'{method.upper()} Component 1', yaxis_title=f'{method.upper()} Component 2')
+        fig.show()
 
 
     def compute_topic_positions(self, embeddings):
@@ -141,7 +157,11 @@ class HierarchicalTopics:
         positions = mds.fit_transform(dist_matrix).flatten()
     
     # Normalize positions to [0, 1] range
-        positions = (positions - positions.min()) / (positions.max() - positions.min())
+        pos_range = positions.max() - positions.min()
+        if pos_range == 0:
+            positions = np.full_like(positions, 0.5)
+        else:
+            positions = (positions - positions.min()) / pos_range
         return positions
 
     def plot_topic_evolution(self, embeddings_list, cutoff_similarity=0.75, all_links=True):
@@ -168,7 +188,7 @@ class HierarchicalTopics:
             for j, topic1 in enumerate(embeddings1):
                 links = []
                 for k, topic2 in enumerate(embeddings2):
-                    similarity = 1 - np.linalg.norm(topic1 - topic2)  # Cosine similarity
+                    similarity = 1 - cosine(topic1, topic2)
                     if similarity >= cutoff_similarity:
                         links.append((k, similarity))
             
