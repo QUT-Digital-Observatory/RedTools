@@ -50,30 +50,17 @@ class HierarchicalTopics:
         hdbscan_params = self.config['hdbscan']
         bertopic_params = self.config['bertopic']
 
-        if hardware == 'GPU':
-            umap_model = UMAP(
-                n_components=umap_params['n_components'],
-                n_neighbors=umap_params['n_neighbors'],
-                min_dist=umap_params['min_dist'],
-                random_state=umap_params['random_state']
-            )
-            hdbscan_model = HDBSCAN(
-                min_samples=hdbscan_params['min_samples'],
-                gen_min_span_tree=hdbscan_params['gen_min_span_tree'],
-                prediction_data=hdbscan_params['prediction_data']
-            )
-        else:
-            umap_model = UMAP(
-                n_components=umap_params['n_components'],
-                n_neighbors=umap_params['n_neighbors'],
-                min_dist=umap_params['min_dist'],
-                random_state=umap_params['random_state']
-            )
-            hdbscan_model = HDBSCAN(
-                min_samples=hdbscan_params['min_samples'],
-                gen_min_span_tree=hdbscan_params['gen_min_span_tree'],
-                prediction_data=hdbscan_params['prediction_data']
-            )
+        umap_model = UMAP(
+            n_components=umap_params['n_components'],
+            n_neighbors=umap_params['n_neighbors'],
+            min_dist=umap_params['min_dist'],
+            random_state=umap_params['random_state']
+        )
+        hdbscan_model = HDBSCAN(
+            min_samples=hdbscan_params['min_samples'],
+            gen_min_span_tree=hdbscan_params['gen_min_span_tree'],
+            prediction_data=hdbscan_params['prediction_data']
+        )
 
         return BERTopic(
             umap_model=umap_model,
@@ -90,10 +77,10 @@ class HierarchicalTopics:
         figs = []
         data_exp = self.topic_windows.expand_dataframe_with_sentences(data.copy(), text_column)
         frames = self.topic_windows.get_frames(data_exp, date_column, timescale)
-        for frame in tqdm(frames):
+        for frame in tqdm(frames, desc="Building hierarchical topics"):
             model = self._create_model().fit(frame[text_column])
             docs: list = frame[text_column].tolist()
-            h_tops =model.hierarchical_topics(docs)
+            h_tops = model.hierarchical_topics(docs)
             hierarchical_topics.append(h_tops)
             t_trees = model.get_topic_tree(h_tops)
             topic_trees.append(t_trees)
@@ -106,7 +93,7 @@ class HierarchicalTopics:
         interval_labels = []
         data_exp = self.topic_windows.expand_dataframe_with_sentences(data.copy(), text_column)
         frames = self.topic_windows.get_frames(data_exp, date_column, timescale)
-        for i, frame in enumerate(tqdm(frames)):
+        for i, frame in enumerate(tqdm(frames, desc="Extracting topic embeddings")):
             model = self._create_model().fit(frame[text_column])
             all_topics = sorted(list(model.get_topics().keys()))
             freq_df = model.get_topic_freq()
@@ -151,12 +138,12 @@ class HierarchicalTopics:
         """Compute y-positions of topics based on their inter-topic distances."""
         distances = pdist(embeddings, metric='cosine')
         dist_matrix = squareform(distances)
-    
-    # Use multidimensional scaling to position topics
+
+        # Use multidimensional scaling to position topics
         mds = MDS(n_components=1, dissimilarity='precomputed', random_state=42)
         positions = mds.fit_transform(dist_matrix).flatten()
-    
-    # Normalize positions to [0, 1] range
+
+        # Normalize positions to [0, 1] range
         pos_range = positions.max() - positions.min()
         if pos_range == 0:
             positions = np.full_like(positions, 0.5)
@@ -167,49 +154,49 @@ class HierarchicalTopics:
     def plot_topic_evolution(self, embeddings_list, cutoff_similarity=0.75, all_links=True):
         num_intervals = len(embeddings_list)
         fig, ax = plt.subplots(figsize=(max(12, num_intervals * 3), 10))
-    
-    # Compute positions for all time intervals
+
+        # Compute positions for all time intervals
         all_positions = [self.compute_topic_positions(embeddings) for embeddings in embeddings_list]
-    
-    # Plot topics for each time interval
+
+        # Plot topics for each time interval
         for i, positions in enumerate(all_positions):
             ax.scatter([i] * len(positions), positions, s=50, label=f'Interval {i+1}')
             for j, pos in enumerate(positions):
-                ax.annotate(f'T{i+1}_{j+1}', (i, pos), xytext=(5, 0), 
-                        textcoords='offset points', fontsize=8, alpha=0.7)
-    
-    # Draw links between adjacent intervals
+                ax.annotate(f'T{i+1}_{j+1}', (i, pos), xytext=(5, 0),
+                            textcoords='offset points', fontsize=8, alpha=0.7)
+
+        # Draw links between adjacent intervals
         for i in range(num_intervals - 1):
             embeddings1 = embeddings_list[i]
             embeddings2 = embeddings_list[i+1]
             positions1 = all_positions[i]
             positions2 = all_positions[i+1]
-        
+
             for j, topic1 in enumerate(embeddings1):
                 links = []
                 for k, topic2 in enumerate(embeddings2):
                     similarity = 1 - cosine(topic1, topic2)
                     if similarity >= cutoff_similarity:
                         links.append((k, similarity))
-            
+
                 if all_links:
                     for k, sim in links:
-                        ax.plot([i, i+1], [positions1[j], positions2[k]], 'k-', 
+                        ax.plot([i, i+1], [positions1[j], positions2[k]], 'k-',
                                 alpha=0.3, linewidth=sim)
                 elif links:
                     k, sim = max(links, key=lambda x: x[1])
-                    ax.plot([i, i+1], [positions1[j], positions2[k]], 'k-', 
+                    ax.plot([i, i+1], [positions1[j], positions2[k]], 'k-',
                             alpha=0.5, linewidth=sim)
-    
+
         ax.set_xlim(-0.5, num_intervals - 0.5)
         ax.set_xticks(range(num_intervals))
         ax.set_xticklabels([f'Interval {i+1}' for i in range(num_intervals)])
         ax.set_ylim(-0.1, 1.1)
         ax.set_yticks([])
-    
+
         ax.set_title('Topic Evolution Across Time Intervals')
         ax.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
-    
+
         plt.tight_layout()
         plt.show()
 

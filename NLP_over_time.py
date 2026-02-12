@@ -9,10 +9,11 @@ from nltk.corpus import stopwords
 from nltk import ngrams
 import spacy
 import matplotlib.pyplot as plt
+from tqdm.auto import tqdm
 
 class NLP_over_time:
     def __init__(self):
-        pass
+        self.stopwords = set(stopwords.words('english'))
 
     def __pre_process__(self, text: str) -> str:  
         text = re.sub(r"&gt;", "", text)
@@ -37,18 +38,18 @@ class NLP_over_time:
         """
         # Apply sentence_chunker to the text column and explode the result into new rows
         df[text_column] = df[text_column].astype(str)
-        df.dropna(subset=[text_column], inplace=True)
+        df = df.dropna(subset=[text_column])
         df['sentences'] = df[text_column].apply(self.__sentence_chunker__)
         df_expanded = df.explode('sentences')
 
         df_expanded = df_expanded[df_expanded['sentences'].str.strip() != '']
         df_expanded['sentences'] = df_expanded['sentences'].apply(self.__pre_process__)
         df_expanded[text_column] = df_expanded['sentences']
-        df_expanded.drop(columns=['sentences'], inplace=True)
+        df_expanded = df_expanded.drop(columns=['sentences'])
 
         df_expanded = df_expanded[df_expanded[text_column].str.strip() != '' ]
         
-        df_expanded.reset_index(drop=True, inplace=True)
+        df_expanded = df_expanded.reset_index(drop=True)
 
         return df_expanded
     
@@ -66,7 +67,7 @@ class NLP_over_time:
         Removes stopwords from the text in the specified column of the input DataFrame.
         """
         # Remove stopwords from the text column
-        df[text_column] = df[text_column].apply(lambda x: ' '.join([word for word in x.split() if word not in (stopwords.words('english'))]))
+        df[text_column] = df[text_column].apply(lambda x: ' '.join([word for word in x.split() if word not in self.stopwords]))
         return df 
     
     def get_frames(self, data: pd.DataFrame, date_column: str, timescale: str = 'week') -> list:
@@ -88,22 +89,23 @@ class NLP_over_time:
         frames = []
         
         if timescale == 'hour':
-            freq = 'H'
+            freq = 'h'
         elif timescale == 'day':
             freq = 'D'
         elif timescale == 'week':
             freq = 'W'
         elif timescale == 'month':
-            freq = 'M'
+            freq = 'ME'
         elif timescale == 'year':
-            freq = 'Y'
+            freq = 'YE'
         else:
             raise ValueError("Invalid timescale. Choose from 'hour', 'day', 'week', 'month', 'year'.")
 
         # Generate time ranges based on the specified frequency
         time_ranges = pd.date_range(start=start_time, end=end_time, freq=freq)
 
-        for start, end in zip(time_ranges[:-1], time_ranges[1:]):
+        time_pairs = list(zip(time_ranges[:-1], time_ranges[1:]))
+        for start, end in tqdm(time_pairs, desc="Splitting into frames"):
             frame = data[(data[date_column] >= start) & (data[date_column] < end)].reset_index(drop=True)
             frames.append(frame)
 
@@ -122,23 +124,23 @@ class NLP_over_time:
         """
         top_terms = []
 
-        for frame in frames:
+        for frame in tqdm(frames, desc="Extracting top terms"):
             # Combine text from all rows in the frame
             combined_text = ' '.join(frame[text_column].tolist())
-            
+
             # Tokenize the text
             tokens = combined_text.split()
-            
+
             # Count the frequency of each token
             term_counts = Counter(tokens)
-            
+
             # Get the top N terms
             top_n_terms = [term for term, _ in term_counts.most_common(n)]
-            
+
             # Assign counts of top N terms to each row in the frame
             for term in top_n_terms:
                 frame[term] = frame[text_column].apply(lambda x: x.split().count(term))
-            
+
             top_terms.append(frame)
 
         return top_terms
@@ -149,19 +151,19 @@ class NLP_over_time:
         """
         top_ngrams = []
         
-        for frame in frames:
+        for frame in tqdm(frames, desc="Extracting top n-grams"):
             # Combine text from all rows in the frame
             combined_text = ' '.join(frame[text_column].tolist())
-            
+
             # Tokenize the text
             tokens = combined_text.split()
-            
+
             # Generate n-grams
             ngrams_list = list(ngrams(tokens, ngram_range))
-            
+
             # Count the frequency of each n-gram
             ngram_counts = Counter(ngrams_list)
-            
+
             # Get the top N n-grams
             top_ngrams.append(ngram_counts.most_common(n))
         
@@ -172,14 +174,12 @@ class NLP_over_time:
         Extracts named entities from the text in the specified column for each data frame in the list of frames.
         """
         named_entities = []
-        
-        for frame in frames:
+
+        nlp = spacy.load("en_core_web_trf")
+        for frame in tqdm(frames, desc="Extracting named entities"):
             # Combine text from all rows in the frame
             combined_text = ' '.join(frame[text_column].tolist())
-            
-            # Load the spaCy model
-            nlp = spacy.load("en_core_web_trf")
-            
+
             # Process the text
             doc = nlp(combined_text)
             
