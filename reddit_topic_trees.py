@@ -30,13 +30,17 @@ class Reddit_trees:
         self.config = load_config(config_path)
         self.hardware = self.config.get('hardware', 'CPU')
 
-        # Initialize Reddit instance
-        self.reddit = praw.Reddit(
-            client_id=self.config['reddit']['client_id'],
-            client_secret=self.config['reddit']['client_secret'],
-            redirect_uri=self.config['reddit']['redirect_uri'],
-            user_agent=self.config['reddit']['user_agent']
-        )
+        # Initialize Reddit instance (optional — only needed for data collection)
+        reddit_cfg = self.config.get('reddit', {})
+        if reddit_cfg.get('client_id') and reddit_cfg.get('client_secret'):
+            self.reddit = praw.Reddit(
+                client_id=reddit_cfg['client_id'],
+                client_secret=reddit_cfg['client_secret'],
+                redirect_uri=reddit_cfg.get('redirect_uri', ''),
+                user_agent=reddit_cfg.get('user_agent', 'RedTools')
+            )
+        else:
+            self.reddit = None
 
         # Initialize LDA modeling
         self.lda_modeling = LDA_over_time()
@@ -279,34 +283,56 @@ class Reddit_trees:
         emo_intensity = EmoIntensityOverTime()
         lexicon_path = self.config['lexicon']['lexicon_filepath']
         lexicon = emo_intensity.load_lexicon(lexicon_path)
-        self.processed_text_column(df, text_column)
-        df = emo_intensity.analyse_sentences(df, lexicon, text_column)
+        # Work on a copy of the text column so the original text is preserved
+        processed_col = f'{text_column}_processed'
+        df[processed_col] = df[text_column]
+        self.processed_text_column(df, processed_col)
+        df = emo_intensity.analyse_sentences(df, lexicon, processed_col)
+        df = df.drop(columns=[processed_col])
         return df
     
         
-    def tree_graph_and_adj_list(self, df: pd.DataFrame, incl_topic: bool = True, topic_column = 'Topic',
+    def tree_graph_and_adj_list(self, df: pd.DataFrame, incl_topic: bool = True, topic_column: str = 'Topic',
                                id_col: str = 'id', author_col: str = 'author',
                                body_col: str = 'body', link_id_col: str = 'link_id',
                                parent_id_col: str = 'parent_id',
-                               created_utc_col: str = 'created_utc') -> Tuple[nx.DiGraph, pd.DataFrame]:
+                               time_col: str = 'created_utc', time_is_utc: bool = True,
+                               extra_node_cols: Optional[List[str]] = None) -> Tuple[nx.DiGraph, pd.DataFrame]:
+        """Build a directed graph and adjacency list from a comment/submission DataFrame.
+
+        Args:
+            df: DataFrame containing the data.
+            incl_topic: Whether to include a topic attribute on each node.
+            topic_column: Column name for topic assignment.
+            id_col, author_col, body_col, link_id_col, parent_id_col, time_col:
+                Column name mappings — override these for non-Reddit schemas
+                (e.g. for the _nt schema pass id_col='commentId', author_col='username',
+                body_col='text', link_id_col='threadId', parent_id_col='responseTo',
+                time_col='date', time_is_utc=False).
+            time_is_utc: If True, convert the time column from a Unix timestamp
+                via datetime.fromtimestamp(). If False, use the value as-is.
+            extra_node_cols: Optional list of additional column names to include
+                as node attributes (e.g. emotion scores).
+        """
         # Create directed graph
         G_tree = nx.DiGraph()
 
         # Add nodes to the graph
         for index, row in df.iterrows():
             node_id = row[id_col]
-            author = row.get(author_col, 'unknown')
-            body = row.get(body_col, '')
-            link_id = row[link_id_col]
-            time_created = datetime.fromtimestamp(row[created_utc_col]).isoformat()
+            time_created = (datetime.fromtimestamp(row[time_col]).isoformat()
+                            if time_is_utc else row[time_col])
             node_data = {
-                'author': author,
-                'body': body,
-                'link_id': link_id,
+                'author': row.get(author_col, 'unknown'),
+                'body': row.get(body_col, ''),
+                'link_id': row[link_id_col],
                 'time_created': time_created
             }
             if incl_topic:
                 node_data['topic'] = row[topic_column]
+            if extra_node_cols:
+                for col in extra_node_cols:
+                    node_data[col] = row[col]
 
             G_tree.add_node(node_id, **node_data)
 
@@ -316,7 +342,8 @@ class Reddit_trees:
             parent_id = str(row[parent_id_col]) if pd.notna(row[parent_id_col]) else ''
             source = parent_id.replace('t3_', '').replace('t1_', '')
             targets = row[id_col]
-            time_created = datetime.fromtimestamp(row[created_utc_col]).isoformat()
+            time_created = (datetime.fromtimestamp(row[time_col]).isoformat()
+                            if time_is_utc else row[time_col])
             link_id = row[link_id_col]
 
             if source and source in G_tree.nodes and targets in G_tree.nodes:
@@ -329,98 +356,6 @@ class Reddit_trees:
         # Create adjacency list DataFrame
         adj_list_df_tree = pd.DataFrame(adj_data)
 
-        return G_tree, adj_list_df_tree
-    
-    def tree_graph_and_adj_list_nt(self, df: pd.DataFrame, incl_topic: bool = True, topic_column = 'Topic') -> Tuple[nx.DiGraph, pd.DataFrame]:
-        # Create directed graph
-        G_tree = nx.DiGraph()
-
-        # Add nodes to the graph
-        for index, row in df.iterrows():
-            node_id = row['commentId']
-            author = row['username']
-            body = row['text']
-            link_id = row['threadId']
-            time_created = row['date']
-            node_data = {
-                'author': author,
-                'body': body,
-                'link_id': link_id,
-                'time_created': time_created
-            }
-            if incl_topic:
-                node_data['topic'] = row[topic_column]
-            
-            G_tree.add_node(node_id, **node_data)
-
-        # Add edges to the graph and build adjacency list data
-        adj_data = {'Source': [], 'Target': [], 'TimeCreated': [], 'LinkID': []}
-        for index, row in df.iterrows():
-            parent_id = str(row['responseTo']) if pd.notna(row['responseTo']) else ''
-            source = parent_id.replace('t3_', '').replace('t1_', '')
-            targets = row['commentId']
-            time_created = row['date']
-            link_id = row['threadId']
-
-            if source and targets in G_tree.nodes:
-                G_tree.add_edge(source, targets, time_created=time_created, link_id=link_id)
-                adj_data['Source'].append(source)
-                adj_data['Target'].append(targets)
-                adj_data['TimeCreated'].append(time_created)
-                adj_data['LinkID'].append(link_id)
-
-        # Create adjacency list DataFrame
-        adj_list_df_tree = pd.DataFrame(adj_data)
-    
-        return G_tree, adj_list_df_tree
-
-    def tree_graph_and_adj_list_emo(self, df) -> Tuple[nx.DiGraph, pd.DataFrame]:
-        # Create directed graph
-        G_tree = nx.DiGraph()
-
-        # Add nodes to the graph
-        for index, row in df.iterrows():
-            node_id = row['id']
-            author = row['author']
-            body = row['body']
-            link_id = row['link_id']
-            time_created = datetime.fromtimestamp(row['created_utc']).isoformat()
-            node_data = {
-                'author': author,
-                'body': body,
-                'link_id': link_id,
-                'time_created': time_created,
-                'anger': row['anger'],
-                'anticipation': row['anticipation'],
-                'disgust': row['disgust'],
-                'fear': row['fear'],
-                'joy': row['joy'],
-                'sadness': row['sadness'],
-                'surprise': row['surprise'],
-                'trust': row['trust']
-            }
-            
-            G_tree.add_node(node_id, **node_data)
-
-        # Add edges to the graph and build adjacency list data
-        adj_data = {'Source': [], 'Target': [], 'TimeCreated': [], 'LinkID': []}
-        for index, row in df.iterrows():
-            parent_id = str(row['parent_id']) if pd.notna(row['parent_id']) else ''
-            source = parent_id.replace('t3_', '').replace('t1_', '')
-            targets = row['id']
-            time_created = datetime.fromtimestamp(row['created_utc']).isoformat()
-            link_id = row['link_id']
-
-            if source and targets in G_tree.nodes:
-                G_tree.add_edge(source, targets, time_created=time_created, link_id=link_id)
-                adj_data['Source'].append(source)
-                adj_data['Target'].append(targets)
-                adj_data['TimeCreated'].append(time_created)
-                adj_data['LinkID'].append(link_id)
-
-        # Create adjacency list DataFrame
-        adj_list_df_tree = pd.DataFrame(adj_data)
-    
         return G_tree, adj_list_df_tree
     
        
