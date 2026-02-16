@@ -46,8 +46,8 @@ class Reddit_trees:
         self.lda_modeling = LDA_over_time()
     
     def search_subreddit(self, query, subreddit="australia", sort="new"):
-        subreddit = self.reddit.subreddit(subreddit)
-        result = subreddit.search(query, sort=sort)
+        sub = self.reddit.subreddit(subreddit)
+        result = sub.search(query, sort=sort)
 
         # Initialize an empty list to store dictionaries, where each dictionary represents a submission
         submissions_data: list[dict] = []
@@ -61,7 +61,7 @@ class Reddit_trees:
                 "comment_count": submission.num_comments,
                 "selftext": submission.selftext,
                 "created_utc": submission.created_utc,
-                "created_time": datetime.fromtimestamp(submission.created_utc).isoformat(),
+                "time_created": datetime.fromtimestamp(submission.created_utc).isoformat(),
                 "url": submission.url  
             }
 
@@ -91,7 +91,7 @@ class Reddit_trees:
                     "body": comment.body,
                     "id": comment.id,
                     "created_utc": comment.created_utc,
-                    'tme_created': datetime.fromtimestamp(comment.created_utc).isoformat(),
+                    'time_created': datetime.fromtimestamp(comment.created_utc).isoformat(),
                     "link_id": comment.link_id,
                     "parent_id": comment.parent_id,
                     "replies": reply_ids,
