@@ -17,21 +17,16 @@ from sklearn.manifold import MDS
 
 from utils import load_config, create_bertopic_model
 
-config_path = 'config.yaml'
-
-config = load_config(config_path)
-hardware = config.get('hardware', 'GPU')
-
 class HierarchicalTopics:
 
     def __init__(self, config_path: str):
         self.models = []
         self.topic_windows = TopicWindow(config_path)
-        with open(config_path, 'r') as file:
-            self.config = yaml.safe_load(file)
+        self.config = load_config(config_path)
+        self.hardware = self.config.get('hardware', 'CPU')
 
     def _create_model(self):
-        return create_bertopic_model(self.config, hardware)
+        return create_bertopic_model(self.config, self.hardware)
 
     def get_hierarchical_topics(self, data, text_column, date_column, timescale):
 

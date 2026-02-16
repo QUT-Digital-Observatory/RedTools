@@ -106,7 +106,7 @@ class LDA_over_time:
         total_frames = len(frames)
         for i in tqdm(range(0, total_frames - window_size + 1), desc="Merging frames into windows"):
             window = pd.concat(frames[i:i + window_size]).reset_index(drop=True)
-            docs = window[text_column].tolist()
+            docs.append(window[text_column].tolist())
             windows.append(window)
         return windows, docs
     
