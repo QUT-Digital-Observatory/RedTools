@@ -6,23 +6,20 @@ import time
 import numpy as np
 from dataclasses import dataclass
 from datetime import datetime, timezone
-import yaml
 
-def load_config(config_path):
-    with open(config_path, 'r') as file:
-        config = yaml.safe_load(file)
-    return config
+from utils import (
+    load_config,
+    APIError,
+    parse_unix_timestamp,
+    process_subreddit_response,
+    process_submission_response,
+    process_comment_response,
+    make_api_request,
+)
 
 config_path = 'config.yaml'
 
 config = load_config(config_path)
-
-
-class APIError(Exception):
-    def __init__(self, status_code: int, detail: str):
-        self.status_code = status_code
-        self.detail = detail
-        super().__init__(f"API Error {status_code}: {detail}")
 
 
 @dataclass
@@ -46,38 +43,7 @@ class AusRedditData:
         return f"{self.base_url}/{endpoint}"
 
     def _make_request(self, endpoint, params=None, method="GET", data=None):
-        url = f"{self.base_url}/{endpoint}"
-        headers = {"Authorization": f"Bearer {self.apikey}"}
-        try:
-            if method == "GET":
-                response = self.session.get(url, params=params, headers=headers)
-            elif method == "POST":
-                response = self.session.post(
-                    url, params=params, headers=headers, json=data
-                )
-            else:
-                raise ValueError(f"Unsupported HTTP method: {method}")
-            response.raise_for_status()
-            return response.json()
-        except requests.exceptions.HTTPError as http_err:
-            # Here, we're sure that 'response' exists because HTTPError is only raised after a response is received
-            if response and response.status_code == 422:  # type: requests.Response
-                error_detail = response.json().get("detail", "No detail provided")
-                raise APIError(422, f"Unprocessable Entity: {error_detail}")
-            elif response and 400 <= response.status_code < 500:
-                raise APIError(response.status_code, f"Client Error: {response.text}")
-            elif response and 500 <= response.status_code < 600:
-                raise APIError(response.status_code, f"Server Error: {response.text}")
-            else:
-                raise APIError(
-                    http_err.response.status_code, f"HTTP Error: {str(http_err)}"
-                )
-        except requests.exceptions.ConnectionError as conn_err:
-            raise APIError(500, f"Connection Error: {str(conn_err)}")
-        except requests.exceptions.Timeout as timeout_err:
-            raise APIError(500, f"Timeout Error: {str(timeout_err)}")
-        except requests.exceptions.RequestException as req_err:
-            raise APIError(500, f"Request Error: {str(req_err)}")
+        return make_api_request(self.session, self.base_url, endpoint, self.apikey, params, method, data)
 
     def stream_comments(
         self, submissions: list[str], limit: int = 1000, embeddings: bool = False
@@ -184,54 +150,10 @@ class AusRedditData:
             return pd.DataFrame()
 
     def _process_subreddit_response(self, response):
-        # Assuming the response is a list of subreddit dictionaries
-        if isinstance(response, dict):
-            subreddits = response.get('subreddits', [])
-        elif isinstance(response, list):
-            subreddits = response
-        else:
-            raise APIError(500, f"Invalid response format: expected a dictionary or list, got {type(response)}")
-    
-        if not subreddits:
-            print("Warning: No subreddits found in the response")
-    
-        processed_data = []
-        for subreddit in subreddits:
-            if not isinstance(subreddit, dict):
-                print(f"Warning: Unexpected subreddit format: {subreddit}")
-                continue
-            processed_subreddit = {
-                'id': subreddit.get('id'),
-                'display_name': subreddit.get('display_name'),
-                'title': subreddit.get('title'),
-                'description': subreddit.get('description'),
-                'public_description': subreddit.get('public_description'),
-                'created_utc': self._parse_unix_timestamp(subreddit.get('created_utc')),
-                'subscribers': int(subreddit.get('subscribers', 0)),
-                'over18': subreddit.get('over18'),
-                'url': subreddit.get('url'),
-                'banner_img': subreddit.get('banner_img'),
-                'icon_img': subreddit.get('icon_img'),
-                'community_icon': subreddit.get('community_icon'),
-                'lang': subreddit.get('lang')
-            }
-            processed_data.append(processed_subreddit)
-        
-        return pd.DataFrame(processed_data)
+        return process_subreddit_response(response)
 
     def _parse_unix_timestamp(self, timestamp):
-        """
-        Parses a Unix timestamp and returns a datetime object in UTC.
-
-        Args:
-            timestamp (int or None): The Unix timestamp to parse. If None, returns None.
-
-        Returns:
-            datetime.datetime or None: A datetime object representing the given timestamp in UTC, or None if the input is None.
-        """
-        if timestamp is not None:
-            return datetime.fromtimestamp(int(timestamp), tz=timezone.utc)
-        return None
+        return parse_unix_timestamp(timestamp)
 
     def get_submissions(self, subreddit_ids: str):
         """
@@ -254,49 +176,7 @@ class AusRedditData:
             return pd.DataFrame()
         
     def _process_submission_response(self, response):
-        """
-        Processes a response containing Reddit submissions and converts it into a DataFrame.
-        Args:
-            response (dict): A dictionary containing a list of submission dictionaries under the key 'submissions'.
-        Returns:
-            pd.DataFrame: A DataFrame containing the processed submission data with the following columns:
-            - id: The submission ID.
-            - title: The title of the submission.
-            - selftext: The text content of the submission.
-            - author: The author of the submission.
-            - created_utc: The creation time of the submission in UTC.
-            - retrieved_utc: The retrieval time of the submission in UTC.
-            - permalink: The permalink URL of the submission.
-            - url: The URL of the submission.
-            - score: The score of the submission.
-            - over_18: Boolean indicating if the submission is marked as NSFW.
-            - subreddit_id: The ID of the subreddit where the submission was posted.
-            - subreddit: The name of the subreddit where the submission was posted.
-            - comment_count: The number of comments on the submission.
-        """
-        # Assuming the response is a list of submission dictionaries
-        submissions = response.get('submissions', [])
-            
-        processed_data = []
-        for submission in submissions:
-            processed_submission = {
-                'id': submission.get('id'),
-                'title': submission.get('title'),
-                'selftext': submission.get('selftext'),
-                'author': submission.get('author'),
-                'created_utc': self._parse_unix_timestamp(submission.get('created_utc')),
-                'retrieved_utc': self._parse_unix_timestamp(submission.get('retrieved_utc')),
-                'permalink': submission.get('permalink'),
-                'url': submission.get('url'),
-                'score': int(submission.get('score', 0)),
-                'over_18': submission.get('over_18', False),
-                'subreddit_id': submission.get('subreddit_id'),
-                'subreddit': submission.get('subreddit'),
-                'comment_count': int(submission.get('comment_count', 0))
-            }
-            processed_data.append(processed_submission)
-        
-        return pd.DataFrame(processed_data)
+        return process_submission_response(response)
 
     def search_submissions(self, query, author=None,start=None, end=None, score_min=None, score_max=None, subreddit=None, subreddit_id=None, comments_min=None, comments_max=None, over18=None, method = 'keyword',search_in = 'all', limit = 1000, ):
         """
@@ -348,41 +228,7 @@ class AusRedditData:
             return pd.DataFrame()
         
     def _process_comment_response(self, response):
-    # Extract the comments from the response
-        comments = response.get('comments', [])
-    
-    # Process each comment
-        processed_data = []
-        for comment in comments:
-            processed_comment = {
-            'id': comment.get('id'),
-            'author': comment.get('author'),
-            'body': comment.get('body'),
-            'created_utc': datetime.fromtimestamp(comment.get('created_utc'), tz=timezone.utc),
-            'submission_id': comment.get('submission_id'),
-            'parent_id': comment.get('parent_id'),
-            'score': int(comment.get('score', 0)),
-            'subreddit_id': comment.get('subreddit_id'),
-            'subreddit': comment.get('subreddit'),
-            'permalink': comment.get('permalink'),
-            'retrieved_on': datetime.fromtimestamp(comment.get('retrieved_on'), tz=timezone.utc) if comment.get('retrieved_on') else pd.NaT
-        }
-            processed_data.append(processed_comment)
-    
-    # Convert the list of dictionaries to a pandas DataFrame
-        df = pd.DataFrame(processed_data)
-    
-    # Ensure all columns are present, even if no data is available
-        expected_columns = ['id', 'author', 'body', 'created_utc', 'submission_id', 'parent_id', 
-                        'score', 'subreddit_id', 'subreddit', 'permalink', 'retrieved_on']
-        for col in expected_columns:
-            if col not in df.columns:
-                df[col] = pd.NA
-    
-    # Reorder columns to match the expected order
-        df = df[expected_columns]
-    
-        return df
+        return process_comment_response(response)
         
     def search_comments(self, query, author= None, start= None, end= None, score_min= None, score_max= None, subreddit= None, subreddit_id = None, over18 = None, method = 'keyword',search_in = 'all', limit = 1000, ):
         """

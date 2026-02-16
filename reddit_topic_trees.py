@@ -11,34 +11,23 @@ from typing import Tuple
 import networkx as nx
 import praw
 import yaml
-from sentence_splitter import SentenceSplitter
 import re
-from nltk.corpus import stopwords
 import matplotlib.pyplot as plt
 from LDA_over_time import LDA_over_time
 from emo_intensity_over_time import EmoIntensityOverTime
 
-def load_config(config_path: str) -> dict:
-    """
-    Load the configuration file from the specified path.
-    """
-    with open(config_path, 'r') as file:
-        config = yaml.safe_load(file)
-    return config
+from utils import (
+    load_config,
+    expand_dataframe_with_sentences,
+    processed_text_column,
+    remove_stopwords,
+    create_umap_hdbscan_models,
+)
 
 config_path = 'config.yaml'
 
 config = load_config(config_path)
 hardware = config.get('hardware', 'GPU')
-
-if hardware == 'GPU':
-    from cuml.manifold import UMAP
-    from cuml.cluster import HDBSCAN
-    print("Using GPU for UMAP and HDBSCAN.")
-else:
-    from umap import UMAP
-    from hdbscan import HDBSCAN
-    print("Using CPU for UMAP and HDBSCAN.")
 
 
 class Reddit_trees:
@@ -172,89 +161,26 @@ class Reddit_trees:
         else:
             raise ValueError("Invalid file format. Choose from 'csv', 'excel' or 'parquet'.")
         
-    def __pre_process__(self, text: str) -> str:  
-        text = re.sub(r"&gt;", "", text)
-        text = text.lower()
-        text = re.sub(r"http\S+", "", text)
-        text = re.sub(r"@\w+", "", text)
-        text = re.sub(r"[^a-zA-Z\s]", "", text)
-        text = text.replace("\n", "").replace("\t", "").strip()
-        return text
-    
-    def __sentence_chunker__(self, text: str) -> list:
-    
-        splitter = SentenceSplitter(language="en")
-        return splitter.split(text)
-    
-    #You can process 1) a dataframe that you want to split into sentences and pre_process, 2) a dataframe that is not split into sentences but is pre_processed, 3) a dataframe that is not split into sentences and is not pre_processed
-
     def expand_dataframe_with_sentences(self, df: pd.DataFrame, text_column: str) -> pd.DataFrame:
-        """
-        Expands a DataFrame by splitting the text in a specified column into sentences,
-        preprocesses them, and each sentence retains metadata from the original row.
-        """
-        # Apply sentence_chunker to the text column and explode the result into new rows
-        df[text_column] = df[text_column].astype(str)
-        df.dropna(subset=[text_column], inplace=True)
-        df['sentences'] = df[text_column].apply(self.__sentence_chunker__)
-        df_expanded = df.explode('sentences')
+        """Expands a DataFrame by splitting text into sentences and preprocessing them."""
+        return expand_dataframe_with_sentences(df, text_column)
 
-        df_expanded = df_expanded[df_expanded['sentences'].str.strip() != '']
-        df_expanded['sentences'] = df_expanded['sentences'].apply(self.__pre_process__)
-        df_expanded[text_column] = df_expanded['sentences']
-        df_expanded.drop(columns=['sentences'], inplace=True)
-
-        df_expanded = df_expanded[df_expanded[text_column].str.strip() != '' ]
-        
-        df_expanded.reset_index(drop=True, inplace=True)
-
-        return df_expanded
-    
     def processed_text_column(self, df: pd.DataFrame, text_column: str) -> pd.DataFrame:
-        """
-        Preprocesses the text in the specified column of the input DataFrame.
-        """
-        # Apply the pre_process function to the text column
-        df[text_column] = df[text_column].astype(str)
-        df[text_column] = df[text_column].apply(self.__pre_process__)
-        return df
+        """Preprocesses the text in the specified column of the input DataFrame."""
+        return processed_text_column(df, text_column)
 
     def remove_stopwords(self, df: pd.DataFrame, text_column: str) -> pd.DataFrame:
-        """
-        Removes stopwords from the text in the specified column of the input DataFrame.
-        """
-        # Remove stopwords from the text column
-        df[text_column] = df[text_column].apply(lambda x: ' '.join([word for word in x.split() if word not in (stopwords.words('english'))]))
-        return df    
+        """Removes stopwords from the text in the specified column of the input DataFrame."""
+        return remove_stopwords(df, text_column)
 
     def topic_model_comments(self, comments, text_column="body"):
-        umap_params = self.config['umap']
-        hdbscan_params = self.config['hdbscan']
+        umap_model, hdbscan_model = create_umap_hdbscan_models(self.config, hardware)
         bertopic_params = self.config['bertopic']
-        # Initialize models with parameters from config
-        if hardware == 'GPU':
-            umap_model = UMAP(
-            n_components=umap_params['n_components'],
-            n_neighbors=umap_params['n_neighbors'],
-            min_dist=umap_params['min_dist'],
-            random_state=umap_params['random_state']
-        )
-            hdbscan_model = HDBSCAN(
-            min_samples=hdbscan_params['min_samples'],
-            gen_min_span_tree=hdbscan_params['gen_min_span_tree'],
-            prediction_data=hdbscan_params['prediction_data']
-        )
-        else:
-            umap_model = UMAP()
-            hdbscan_model = HDBSCAN()  
-
-        umap_model = umap_model
-        hdbscan_model = hdbscan_model
         topic_model = BERTopic(
-                    umap_model=umap_model, 
-                    hdbscan_model=hdbscan_model, 
-                    calculate_probabilities=bertopic_params['calculate_probabilities'], 
-                    verbose=bertopic_params['verbose'], 
+                    umap_model=umap_model,
+                    hdbscan_model=hdbscan_model,
+                    calculate_probabilities=bertopic_params['calculate_probabilities'],
+                    verbose=bertopic_params['verbose'],
                     min_topic_size=bertopic_params['min_topic_size'])
         topics, _ = topic_model.fit_transform(comments[text_column])
         docs = topic_model.get_document_info(comments[text_column], df = comments)
@@ -262,32 +188,13 @@ class Reddit_trees:
         return docs, topic_list
     
     def topic_model_submissions(self, submissions, text_column_1="selftext", text_column_2="title"):
-        umap_params = self.config['umap']
-        hdbscan_params = self.config['hdbscan']
+        umap_model, hdbscan_model = create_umap_hdbscan_models(self.config, hardware)
         bertopic_params = self.config['bertopic']
-        # Initialize models with parameters from config
-        if hardware == 'GPU':
-            umap_model = UMAP(
-            n_components=umap_params['n_components'],
-            n_neighbors=umap_params['n_neighbors'],
-            min_dist=umap_params['min_dist'],
-            random_state=umap_params['random_state']
-        )
-            hdbscan_model = HDBSCAN(
-            min_samples=hdbscan_params['min_samples'],
-            gen_min_span_tree=hdbscan_params['gen_min_span_tree'],
-            prediction_data=hdbscan_params['prediction_data']
-        )
-        else:
-            umap_model = UMAP()
-            hdbscan_model = HDBSCAN() 
-        umap_model = umap_model
-        hdbscan_model = hdbscan_model
         topic_model = BERTopic(
-                    umap_model=umap_model, 
-                    hdbscan_model=hdbscan_model, 
-                    calculate_probabilities=bertopic_params['calculate_probabilities'], 
-                    verbose=bertopic_params['verbose'], 
+                    umap_model=umap_model,
+                    hdbscan_model=hdbscan_model,
+                    calculate_probabilities=bertopic_params['calculate_probabilities'],
+                    verbose=bertopic_params['verbose'],
                     min_topic_size=bertopic_params['min_topic_size'])
         combined_text = submissions[text_column_1] + submissions[text_column_2]
         topics, _ = topic_model.fit_transform(combined_text)
@@ -305,33 +212,13 @@ class Reddit_trees:
         combined_text = comments[text_column].tolist() + (submissions[text_column_1] + submissions[text_column_2]).tolist()
 
         # Initialize the models
-        umap_params = self.config['umap']
-        hdbscan_params = self.config['hdbscan']
+        umap_model, hdbscan_model = create_umap_hdbscan_models(self.config, hardware)
         bertopic_params = self.config['bertopic']
-        # Initialize models with parameters from config
-        if hardware == 'GPU':
-            umap_model = UMAP(
-            n_components=umap_params['n_components'],
-            n_neighbors=umap_params['n_neighbors'],
-            min_dist=umap_params['min_dist'],
-            random_state=umap_params['random_state']
-        )
-            hdbscan_model = HDBSCAN(
-            min_samples=hdbscan_params['min_samples'],
-            gen_min_span_tree=hdbscan_params['gen_min_span_tree'],
-            prediction_data=hdbscan_params['prediction_data']
-        )
-        else:
-            umap_model = UMAP()
-            hdbscan_model = HDBSCAN()
-            
-        umap_model = umap_model
-        hdbscan_model = hdbscan_model
         topic_model = BERTopic(
-                    umap_model=umap_model, 
-                    hdbscan_model=hdbscan_model, 
-                    calculate_probabilities=bertopic_params['calculate_probabilities'], 
-                    verbose=bertopic_params['verbose'], 
+                    umap_model=umap_model,
+                    hdbscan_model=hdbscan_model,
+                    calculate_probabilities=bertopic_params['calculate_probabilities'],
+                    verbose=bertopic_params['verbose'],
                     min_topic_size=bertopic_params['min_topic_size'])
 
         # Fit the model

@@ -15,27 +15,12 @@ from scipy.spatial.distance import cosine
 from scipy.spatial.distance import pdist, squareform
 from sklearn.manifold import MDS
 
-def load_config(config_path: str) -> dict:
-    """
-    Load the configuration file from the specified path.
-    """
-    with open(config_path, 'r') as file:
-        config = yaml.safe_load(file)
-    return config
+from utils import load_config, create_bertopic_model
 
 config_path = 'config.yaml'
 
 config = load_config(config_path)
 hardware = config.get('hardware', 'GPU')
-
-if hardware == 'GPU':
-    from cuml.manifold import UMAP
-    from cuml.cluster import HDBSCAN
-    print("Using GPU for UMAP and HDBSCAN.")
-else:
-    from umap import UMAP
-    from hdbscan import HDBSCAN
-    print("Using CPU for UMAP and HDBSCAN.")
 
 class HierarchicalTopics:
 
@@ -46,29 +31,7 @@ class HierarchicalTopics:
             self.config = yaml.safe_load(file)
 
     def _create_model(self):
-        umap_params = self.config['umap']
-        hdbscan_params = self.config['hdbscan']
-        bertopic_params = self.config['bertopic']
-
-        umap_model = UMAP(
-            n_components=umap_params['n_components'],
-            n_neighbors=umap_params['n_neighbors'],
-            min_dist=umap_params['min_dist'],
-            random_state=umap_params['random_state']
-        )
-        hdbscan_model = HDBSCAN(
-            min_samples=hdbscan_params['min_samples'],
-            gen_min_span_tree=hdbscan_params['gen_min_span_tree'],
-            prediction_data=hdbscan_params['prediction_data']
-        )
-
-        return BERTopic(
-            umap_model=umap_model,
-            hdbscan_model=hdbscan_model,
-            calculate_probabilities=bertopic_params['calculate_probabilities'],
-            verbose=bertopic_params['verbose'],
-            min_topic_size=bertopic_params['min_topic_size']
-        )
+        return create_bertopic_model(self.config, hardware)
 
     def get_hierarchical_topics(self, data, text_column, date_column, timescale):
 

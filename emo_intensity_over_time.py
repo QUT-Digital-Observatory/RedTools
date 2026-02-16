@@ -3,18 +3,19 @@
 import pandas as pd
 import plotly.express as px
 from tqdm.auto import tqdm
-from sentence_splitter import SentenceSplitter
-import re
-from nltk.corpus import stopwords
 
-
+from utils import (
+    expand_dataframe_with_sentences,
+    processed_text_column,
+    remove_stopwords,
+)
 
 
 lexicon_filepath = "data/NRC-Emotion-Intensity-Lexicon-v1.txt"
 
 class EmoIntensityOverTime:
     def __init__(self):
-        self.stopwords = set(stopwords.words('english'))
+        pass
 
     def load_lexicon(self, filepath: str) -> pd.DataFrame:
         """
@@ -24,60 +25,17 @@ class EmoIntensityOverTime:
         lexicon = pd.read_csv(filepath, sep='\t', header=None, names=['Word', 'Emotion', 'Score'])
         return lexicon
 
-    def __pre_process__(self, text: str) -> str:  
-        text = re.sub(r"&gt;", "", text)
-        text = text.lower()
-        text = re.sub(r"http\S+", "", text)
-        text = re.sub(r"@\w+", "", text)
-        text = re.sub(r"[^a-zA-Z\s]", "", text)
-        text = text.replace("\n", "").replace("\t", "").strip()
-        return text
-    
-    def __sentence_chunker__(self, text: str) -> list:
-    
-        splitter = SentenceSplitter(language="en")
-        return splitter.split(text)
-    
-    #You can process 1) a dataframe that you want to split into sentences and pre_process, 2) a dataframe that is not split into sentences but is pre_processed, 3) a dataframe that is not split into sentences and is not pre_processed
-
     def expand_dataframe_with_sentences(self, df: pd.DataFrame, text_column: str) -> pd.DataFrame:
-        """
-        Expands a DataFrame by splitting the text in a specified column into sentences,
-        preprocesses them, and each sentence retains metadata from the original row.
-        """
-        # Apply sentence_chunker to the text column and explode the result into new rows
-        df[text_column] = df[text_column].astype(str)
-        df = df.dropna(subset=[text_column])
-        df['sentences'] = df[text_column].apply(self.__sentence_chunker__)
-        df_expanded = df.explode('sentences')
+        """Expands a DataFrame by splitting text into sentences and preprocessing them."""
+        return expand_dataframe_with_sentences(df, text_column)
 
-        df_expanded = df_expanded[df_expanded['sentences'].str.strip() != '']
-        df_expanded['sentences'] = df_expanded['sentences'].apply(self.__pre_process__)
-        df_expanded[text_column] = df_expanded['sentences']
-        df_expanded = df_expanded.drop(columns=['sentences'])
-
-        df_expanded = df_expanded[df_expanded[text_column].str.strip() != '' ]
-
-        df_expanded = df_expanded.reset_index(drop=True)
-
-        return df_expanded
-    
     def processed_text_column(self, df: pd.DataFrame, text_column: str) -> pd.DataFrame:
-        """
-        Preprocesses the text in the specified column of the input DataFrame.
-        """
-        # Apply the pre_process function to the text column
-        df[text_column] = df[text_column].astype(str)
-        df[text_column] = df[text_column].apply(self.__pre_process__)
-        return df
+        """Preprocesses the text in the specified column of the input DataFrame."""
+        return processed_text_column(df, text_column)
 
     def remove_stopwords(self, df: pd.DataFrame, text_column: str) -> pd.DataFrame:
-        """
-        Removes stopwords from the text in the specified column of the input DataFrame.
-        """
-        # Remove stopwords from the text column
-        df[text_column] = df[text_column].apply(lambda x: ' '.join([word for word in x.split() if word not in self.stopwords]))
-        return df  
+        """Removes stopwords from the text in the specified column of the input DataFrame."""
+        return remove_stopwords(df, text_column)
 
     def analyse_sentences(self, df_sentences: pd.DataFrame, lexicon: pd.DataFrame, text_column: str) -> pd.DataFrame:
         """
