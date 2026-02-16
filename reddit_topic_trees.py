@@ -24,18 +24,12 @@ from utils import (
     create_umap_hdbscan_models,
 )
 
-config_path = 'config.yaml'
-
-config = load_config(config_path)
-hardware = config.get('hardware', 'GPU')
-
-
 class Reddit_trees:
     def __init__(self, config_path='config.yaml'):
         # Load the configuration
-        with open(config_path, 'r') as config_file:
-            self.config = yaml.safe_load(config_file)
-        
+        self.config = load_config(config_path)
+        self.hardware = self.config.get('hardware', 'CPU')
+
         # Initialize Reddit instance
         self.reddit = praw.Reddit(
             client_id=self.config['reddit']['client_id'],
@@ -43,7 +37,7 @@ class Reddit_trees:
             redirect_uri=self.config['reddit']['redirect_uri'],
             user_agent=self.config['reddit']['user_agent']
         )
-        
+
         # Initialize LDA modeling
         self.lda_modeling = LDA_over_time()
     
@@ -98,11 +92,10 @@ class Reddit_trees:
                     "parent_id": comment.parent_id,
                     "replies": reply_ids,
                     "reply_count": len(reply_ids)
-            }
-            
+                }
                 comments_data.append(comment_dict)
-        
-        # Sleep for a few seconds between each request to avoid hitting rate limits
+
+            # Sleep for a few seconds between each submission to avoid hitting rate limits
             time.sleep(2)
 
         return pd.DataFrame(comments_data)
@@ -174,7 +167,7 @@ class Reddit_trees:
         return remove_stopwords(df, text_column)
 
     def topic_model_comments(self, comments, text_column="body"):
-        umap_model, hdbscan_model = create_umap_hdbscan_models(self.config, hardware)
+        umap_model, hdbscan_model = create_umap_hdbscan_models(self.config, self.hardware)
         bertopic_params = self.config['bertopic']
         topic_model = BERTopic(
                     umap_model=umap_model,
@@ -187,8 +180,8 @@ class Reddit_trees:
         topic_list = topic_model.get_topic_info()
         return docs, topic_list
     
-    def topic_model_submissions(self, submissions, text_column_1="selftext", text_column_2="title"):
-        umap_model, hdbscan_model = create_umap_hdbscan_models(self.config, hardware)
+    def topic_model_submissions(self, submissions, text_column_1="title", text_column_2="selftext"):
+        umap_model, hdbscan_model = create_umap_hdbscan_models(self.config, self.hardware)
         bertopic_params = self.config['bertopic']
         topic_model = BERTopic(
                     umap_model=umap_model,
@@ -202,7 +195,7 @@ class Reddit_trees:
         topic_list = topic_model.get_topic_info()
         return docs, topic_list
     
-    def topic_model_combined(self, comments: pd.DataFrame, submissions: pd.DataFrame, text_column: str = 'body', text_column_1: str = "selftext", text_column_2: str = "title"):
+    def topic_model_combined(self, comments: pd.DataFrame, submissions: pd.DataFrame, text_column: str = 'body', text_column_1: str = "title", text_column_2: str = "selftext"):
         # Ensure that the input columns are strings
         comments[text_column] = comments[text_column].astype(str)
         submissions[text_column_1] = submissions[text_column_1].astype(str)
@@ -212,7 +205,7 @@ class Reddit_trees:
         combined_text = comments[text_column].tolist() + (submissions[text_column_1] + submissions[text_column_2]).tolist()
 
         # Initialize the models
-        umap_model, hdbscan_model = create_umap_hdbscan_models(self.config, hardware)
+        umap_model, hdbscan_model = create_umap_hdbscan_models(self.config, self.hardware)
         bertopic_params = self.config['bertopic']
         topic_model = BERTopic(
                     umap_model=umap_model,
@@ -239,7 +232,7 @@ class Reddit_trees:
         df['topic_words'] = df['Topic'].map(topic_words)
         return df, lda_model
     
-    def lda_submissions(self, submissions, text_column_1="selftext", text_column_2="title", num_topics=10):
+    def lda_submissions(self, submissions, text_column_1="title", text_column_2="selftext", num_topics=10):
         combined_text = submissions[text_column_1] + submissions[text_column_2]
         lda_model, doc_term_matrix = self.lda_modeling.create_lda_model(combined_text, num_topics)
         topic_words = self.lda_modeling.get_topic_words()
@@ -247,7 +240,7 @@ class Reddit_trees:
         submissions['topic_words'] = submissions['Topic'].map(topic_words)
         return submissions, lda_model
     
-    def lda_combined(self, comments: pd.DataFrame, submissions: pd.DataFrame, text_column: str = 'body', text_column_1: str = "selftext", text_column_2: str = "title", num_topics: int = 10) -> pd.DataFrame:
+    def lda_combined(self, comments: pd.DataFrame, submissions: pd.DataFrame, text_column: str = 'body', text_column_1: str = "title", text_column_2: str = "selftext", num_topics: int = 10) -> pd.DataFrame:
         # Ensure that the input columns are strings
         comments[text_column] = comments[text_column].astype(str)
         submissions[text_column_1] = submissions[text_column_1].astype(str)
@@ -291,17 +284,21 @@ class Reddit_trees:
         return df
     
         
-    def tree_graph_and_adj_list(self, df: pd.DataFrame, incl_topic: bool = True, topic_column = 'Topic') -> Tuple[nx.DiGraph, pd.DataFrame]:
+    def tree_graph_and_adj_list(self, df: pd.DataFrame, incl_topic: bool = True, topic_column = 'Topic',
+                               id_col: str = 'id', author_col: str = 'author',
+                               body_col: str = 'body', link_id_col: str = 'link_id',
+                               parent_id_col: str = 'parent_id',
+                               created_utc_col: str = 'created_utc') -> Tuple[nx.DiGraph, pd.DataFrame]:
         # Create directed graph
         G_tree = nx.DiGraph()
 
         # Add nodes to the graph
         for index, row in df.iterrows():
-            node_id = row['id']
-            author = row['author']
-            body = row['body']
-            link_id = row['link_id']
-            time_created = datetime.fromtimestamp(row['created_utc']).isoformat()
+            node_id = row[id_col]
+            author = row.get(author_col, 'unknown')
+            body = row.get(body_col, '')
+            link_id = row[link_id_col]
+            time_created = datetime.fromtimestamp(row[created_utc_col]).isoformat()
             node_data = {
                 'author': author,
                 'body': body,
@@ -310,19 +307,19 @@ class Reddit_trees:
             }
             if incl_topic:
                 node_data['topic'] = row[topic_column]
-            
+
             G_tree.add_node(node_id, **node_data)
 
         # Add edges to the graph and build adjacency list data
         adj_data = {'Source': [], 'Target': [], 'TimeCreated': [], 'LinkID': []}
         for index, row in df.iterrows():
-            parent_id = str(row['parent_id']) if pd.notna(row['parent_id']) else ''
+            parent_id = str(row[parent_id_col]) if pd.notna(row[parent_id_col]) else ''
             source = parent_id.replace('t3_', '').replace('t1_', '')
-            targets = row['id']
-            time_created = datetime.fromtimestamp(row['created_utc']).isoformat()
-            link_id = row['link_id']
+            targets = row[id_col]
+            time_created = datetime.fromtimestamp(row[created_utc_col]).isoformat()
+            link_id = row[link_id_col]
 
-            if source and targets in G_tree.nodes:
+            if source and source in G_tree.nodes and targets in G_tree.nodes:
                 G_tree.add_edge(source, targets, time_created=time_created, link_id=link_id)
                 adj_data['Source'].append(source)
                 adj_data['Target'].append(targets)
@@ -331,7 +328,7 @@ class Reddit_trees:
 
         # Create adjacency list DataFrame
         adj_list_df_tree = pd.DataFrame(adj_data)
-    
+
         return G_tree, adj_list_df_tree
     
     def tree_graph_and_adj_list_nt(self, df: pd.DataFrame, incl_topic: bool = True, topic_column = 'Topic') -> Tuple[nx.DiGraph, pd.DataFrame]:
