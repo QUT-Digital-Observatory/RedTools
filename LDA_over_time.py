@@ -3,8 +3,6 @@
 from typing import Any
 import numpy as np
 import pandas as pd
-from sentence_splitter import SentenceSplitter
-import re
 import plotly.express as px
 import plotly.graph_objects as go
 from tqdm.auto import tqdm
@@ -22,6 +20,12 @@ from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
 
+from utils import (
+    expand_dataframe_with_sentences,
+    processed_text_column,
+    remove_stopwords,
+    get_frames,
+)
 
 nltk.download('punkt', quiet=True)
 nltk.download('stopwords', quiet=True)
@@ -36,60 +40,17 @@ class LDA_over_time:
         self.stopwords = set(stopwords.words('english'))
         self.lemmatizer = WordNetLemmatizer()
 
-    def __pre_process__(self, text: str) -> str:  
-        text = re.sub(r"&gt;", "", text)
-        text = text.lower()
-        text = re.sub(r"http\S+", "", text)
-        text = re.sub(r"@\w+", "", text)
-        text = re.sub(r"[^a-zA-Z\s]", "", text)
-        text = text.replace("\n", "").replace("\t", "").strip()
-        return text
-    
-    def __sentence_chunker__(self, text: str) -> list:
-    
-        splitter = SentenceSplitter(language="en")
-        return splitter.split(text)
-    
-    #You can process 1) a dataframe that you want to split into sentences and pre_process, 2) a dataframe that is not split into sentences but is pre_processed, 3) a dataframe that is not split into sentences and is not pre_processed
-
     def expand_dataframe_with_sentences(self, df: pd.DataFrame, text_column: str) -> pd.DataFrame:
-        """
-        Expands a DataFrame by splitting the text in a specified column into sentences,
-        preprocesses them, and each sentence retains metadata from the original row.
-        """
-        # Apply sentence_chunker to the text column and explode the result into new rows
-        df[text_column] = df[text_column].astype(str)
-        df = df.dropna(subset=[text_column])
-        df['sentences'] = df[text_column].apply(self.__sentence_chunker__)
-        df_expanded = df.explode('sentences')
+        """Expands a DataFrame by splitting text into sentences and preprocessing them."""
+        return expand_dataframe_with_sentences(df, text_column)
 
-        df_expanded = df_expanded[df_expanded['sentences'].str.strip() != '']
-        df_expanded['sentences'] = df_expanded['sentences'].apply(self.__pre_process__)
-        df_expanded[text_column] = df_expanded['sentences']
-        df_expanded = df_expanded.drop(columns=['sentences'])
-
-        df_expanded = df_expanded[df_expanded[text_column].str.strip() != '' ]
-        
-        df_expanded = df_expanded.reset_index(drop=True)
-
-        return df_expanded
-    
     def processed_text_column(self, df: pd.DataFrame, text_column: str) -> pd.DataFrame:
-        """
-        Preprocesses the text in the specified column of the input DataFrame.
-        """
-        # Apply the pre_process function to the text column
-        df[text_column] = df[text_column].astype(str)
-        df[text_column] = df[text_column].apply(self.__pre_process__)
-        return df
+        """Preprocesses the text in the specified column of the input DataFrame."""
+        return processed_text_column(df, text_column)
 
     def remove_stopwords(self, df: pd.DataFrame, text_column: str) -> pd.DataFrame:
-        """
-        Removes stopwords from the text in the specified column of the input DataFrame.
-        """
-        # Remove stopwords from the text column
-        df[text_column] = df[text_column].apply(lambda x: ' '.join([word for word in x.split() if word not in self.stopwords]))
-        return df
+        """Removes stopwords from the text in the specified column of the input DataFrame."""
+        return remove_stopwords(df, text_column)
 
     def create_lda_model(self, texts, num_topics=5):
         self.vectorizer = CountVectorizer(max_df=0.95, min_df=2, stop_words='english')
@@ -121,45 +82,8 @@ class LDA_over_time:
         return df, lda_model
     
     def get_frames(self, data: pd.DataFrame, date_column: str, timescale: str = 'week') -> list:
-        """
-        Splits the DataFrame into intervals based on the specified timescale and the range of dates in the specified date column.
-        """
-        # Ensure the date column is in datetime format
-        if pd.api.types.is_numeric_dtype(data[date_column]):
-            # Assuming Unix timestamps
-            data[date_column] = pd.to_datetime(data[date_column], unit='s')
-        else:
-            data[date_column] = pd.to_datetime(data[date_column])
-        
-        # Calculate the start and end times
-        start_time = data[date_column].min()
-        end_time = data[date_column].max()
-        
-        # Initialize a list to store the data slices
-        frames = []
-        
-        if timescale == 'hour':
-            freq = 'H'
-        elif timescale == 'day':
-            freq = 'D'
-        elif timescale == 'week':
-            freq = 'W'
-        elif timescale == 'month':
-            freq = 'M'
-        elif timescale == 'year':
-            freq = 'Y'
-        else:
-            raise ValueError("Invalid timescale. Choose from 'hour', 'day', 'week', 'month', 'year'.")
-
-        # Generate time ranges based on the specified frequency
-        time_ranges = pd.date_range(start=start_time, end=end_time, freq=freq)
-
-        time_pairs = list(zip(time_ranges[:-1], time_ranges[1:]))
-        for start, end in tqdm(time_pairs, desc="Splitting into frames"):
-            frame = data[(data[date_column] >= start) & (data[date_column] < end)].reset_index(drop=True)
-            frames.append(frame)
-
-        # Store the data slices in the instance variable
+        """Splits the DataFrame into intervals based on the specified timescale."""
+        frames = get_frames(data, date_column, timescale)
         self.data = frames
         return frames
     

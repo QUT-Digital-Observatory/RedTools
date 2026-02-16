@@ -2,41 +2,29 @@
 
 import numpy as np
 import pandas as pd
-import re
 from bertopic import BERTopic
 import yaml
 from datetime import datetime
-from sentence_splitter import SentenceSplitter
 from transformers import pipeline
 from sentence_transformers import SentenceTransformer
 import plotly.express as px
 import plotly.graph_objects as go
 from tqdm.auto import tqdm
-from nltk.corpus import stopwords
 import matplotlib.pyplot as plt
 
-
-def load_config(config_path: str) -> dict:
-    """
-    Load the configuration file from the specified path.
-    """
-    with open(config_path, 'r') as file:
-        config = yaml.safe_load(file)
-    return config
+from utils import (
+    load_config,
+    expand_dataframe_with_sentences,
+    processed_text_column,
+    remove_stopwords,
+    get_frames,
+    create_umap_hdbscan_models,
+)
 
 config_path = 'config.yaml'
 
 config = load_config(config_path)
 hardware = config.get('hardware', 'GPU')
-
-if hardware == 'GPU':
-    from cuml.manifold import UMAP
-    from cuml.cluster import HDBSCAN
-    print("Using GPU for UMAP and HDBSCAN.")
-else:
-    from umap import UMAP
-    from hdbscan import HDBSCAN
-    print("Using CPU for UMAP and HDBSCAN.")
 
 class TopicWindow:
     def __init__(self, config_path: str):
@@ -45,102 +33,21 @@ class TopicWindow:
         with open(config_path, 'r') as file:
             self.config = yaml.safe_load(file)
 
-    def __pre_process__(self, text: str) -> str:  
-        text = re.sub(r"&gt;", "", text)
-        text = text.lower()
-        text = re.sub(r"http\S+", "", text)
-        text = re.sub(r"@\w+", "", text)
-        text = re.sub(r"[^a-zA-Z\s]", "", text)
-        text = text.replace("\n", "").replace("\t", "").strip()
-        return text
-    
-    def __sentence_chunker__(self, text: str) -> list:
-    
-        splitter = SentenceSplitter(language="en")
-        return splitter.split(text)
-    
-    #You can process 1) a dataframe that you want to split into sentences and pre_process, 2) a dataframe that is not split into sentences but is pre_processed, 3) a dataframe that is not split into sentences and is not pre_processed
-
     def expand_dataframe_with_sentences(self, df: pd.DataFrame, text_column: str) -> pd.DataFrame:
-        """
-        Expands a DataFrame by splitting the text in a specified column into sentences,
-        preprocesses them, and each sentence retains metadata from the original row.
-        """
-        # Apply sentence_chunker to the text column and explode the result into new rows
-        df[text_column] = df[text_column].astype(str)
-        df = df.dropna(subset=[text_column])
-        df['sentences'] = df[text_column].apply(self.__sentence_chunker__)
-        df_expanded = df.explode('sentences')
+        """Expands a DataFrame by splitting text into sentences and preprocessing them."""
+        return expand_dataframe_with_sentences(df, text_column)
 
-        df_expanded = df_expanded[df_expanded['sentences'].str.strip() != '']
-        df_expanded['sentences'] = df_expanded['sentences'].apply(self.__pre_process__)
-        df_expanded[text_column] = df_expanded['sentences']
-        df_expanded = df_expanded.drop(columns=['sentences'])
-
-        df_expanded = df_expanded[df_expanded[text_column].str.strip() != '' ]
-        
-        df_expanded = df_expanded.reset_index(drop=True)
-
-        return df_expanded
-    
     def processed_text_column(self, df: pd.DataFrame, text_column: str) -> pd.DataFrame:
-        """
-        Preprocesses the text in the specified column of the input DataFrame.
-        """
-        # Apply the pre_process function to the text column
-        df[text_column] = df[text_column].astype(str)
-        df[text_column] = df[text_column].apply(self.__pre_process__)
-        return df
+        """Preprocesses the text in the specified column of the input DataFrame."""
+        return processed_text_column(df, text_column)
 
     def remove_stopwords(self, df: pd.DataFrame, text_column: str) -> pd.DataFrame:
-        """
-        Removes stopwords from the text in the specified column of the input DataFrame.
-        """
-        # Remove stopwords from the text column
-        stop_words = set(stopwords.words('english'))
-        df[text_column] = df[text_column].apply(lambda x: ' '.join([word for word in x.split() if word not in stop_words]))
-        return df
+        """Removes stopwords from the text in the specified column of the input DataFrame."""
+        return remove_stopwords(df, text_column)
 
     def get_frames(self, data: pd.DataFrame, date_column: str, timescale: str = 'week') -> list:
-        """
-        Splits the DataFrame into intervals based on the specified timescale and the range of dates in the specified date column.
-        """
-        # Ensure the date column is in datetime format
-        if pd.api.types.is_numeric_dtype(data[date_column]):
-            # Assuming Unix timestamps
-            data[date_column] = pd.to_datetime(data[date_column], unit='s')
-        else:
-            data[date_column] = pd.to_datetime(data[date_column])
-        
-        # Calculate the start and end times
-        start_time = data[date_column].min()
-        end_time = data[date_column].max()
-        
-        # Initialize a list to store the data slices
-        frames = []
-        
-        if timescale == 'hour':
-            freq = 'h'
-        elif timescale == 'day':
-            freq = 'D'
-        elif timescale == 'week':
-            freq = 'W'
-        elif timescale == 'month':
-            freq = 'ME'
-        elif timescale == 'year':
-            freq = 'YE'
-        else:
-            raise ValueError("Invalid timescale. Choose from 'hour', 'day', 'week', 'month', 'year'.")
-
-        # Generate time ranges based on the specified frequency
-        time_ranges = pd.date_range(start=start_time, end=end_time, freq=freq)
-
-        time_pairs = list(zip(time_ranges[:-1], time_ranges[1:]))
-        for start, end in tqdm(time_pairs, desc="Splitting into frames"):
-            frame = data[(data[date_column] >= start) & (data[date_column] < end)].reset_index(drop=True)
-            frames.append(frame)
-
-        # Store the data slices in the instance variable
+        """Splits the DataFrame into intervals based on the specified timescale."""
+        frames = get_frames(data, date_column, timescale)
         self.data = frames
         return frames
 
@@ -148,35 +55,17 @@ class TopicWindow:
         """
         Fits a BERTopic model to each weekly interval in the input data.
         """
-        # Extract UMAP and HDBSCAN hyperparameters from the config
-        umap_params = self.config['umap']
-        hdbscan_params = self.config['hdbscan']
+        umap_model, hdbscan_model = create_umap_hdbscan_models(self.config, hardware)
         bertopic_params = self.config['bertopic']
-        # Initialize models with parameters from config
-        if hardware == 'GPU':
-            umap_model = UMAP(
-            n_components=umap_params['n_components'],
-            n_neighbors=umap_params['n_neighbors'],
-            min_dist=umap_params['min_dist'],
-            random_state=umap_params['random_state']
-        )
-            hdbscan_model = HDBSCAN(
-            min_samples=hdbscan_params['min_samples'],
-            gen_min_span_tree=hdbscan_params['gen_min_span_tree'],
-            prediction_data=hdbscan_params['prediction_data']
-        )
-        else:
-            umap_model = UMAP()
-            hdbscan_model = HDBSCAN()   
 
         frames = self.get_frames(data, date_column, timescale)
         for frame in tqdm(frames, desc="Fitting BERTopic to frames"):
             if not frame.empty:
                 model = BERTopic(
-                    umap_model=umap_model, 
-                    hdbscan_model=hdbscan_model, 
-                    calculate_probabilities=bertopic_params['calculate_probabilities'], 
-                    verbose=bertopic_params['verbose'], 
+                    umap_model=umap_model,
+                    hdbscan_model=hdbscan_model,
+                    calculate_probabilities=bertopic_params['calculate_probabilities'],
+                    verbose=bertopic_params['verbose'],
                     min_topic_size=bertopic_params['min_topic_size']
                 ).fit(frame[text_column])
                 self.models.append(model)
@@ -379,30 +268,13 @@ class TopicWindow:
         """
         Fit a BERTopic model to the input data.
         """
-        umap_params = self.config['umap']
-        hdbscan_params = self.config['hdbscan']
+        umap_model, hdbscan_model = create_umap_hdbscan_models(self.config, hardware)
         bertopic_params = self.config['bertopic']
-        # Initialize models with parameters from config
-        if hardware == 'GPU':
-            umap_model = UMAP(
-            n_components=umap_params['n_components'],
-            n_neighbors=umap_params['n_neighbors'],
-            min_dist=umap_params['min_dist'],
-            random_state=umap_params['random_state']
-        )
-            hdbscan_model = HDBSCAN(
-            min_samples=hdbscan_params['min_samples'],
-            gen_min_span_tree=hdbscan_params['gen_min_span_tree'],
-            prediction_data=hdbscan_params['prediction_data']
-        )
-        else:
-            umap_model = UMAP()
-            hdbscan_model = HDBSCAN()    
 
-        all_model = BERTopic(umap_model=umap_model, 
+        all_model = BERTopic(umap_model=umap_model,
                          hdbscan_model=hdbscan_model,
-                         calculate_probabilities=bertopic_params['calculate_probabilities'], 
-                        verbose=bertopic_params['verbose'], 
+                         calculate_probabilities=bertopic_params['calculate_probabilities'],
+                        verbose=bertopic_params['verbose'],
                         min_topic_size=bertopic_params['min_topic_size'])
         all_model.fit_transform (data[text_column])
         return all_model
