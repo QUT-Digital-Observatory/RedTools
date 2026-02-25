@@ -17,6 +17,7 @@ from utils import (
     make_api_request,
 )
 
+
 config_path = 'config.yaml'
 
 config = load_config(config_path)
@@ -29,9 +30,9 @@ class AusRedditComments:
     length: int
 
 
-class AusRedditData:
-    def __init__(self, base: str | None = None):
-        self.config = config
+class AusRedditData:  
+    def __init__(self, base: str | None = None, config_path: str = 'config.yaml'):
+        self.config = load_config(config_path)
         self.apikey = self.config['ausreddit']['api_key']
         if base is None:
             self.base_url = "https://ausreddit.digitalobservatory.net.au/api/v1"
