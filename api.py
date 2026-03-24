@@ -179,7 +179,7 @@ class AusRedditData:
     def _process_submission_response(self, response):
         return process_submission_response(response)
 
-    def search_submissions(self, query, author=None,start=None, end=None, score_min=None, score_max=None, subreddit=None, subreddit_id=None, comments_min=None, comments_max=None, over18=None, method = 'keyword',search_in = 'all', limit = 1000, ):
+    def search_submissions(self, query, author=None,start=None, end=None, score_min=None, score_max=None, subreddit=None, subreddit_id=None, comments_min=None, comments_max=None, over18=None, method = 'keyword',search_in = 'all', limit = 1000, page = 1):
         """
         Search for submissions based on various criteria.
 
@@ -193,11 +193,12 @@ class AusRedditData:
         score_max (int): The maximum score of the submissions.
         subreddit (str): The subreddit to search in.
         subreddit_id (str): The ID of the subreddit to search in.
-        limit (int): The maximum number of submissions to return.
+        limit (int): The maximum number of submissions to return (max 1000).
         search_in (str): The fields to search in.
         restricted (bool): search for NSFW or SFW submissions or both.
         comments_min (int): The minimum number of comments.
         comments_max (int): The maximum number of comments.
+        page (int): The page number to retrieve (default 1).
 
         Returns:
         pd.DataFrame: A DataFrame containing the search results.
@@ -219,7 +220,8 @@ class AusRedditData:
             'search_in': search_in,
             'over18': over18,
             'comments_min': comments_min,
-            'comments_max': comments_max
+            'comments_max': comments_max,
+            'page': page,
         }
         try:
             response = self._make_request('submissions', params=params)
@@ -227,11 +229,53 @@ class AusRedditData:
         except APIError as e:
             print(f"Error searching submissions: {e}")
             return pd.DataFrame()
+
+    def get_all_submissions(self, query, author=None, start=None, end=None, score_min=None, score_max=None, subreddit=None, subreddit_id=None, comments_min=None, comments_max=None, over18=None, method='keyword', search_in='all', limit=1000):
+        """
+        Fetch all pages of submission search results automatically.
+
+        Accepts the same parameters as search_submissions() (except page).
+        Iterates through pages until the API reports no further results.
+
+        Returns:
+        pd.DataFrame: A DataFrame containing all results across all pages.
+        """
+        base_params = {
+            'query': query,
+            'author': author,
+            'method': method,
+            'start': start,
+            'end': end,
+            'score_min': score_min,
+            'score_max': score_max,
+            'subreddit': subreddit,
+            'subreddit_id': subreddit_id,
+            'limit': limit,
+            'search_in': search_in,
+            'over18': over18,
+            'comments_min': comments_min,
+            'comments_max': comments_max,
+        }
+        all_pages = []
+        page = 1
+        while True:
+            try:
+                response = self._make_request('submissions', params={**base_params, 'page': page})
+                df = self._process_submission_response(response)
+                if not df.empty:
+                    all_pages.append(df)
+                if not response.get('next', False):
+                    break
+                page += 1
+            except APIError as e:
+                print(f"Error fetching submissions page {page}: {e}")
+                break
+        return pd.concat(all_pages, ignore_index=True) if all_pages else pd.DataFrame()
         
     def _process_comment_response(self, response):
         return process_comment_response(response)
         
-    def search_comments(self, query, author= None, start= None, end= None, score_min= None, score_max= None, subreddit= None, subreddit_id = None, over18 = None, method = 'keyword',search_in = 'all', limit = 1000, ):
+    def search_comments(self, query, author= None, start= None, end= None, score_min= None, score_max= None, subreddit= None, subreddit_id = None, over18 = None, method = 'keyword',search_in = 'all', limit = 1000, page = 1):
         """
         Search for comments based on various criteria.
         Parameters:
@@ -255,11 +299,13 @@ class AusRedditData:
         subreddit_id : str
             The ID of the subreddit to search in.
         limit : int
-            The maximum number of comments to return.
+            The maximum number of comments to return (max 1000).
         search_in : str
             The fields to search in.
         restricted : bool
             Whether to restrict the search to certain criteria. NSFW or SFW comments or both.
+        page : int
+            The page number to retrieve (default 1).
         Returns:
         --------
         pd.DataFrame
@@ -282,7 +328,7 @@ class AusRedditData:
             'limit': limit,
             'search_in': search_in,
             'over18': over18,
-                
+            'page': page,
         }
 
         try:
@@ -291,6 +337,46 @@ class AusRedditData:
         except APIError as e:
             print(f"Error searching comments: {e}")
             return pd.DataFrame()
+
+    def get_all_comments(self, query, author=None, start=None, end=None, score_min=None, score_max=None, subreddit=None, subreddit_id=None, over18=None, method='keyword', search_in='all', limit=1000):
+        """
+        Fetch all pages of comment search results automatically.
+
+        Accepts the same parameters as search_comments() (except page).
+        Iterates through pages until the API reports no further results.
+
+        Returns:
+        pd.DataFrame: A DataFrame containing all results across all pages.
+        """
+        base_params = {
+            'query': query,
+            'author': author,
+            'method': method,
+            'start': start,
+            'end': end,
+            'score_min': score_min,
+            'score_max': score_max,
+            'subreddit': subreddit,
+            'subreddit_id': subreddit_id,
+            'limit': limit,
+            'search_in': search_in,
+            'over18': over18,
+        }
+        all_pages = []
+        page = 1
+        while True:
+            try:
+                response = self._make_request('comments', params={**base_params, 'page': page})
+                df = self._process_comment_response(response)
+                if not df.empty:
+                    all_pages.append(df)
+                if not response.get('next', False):
+                    break
+                page += 1
+            except APIError as e:
+                print(f"Error fetching comments page {page}: {e}")
+                break
+        return pd.concat(all_pages, ignore_index=True) if all_pages else pd.DataFrame()
         
     def get_comments(self, submission_ids):
         try:
