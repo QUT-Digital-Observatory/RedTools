@@ -425,4 +425,99 @@ class AusRedditData:
             return self._process_comment_response(response)
         except APIError as e:
             print(f"Error getting comments: {e}")
-            return pd.DataFrame()    
+            return pd.DataFrame()
+
+    def get_submission_aggregates(self, query, start=None, end=None, period='week'):
+        """
+        Fetch submission frequency aggregated into time bins.
+
+        Uses GET /aggregates/submissions/.
+
+        Parameters:
+        -----------
+        query : str
+            Search text to filter submissions.
+        start : int or str, optional
+            Start of the range. Accepts a Unix timestamp (int/float) or a date
+            string in 'yyyy-mm-dd' / 'dd/mm/yyyy' format (interpreted as
+            00:00:00 UTC). Defaults to the earliest record in the DB.
+        end : int or str, optional
+            End of the range. Accepts a Unix timestamp (int/float) or a date
+            string in 'yyyy-mm-dd' / 'dd/mm/yyyy' format (interpreted as
+            23:59:59 UTC). Defaults to the latest record in the DB.
+        period : str, optional
+            Bin size: 'day', 'week', 'month', or 'year'. Default 'week'.
+
+        Returns:
+        --------
+        pd.DataFrame
+            Columns: start (datetime, UTC), end (datetime, UTC), frequency (int).
+        """
+        params = {
+            'query': query,
+            'start': self._parse_date_param(start, is_end=False),
+            'end': self._parse_date_param(end, is_end=True),
+            'period': period,
+        }
+        try:
+            response = self._make_request('aggregates/submissions', params=params)
+            results = response.get('results', [])
+            df = pd.DataFrame(results)
+            if not df.empty:
+                df['start'] = pd.to_datetime(df['start'], unit='s', utc=True)
+                df['end'] = pd.to_datetime(df['end'], unit='s', utc=True)
+            return df
+        except APIError as e:
+            print(f"Error fetching submission aggregates: {e}")
+            return pd.DataFrame()
+
+    def get_ngrams(self, queries, start_year=None, start_month=None, end_year=None, end_month=None):
+        """
+        Fetch ngram frequency timelines.
+
+        Uses POST /aggregates/ngrams/.
+
+        Each query is 1–3 words. The first (and only the first) query may
+        contain a '*' wildcard as a whole word, in which case the API expands
+        it to the top 5 matching ngrams and returns them as separate series.
+
+        Parameters:
+        -----------
+        queries : list[str]
+            One or more ngram strings to look up.
+        start_year : int, optional
+            Start year filter.
+        start_month : int, optional
+            Start month (1–12). Requires start_year.
+        end_year : int, optional
+            End year filter.
+        end_month : int, optional
+            End month (1–12). Requires end_year.
+
+        Returns:
+        --------
+        pd.DataFrame
+            Index: period labels (e.g. '2021-01'). Columns: one per query (or
+            expanded wildcard ngram). Values are percentage of total comments
+            for that month, rounded to 4 decimal places.
+        """
+        body = {'queries': queries}
+        if start_year is not None:
+            body['start_year'] = start_year
+        if start_month is not None:
+            body['start_month'] = start_month
+        if end_year is not None:
+            body['end_year'] = end_year
+        if end_month is not None:
+            body['end_month'] = end_month
+
+        try:
+            response = self._make_request('aggregates/ngrams', method='POST', data=body)
+            timeline = response.get('timeline', [])
+            values = response.get('values', {})
+            df = pd.DataFrame(values, index=timeline)
+            df.index.name = 'period'
+            return df
+        except APIError as e:
+            print(f"Error fetching ngrams: {e}")
+            return pd.DataFrame()
