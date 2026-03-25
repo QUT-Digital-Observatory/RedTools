@@ -471,7 +471,37 @@ class AusRedditData:
             print(f"Error fetching submission aggregates: {e}")
             return pd.DataFrame()
 
-    def get_ngrams(self, queries, start_year=None, start_month=None, end_year=None, end_month=None):
+    def _parse_year_month(self, value):
+        """Parse a date value and return a (year, month) tuple.
+
+        Accepts:
+        - str 'yyyy-mm-dd' or 'dd/mm/yyyy': year and month extracted.
+        - str 'yyyy-mm': year and month extracted directly.
+        - int: treated as a year (month returned as None).
+
+        Raises ValueError for unrecognised formats.
+        """
+        if isinstance(value, int):
+            return value, None
+        if isinstance(value, str):
+            for fmt in ('%Y-%m-%d', '%d/%m/%Y'):
+                try:
+                    dt = datetime.strptime(value, fmt)
+                    return dt.year, dt.month
+                except ValueError:
+                    continue
+            try:
+                dt = datetime.strptime(value, '%Y-%m')
+                return dt.year, dt.month
+            except ValueError:
+                pass
+            raise ValueError(
+                f"Unrecognised date format: {value!r}. "
+                "Use 'yyyy-mm-dd', 'dd/mm/yyyy', 'yyyy-mm', or an integer year."
+            )
+        raise TypeError(f"Unsupported type for date parameter: {type(value).__name__}")
+
+    def get_ngrams(self, queries, start=None, end=None):
         """
         Fetch ngram frequency timelines.
 
@@ -485,14 +515,11 @@ class AusRedditData:
         -----------
         queries : list[str]
             One or more ngram strings to look up.
-        start_year : int, optional
-            Start year filter.
-        start_month : int, optional
-            Start month (1–12). Requires start_year.
-        end_year : int, optional
-            End year filter.
-        end_month : int, optional
-            End month (1–12). Requires end_year.
+        start : str or int, optional
+            Start of the range. Accepts 'yyyy-mm-dd', 'dd/mm/yyyy', 'yyyy-mm',
+            or an integer year. Year and month are extracted and sent to the API.
+        end : str or int, optional
+            End of the range. Same formats as start.
 
         Returns:
         --------
@@ -502,14 +529,16 @@ class AusRedditData:
             for that month, rounded to 4 decimal places.
         """
         body = {'queries': queries}
-        if start_year is not None:
+        if start is not None:
+            start_year, start_month = self._parse_year_month(start)
             body['start_year'] = start_year
-        if start_month is not None:
-            body['start_month'] = start_month
-        if end_year is not None:
+            if start_month is not None:
+                body['start_month'] = start_month
+        if end is not None:
+            end_year, end_month = self._parse_year_month(end)
             body['end_year'] = end_year
-        if end_month is not None:
-            body['end_month'] = end_month
+            if end_month is not None:
+                body['end_month'] = end_month
 
         try:
             response = self._make_request('aggregates/ngrams', method='POST', data=body)
