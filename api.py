@@ -46,6 +46,39 @@ class AusRedditData:
     def _make_request(self, endpoint, params=None, method="GET", data=None):
         return make_api_request(self.session, self.base_url, endpoint, self.apikey, params, method, data)
 
+    def _parse_date_param(self, value, is_end: bool = False):
+        """Convert a date value to a Unix timestamp integer.
+
+        Accepts:
+        - int/float: returned as-is, allowing fine-grained epoch control.
+        - datetime: converted to a Unix timestamp.
+        - str 'yyyy-mm-dd' or 'dd/mm/yyyy': converted to UTC start-of-day
+          (00:00:00) for start dates, or UTC end-of-day (23:59:59) for end
+          dates, so that a plain date covers the full calendar day.
+
+        Raises ValueError for unrecognised string formats.
+        """
+        if value is None:
+            return None
+        if isinstance(value, (int, float)):
+            return int(value)
+        if isinstance(value, datetime):
+            return int(value.timestamp())
+        if isinstance(value, str):
+            for fmt in ('%Y-%m-%d', '%d/%m/%Y'):
+                try:
+                    dt = datetime.strptime(value, fmt).replace(tzinfo=timezone.utc)
+                    if is_end:
+                        dt = dt.replace(hour=23, minute=59, second=59)
+                    return int(dt.timestamp())
+                except ValueError:
+                    continue
+            raise ValueError(
+                f"Unrecognised date format: {value!r}. "
+                "Use 'yyyy-mm-dd', 'dd/mm/yyyy', or a Unix timestamp integer."
+            )
+        raise TypeError(f"Unsupported type for date parameter: {type(value).__name__}")
+
     def stream_comments(
         self, submissions: list[str], limit: int = 1000, embeddings: bool = False
     ) -> AusRedditComments:
@@ -187,8 +220,12 @@ class AusRedditData:
         query (str): The search query string.
         author (str): The author of the submissions.
         method (str): The search method to use. Keyword or semantic.
-        start (int): The start timestamp for the search range.
-        end (int): The end timestamp for the search range.
+        start (int | str): Start of the search range. Accepts a Unix timestamp
+            (int/float) for fine-grained control, or a date string in
+            'yyyy-mm-dd' or 'dd/mm/yyyy' format (interpreted as 00:00:00 UTC).
+        end (int | str): End of the search range. Accepts a Unix timestamp
+            (int/float) for fine-grained control, or a date string in
+            'yyyy-mm-dd' or 'dd/mm/yyyy' format (interpreted as 23:59:59 UTC).
         score_min (int): The minimum score of the submissions.
         score_max (int): The maximum score of the submissions.
         subreddit (str): The subreddit to search in.
@@ -210,8 +247,8 @@ class AusRedditData:
             'query': query,
             'author': author,
             'method': method,
-            'start': start,
-            'end': end,
+            'start': self._parse_date_param(start, is_end=False),
+            'end': self._parse_date_param(end, is_end=True),
             'score_min': score_min,
             'score_max': score_max,
             'subreddit': subreddit,
@@ -244,8 +281,8 @@ class AusRedditData:
             'query': query,
             'author': author,
             'method': method,
-            'start': start,
-            'end': end,
+            'start': self._parse_date_param(start, is_end=False),
+            'end': self._parse_date_param(end, is_end=True),
             'score_min': score_min,
             'score_max': score_max,
             'subreddit': subreddit,
@@ -286,10 +323,14 @@ class AusRedditData:
             The author of the comments.
         method : str
             The search method to use.
-        start : int
-            The start timestamp for the search range.
-        end : int
-            The end timestamp for the search range.
+        start : int or str
+            Start of the search range. Accepts a Unix timestamp (int/float)
+            for fine-grained control, or a date string in 'yyyy-mm-dd' or
+            'dd/mm/yyyy' format (interpreted as 00:00:00 UTC).
+        end : int or str
+            End of the search range. Accepts a Unix timestamp (int/float)
+            for fine-grained control, or a date string in 'yyyy-mm-dd' or
+            'dd/mm/yyyy' format (interpreted as 23:59:59 UTC).
         score_min : int
             The minimum score of the comments.
         score_max : int
@@ -319,8 +360,8 @@ class AusRedditData:
             'query': query,
             'author': author,
             'method': method,
-            'start': start,
-            'end': end,
+            'start': self._parse_date_param(start, is_end=False),
+            'end': self._parse_date_param(end, is_end=True),
             'score_min': score_min,
             'score_max': score_max,
             'subreddit': subreddit,
@@ -352,8 +393,8 @@ class AusRedditData:
             'query': query,
             'author': author,
             'method': method,
-            'start': start,
-            'end': end,
+            'start': self._parse_date_param(start, is_end=False),
+            'end': self._parse_date_param(end, is_end=True),
             'score_min': score_min,
             'score_max': score_max,
             'subreddit': subreddit,
