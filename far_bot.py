@@ -215,3 +215,39 @@ How much of the overall conversation does it represent? Describe its relative pr
 If the user asks to save the report, call save_report with the markdown text.
 Be concise and factual. Ground all claims in the data returned by the tools."""
 )
+
+
+def run(query, start=None, end=None, save=False):
+    """Run a feasibility assessment for a topic and optional date range.
+
+    Parameters:
+    -----------
+    query : str
+        The topic to assess (e.g. 'bluey').
+    start : str, optional
+        Start of the date range. Accepts 'yyyy-mm-dd' or 'dd/mm/yyyy'.
+    end : str, optional
+        End of the date range. Accepts 'yyyy-mm-dd' or 'dd/mm/yyyy'.
+    save : bool, optional
+        If True, the agent will save the report and charts to files.
+    """
+    parts = [f'Assess the feasibility of studying "{query}" in the AusReddit collection']
+    if start or end:
+        parts.append(f'for the period {start or "the beginning"} to {end or "the present"}')
+    if save:
+        parts.append('Save the report and charts to files named after the topic.')
+    prompt = ' '.join(parts) + '.'
+
+    result = agent.invoke({'messages': [{'role': 'user', 'content': prompt}]})
+    print(result['messages'][-1].content)
+
+
+if __name__ == '__main__':
+    import argparse
+    parser = argparse.ArgumentParser(description='Feasibility assessment bot for the AusReddit collection.')
+    parser.add_argument('query', help='Topic to assess (e.g. "bluey")')
+    parser.add_argument('--start', help='Start date (yyyy-mm-dd or dd/mm/yyyy)', default=None)
+    parser.add_argument('--end', help='End date (yyyy-mm-dd or dd/mm/yyyy)', default=None)
+    parser.add_argument('--save', action='store_true', help='Save the report and charts to files')
+    args = parser.parse_args()
+    run(args.query, args.start, args.end, args.save)
