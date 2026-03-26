@@ -429,29 +429,38 @@ class AusRedditData:
 
     def get_submission_aggregates(self, query, start=None, end=None, period='week'):
         """
-        Fetch submission frequency aggregated into time bins.
+        Count how many Reddit submissions match a search query over time.
+
+        Queries the RedTools API and returns the number of matching submissions
+        grouped into regular time bins (e.g. weekly or monthly counts). Use this
+        to understand trends in how often a topic is posted about on Reddit.
 
         Uses GET /aggregates/submissions/.
 
         Parameters:
         -----------
         query : str
-            Search text to filter submissions.
+            Keyword or phrase to search for in submission titles and text.
+            Only submissions matching this query are counted.
         start : int or str, optional
-            Start of the range. Accepts a Unix timestamp (int/float) or a date
-            string in 'yyyy-mm-dd' / 'dd/mm/yyyy' format (interpreted as
-            00:00:00 UTC). Defaults to the earliest record in the DB.
+            Start of the date range to aggregate over. Accepts a Unix timestamp
+            (int/float), 'yyyy-mm-dd', or 'dd/mm/yyyy'. Interpreted as
+            00:00:00 UTC. Defaults to the earliest record in the database.
         end : int or str, optional
-            End of the range. Accepts a Unix timestamp (int/float) or a date
-            string in 'yyyy-mm-dd' / 'dd/mm/yyyy' format (interpreted as
-            23:59:59 UTC). Defaults to the latest record in the DB.
+            End of the date range to aggregate over. Accepts a Unix timestamp
+            (int/float), 'yyyy-mm-dd', or 'dd/mm/yyyy'. Interpreted as
+            23:59:59 UTC. Defaults to the latest record in the database.
         period : str, optional
-            Bin size: 'day', 'week', 'month', or 'year'. Default 'week'.
+            Size of each time bin. One of 'day', 'week', 'month', or 'year'.
+            Default is 'week'.
 
         Returns:
         --------
         pd.DataFrame
-            Columns: start (datetime, UTC), end (datetime, UTC), frequency (int).
+            One row per time bin with columns:
+            - start (datetime, UTC): bin start timestamp
+            - end (datetime, UTC): bin end timestamp
+            - frequency (int): number of matching submissions in that bin
         """
         params = {
             'query': query,
