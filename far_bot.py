@@ -1,6 +1,8 @@
 #feasibilty bot for Ausreddit
 
 import json
+import os
+import matplotlib.pyplot as plt
 from api import AusRedditData
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.agents import create_agent
@@ -93,22 +95,123 @@ str (JSON)
     df = df.reset_index()
     return df.to_json(orient='records')
 
+@tool
+def plot_submission_frequency(data_json, query, output_path='submission_frequency.png'):
+    '''Plot submission counts over time as a bar chart and save to a PNG file.
+
+Takes the JSON output from get_submission_aggregates and produces a bar
+chart showing how many matching submissions occurred in each time bin.
+Call this after get_submission_aggregates to visualise frequency trends.
+
+Parameters:
+-----------
+data_json : str
+    JSON string returned by get_submission_aggregates.
+query : str
+    The search query, used as the chart title.
+output_path : str, optional
+    File path to save the PNG. Default is 'submission_frequency.png'.
+
+Returns:
+--------
+str
+    The path to the saved PNG file.
+'''
+    data = json.loads(data_json)
+    if not data:
+        return 'No data to plot.'
+    labels = [row['start'][:10] for row in data]
+    values = [row['frequency'] for row in data]
+    fig, ax = plt.subplots(figsize=(12, 4))
+    ax.bar(labels, values)
+    ax.set_title(f'Submission frequency: "{query}"')
+    ax.set_xlabel('Period start')
+    ax.set_ylabel('Submissions')
+    plt.xticks(rotation=45, ha='right')
+    plt.tight_layout()
+    plt.savefig(output_path)
+    plt.close(fig)
+    return output_path
+
+@tool
+def plot_ngram_volume(data_json, output_path='ngram_volume.png'):
+    '''Plot ngram usage percentages over time as a line chart and save to a PNG file.
+
+Takes the JSON output from get_ngrams and produces a line chart showing
+the percentage of comments mentioning each ngram per month. Call this
+after get_ngrams to visualise relative volume trends.
+
+Parameters:
+-----------
+data_json : str
+    JSON string returned by get_ngrams.
+output_path : str, optional
+    File path to save the PNG. Default is 'ngram_volume.png'.
+
+Returns:
+--------
+str
+    The path to the saved PNG file.
+'''
+    data = json.loads(data_json)
+    if not data:
+        return 'No data to plot.'
+    periods = [row['period'] for row in data]
+    columns = [k for k in data[0].keys() if k != 'period']
+    fig, ax = plt.subplots(figsize=(12, 4))
+    for col in columns:
+        ax.plot(periods, [row[col] for row in data], label=col, marker='o', markersize=3)
+    ax.set_title('Ngram volume (% of comments)')
+    ax.set_xlabel('Month')
+    ax.set_ylabel('% of comments')
+    ax.legend()
+    plt.xticks(rotation=45, ha='right')
+    plt.tight_layout()
+    plt.savefig(output_path)
+    plt.close(fig)
+    return output_path
+
+@tool
+def save_report(content, output_path='report.md'):
+    '''Save the feasibility report to a markdown file.
+
+Parameters:
+-----------
+content : str
+    The markdown-formatted report text to save.
+output_path : str, optional
+    File path to save the report. Default is 'report.md'.
+
+Returns:
+--------
+str
+    The path to the saved file.
+'''
+    with open(output_path, 'w') as f:
+        f.write(content)
+    return output_path
+
 
 agent = create_agent(
     model=model,
-    tools=[get_submission_aggregates, get_ngrams],
+    tools=[get_submission_aggregates, get_ngrams, plot_submission_frequency, plot_ngram_volume, save_report],
     prompt="""You are a research assistant that assesses the feasibility of studying a topic \
 using the AusReddit collection — a database of Australian Reddit submissions and comments.
 
-When given a topic and time period, you will call both available tools and produce a short \
-feasibility report covering three dimensions:
+When given a topic and time period, you will:
+1. Call get_submission_aggregates and get_ngrams to retrieve the data.
+2. Call plot_submission_frequency and plot_ngram_volume to generate charts.
+3. Produce a feasibility report in markdown covering three dimensions:
 
-- Occurrence: Is the topic present in the collection during the time period? When does it \
-first and last appear?
-- Frequency: How often does it appear? Use submission counts from get_submission_aggregates \
-to describe trends over time (e.g. peaks, growth, decline).
-- Volume: How much of the overall conversation does it represent? Use the ngram percentages \
-from get_ngrams to describe its relative presence in comments.
+## Occurrence
+Is the topic present in the collection during the time period? When does it first and last appear?
 
+## Frequency
+How often does it appear? Describe trends over time (peaks, growth, decline) using the submission counts.
+
+## Volume
+How much of the overall conversation does it represent? Describe its relative presence using the ngram percentages.
+
+If the user asks to save the report, call save_report with the markdown text.
 Be concise and factual. Ground all claims in the data returned by the tools."""
 )
