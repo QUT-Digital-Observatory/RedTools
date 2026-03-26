@@ -1,0 +1,50 @@
+umap:
+  n_components: 5
+  n_neighbors: 20
+  min_dist: 0.0
+  random_state: 42
+
+pca:
+  n_components: 5
+  random_state: 42
+
+tsvd:
+  n_components: 5
+  random_state: 42
+
+hdbscan:
+  min_cluster_size: 3
+  min_samples: 2
+  gen_min_span_tree: True
+  prediction_data: True
+
+kmeans:
+  n_clusters: 100
+  random_state: 42
+
+bertopic:
+  calculate_probabilities: False
+  verbose: True
+  min_topic_size: 10
+  min_similarity: 0.7
+
+hardware: GPU  # set to CPU if no GPU is available
+
+reddit:
+  client_id: 'your_client_id'
+  client_secret: 'your_client_secret'
+  redirect_uri: 'your_redirect_uri'
+  user_agent: 'your_user_agent'
+
+ausreddit:
+  api_key: 'your_api_key'
+
+open_ai:
+  api_key: 'your_openai_api_key'
+
+far_bot:
+  google_api_key: 'your_google_api_key'
+  langsmith_tracing: 'true'
+  langsmith_endpoint: 'https://api.smith.langchain.com'
+  langsmith_api_key: 'your_langsmith_api_key'
+  langsmith_project: 'your_langsmith_project'
