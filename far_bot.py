@@ -6,7 +6,12 @@ from langchain.agents import create_agent
 from langchain.tools import tool
 
 endpoint = AusRedditData()
-model = ChatGoogleGenerativeAI(model="gemini-flash-latest")
+model = ChatGoogleGenerativeAI(
+    model="gemini-flash-latest",
+    temperature=0.1,
+    max_tokens=1000,
+    timeout=30,
+)
 
 @tool
 def get_submission_aggregates(query, start=None, end=None, period='week'):
