@@ -1,5 +1,6 @@
 #feasibilty bot for Ausreddit
 
+import json
 from api import AusRedditData
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.agents import create_agent
@@ -37,13 +38,18 @@ period : str, optional
 
 Returns:
 --------
-pd.DataFrame
-    One row per time bin with columns:
-    - start (datetime, UTC): bin start timestamp
-    - end (datetime, UTC): bin end timestamp
+str (JSON)
+    JSON array, one object per time bin with keys:
+    - start (ISO 8601 UTC string): bin start timestamp
+    - end (ISO 8601 UTC string): bin end timestamp
     - frequency (int): number of matching submissions in that bin
 '''
-    return endpoint.get_submission_aggregates(query, start, end, period)
+    df = endpoint.get_submission_aggregates(query, start, end, period)
+    if df.empty:
+        return json.dumps([])
+    df['start'] = df['start'].dt.strftime('%Y-%m-%dT%H:%M:%SZ')
+    df['end'] = df['end'].dt.strftime('%Y-%m-%dT%H:%M:%SZ')
+    return df.to_json(orient='records')
 
 @tool
 def get_ngrams(queries, start=None, end=None):
@@ -75,13 +81,17 @@ end : str or int, optional
 
 Returns:
 --------
-pd.DataFrame
-    Index: monthly period labels (e.g. '2021-01'). One column per
-    query (or per expanded wildcard ngram). Values are the percentage
-    of total comments that month containing the ngram, rounded to
-    4 decimal places.
+str (JSON)
+    JSON array, one object per month with a 'period' key (e.g. '2021-01')
+    and one key per query (or expanded wildcard ngram) whose value is the
+    percentage of total comments that month containing the ngram, rounded
+    to 4 decimal places.
 '''
-    return endpoint.get_ngrams(queries, start, end)
+    df = endpoint.get_ngrams(queries, start, end)
+    if df.empty:
+        return json.dumps([])
+    df = df.reset_index()
+    return df.to_json(orient='records')
 
 
 agent = create_agent(
