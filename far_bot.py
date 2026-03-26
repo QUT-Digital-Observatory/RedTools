@@ -2,11 +2,21 @@
 
 import json
 import os
+import yaml
 import matplotlib.pyplot as plt
 from api import AusRedditData
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.agents import create_agent
 from langchain.tools import tool
+
+with open('config.yaml') as f:
+    _config = yaml.safe_load(f)['far_bot']
+
+os.environ['GOOGLE_API_KEY'] = _config['google_api_key']
+os.environ['LANGSMITH_TRACING'] = _config['langsmith_tracing']
+os.environ['LANGSMITH_ENDPOINT'] = _config['langsmith_endpoint']
+os.environ['LANGSMITH_API_KEY'] = _config['langsmith_api_key']
+os.environ['LANGSMITH_PROJECT'] = _config['langsmith_project']
 
 endpoint = AusRedditData()
 model = ChatGoogleGenerativeAI(model="gemini-flash-latest")

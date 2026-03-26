@@ -28,3 +28,10 @@ lexicon:
 
 ausreddit:
   api_key: 'your_api_key'
+
+far_bot:
+  google_api_key: 'your_google_api_key'
+  langsmith_tracing: 'true'
+  langsmith_endpoint: 'https://api.smith.langchain.com'
+  langsmith_api_key: 'your_langsmith_api_key'
+  langsmith_project: 'your_langsmith_project'
