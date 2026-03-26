@@ -2,6 +2,7 @@
 
 import json
 import os
+import ast
 import yaml
 import matplotlib.pyplot as plt
 from api import AusRedditData
@@ -19,7 +20,29 @@ os.environ['LANGSMITH_API_KEY'] = _config['langsmith_api_key']
 os.environ['LANGSMITH_PROJECT'] = _config['langsmith_project']
 
 endpoint = AusRedditData()
-model = ChatGoogleGenerativeAI(model="gemini-flash-latest")
+# Avoid alias-related tool-calling issues by pinning an explicit model.
+model = ChatGoogleGenerativeAI(model=_config.get('google_model', 'gemini-2.5-flash'))
+
+
+def _coerce_records(data):
+    """Normalize tool payloads to a list of dict-like records."""
+    if data is None:
+        return []
+    if isinstance(data, list):
+        return data
+    if isinstance(data, dict):
+        return [data]
+    if isinstance(data, str):
+        text = data.strip()
+        if not text:
+            return []
+        for parser in (json.loads, ast.literal_eval):
+            try:
+                parsed = parser(text)
+                return _coerce_records(parsed)
+            except (ValueError, SyntaxError, TypeError):
+                continue
+    raise ValueError('Could not parse records from tool input.')
 
 @tool
 def get_submission_aggregates(query, start=None, end=None, period='week'):
@@ -127,7 +150,7 @@ Returns:
 str
     The path to the saved PNG file.
 '''
-    data = json.loads(data_json)
+    data = _coerce_records(data_json)
     if not data:
         return 'No data to plot.'
     labels = [row['start'][:10] for row in data]
@@ -163,7 +186,7 @@ Returns:
 str
     The path to the saved PNG file.
 '''
-    data = json.loads(data_json)
+    data = _coerce_records(data_json)
     if not data:
         return 'No data to plot.'
     periods = [row['period'] for row in data]
