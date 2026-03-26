@@ -512,30 +512,39 @@ class AusRedditData:
 
     def get_ngrams(self, queries, start=None, end=None):
         """
-        Fetch ngram frequency timelines.
+        Track how frequently one or more words or phrases appear in Reddit comments over time.
+
+        Queries the RedTools API and returns monthly usage percentages for each
+        ngram (1–3 word phrase). Use this to compare the relative popularity of
+        terms or topics across time.
 
         Uses POST /aggregates/ngrams/.
 
-        Each query is 1–3 words. The first (and only the first) query may
+        Each query must be 1–3 words. The first (and only the first) query may
         contain a '*' wildcard as a whole word, in which case the API expands
-        it to the top 5 matching ngrams and returns them as separate series.
+        it to the top 5 matching ngrams and returns them as separate columns.
 
         Parameters:
         -----------
         queries : list[str]
-            One or more ngram strings to look up.
+            One or more ngram strings (1–3 words each) to look up. The first
+            entry may use '*' as a wildcard word (e.g. 'climate *') to retrieve
+            the top 5 matching completions as separate series.
         start : str or int, optional
-            Start of the range. Accepts 'yyyy-mm-dd', 'dd/mm/yyyy', 'yyyy-mm',
-            or an integer year. Year and month are extracted and sent to the API.
+            Start of the date range. Accepts 'yyyy-mm-dd', 'dd/mm/yyyy',
+            'yyyy-mm', or an integer year. Year and month are extracted and
+            sent to the API. Defaults to the earliest available data.
         end : str or int, optional
-            End of the range. Same formats as start.
+            End of the date range. Same formats as start. Defaults to the
+            most recent available data.
 
         Returns:
         --------
         pd.DataFrame
-            Index: period labels (e.g. '2021-01'). Columns: one per query (or
-            expanded wildcard ngram). Values are percentage of total comments
-            for that month, rounded to 4 decimal places.
+            Index: monthly period labels (e.g. '2021-01'). One column per
+            query (or per expanded wildcard ngram). Values are the percentage
+            of total comments that month containing the ngram, rounded to
+            4 decimal places.
         """
         body = {'queries': queries}
         if start is not None:
