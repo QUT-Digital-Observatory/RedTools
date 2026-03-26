@@ -205,7 +205,7 @@ str
 agent = create_agent(
     model=model,
     tools=[get_submission_aggregates, get_ngrams, plot_submission_frequency, plot_ngram_volume, save_report],
-    prompt="""You are a research assistant that assesses the feasibility of studying a topic \
+    system_prompt="""You are a research assistant that assesses the feasibility of studying a topic \
 using the AusReddit collection — a database of Australian Reddit submissions and comments.
 
 When given a topic and time period, you will:
