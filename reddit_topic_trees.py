@@ -292,70 +292,113 @@ class Reddit_trees:
         return df
     
         
-    def tree_graph_and_adj_list(self, df: pd.DataFrame, incl_topic: bool = True, topic_column: str = 'Topic',
-                               id_col: str = 'id', author_col: str = 'author',
-                               body_col: str = 'body', link_id_col: str = 'link_id',
+    def tree_graph_and_adj_list(self,
+                               comments_df: pd.DataFrame,
+                               submissions_df: pd.DataFrame,
+                               incl_topic: bool = True,
+                               topic_column: str = 'Topic',
+                               id_col: str = 'id',
+                               author_col: str = 'author',
+                               body_col: str = 'body',
+                               link_id_col: str = 'link_id',
                                parent_id_col: str = 'parent_id',
-                               time_col: str = 'created_utc', time_is_utc: bool = True,
+                               time_col: str = 'created_utc',
+                               time_is_utc: bool = True,
+                               submission_title_col: str = 'title',
+                               submission_body_col: str = 'selftext',
                                extra_node_cols: Optional[List[str]] = None) -> Tuple[nx.DiGraph, pd.DataFrame]:
-        """Build a directed graph and adjacency list from a comment/submission DataFrame.
+        """Build a directed graph and adjacency list from submissions and comments DataFrames.
+
+        Each submission is added as the root node of its conversation tree before
+        comments are processed. This ensures top-level comments (whose parent_id
+        points to the submission) are correctly connected, producing one fully
+        connected component per submission. The resulting graph can be passed
+        directly to AusredditMetrics.analyze_conversation_graphs().
 
         Args:
-            df: DataFrame containing the data.
+            comments_df: DataFrame of comments, typically from fetch_comments().
+            submissions_df: DataFrame of submissions, typically from search_subreddit().
+                Each row is added as a root node using its id_col value.
             incl_topic: Whether to include a topic attribute on each node.
             topic_column: Column name for topic assignment.
             id_col, author_col, body_col, link_id_col, parent_id_col, time_col:
-                Column name mappings — override these for non-Reddit schemas
-                (e.g. for the _nt schema pass id_col='commentId', author_col='username',
-                body_col='text', link_id_col='threadId', parent_id_col='responseTo',
-                time_col='date', time_is_utc=False).
+                Column name mappings for the comments DataFrame — override for
+                non-Reddit schemas (e.g. for the _nt schema pass id_col='commentId',
+                author_col='username', body_col='text', link_id_col='threadId',
+                parent_id_col='responseTo', time_col='date', time_is_utc=False).
             time_is_utc: If True, convert the time column from a Unix timestamp
                 via datetime.fromtimestamp(). If False, use the value as-is.
-            extra_node_cols: Optional list of additional column names to include
-                as node attributes (e.g. emotion scores).
+            submission_title_col: Column in submissions_df containing the post title.
+            submission_body_col: Column in submissions_df containing the post body (selftext).
+            extra_node_cols: Optional list of additional comment column names to
+                include as node attributes (e.g. emotion scores).
+
+        Returns:
+            Tuple of (DiGraph, adjacency list DataFrame). Each connected component
+            in the graph corresponds to exactly one submission and all its comments.
         """
-        # Create directed graph
         G_tree = nx.DiGraph()
 
-        # Add nodes to the graph
-        for index, row in df.iterrows():
+        # --- Submission nodes (roots) ---
+        # Added first so that top-level comment edges can resolve their parent.
+        for _, row in submissions_df.iterrows():
+            node_id = row[id_col]
+            time_created = (datetime.fromtimestamp(row[time_col]).isoformat()
+                            if time_is_utc else row[time_col])
+            title = str(row.get(submission_title_col, ''))
+            selftext = str(row.get(submission_body_col, ''))
+            node_data = {
+                'node_type': 'submission',
+                'author': row.get(author_col, 'unknown'),
+                'body': f"{title} {selftext}".strip(),
+                'link_id': f"t3_{node_id}",
+                'time_created': time_created,
+            }
+            if incl_topic and topic_column in row.index:
+                node_data['topic'] = row[topic_column]
+            if extra_node_cols:
+                for col in extra_node_cols:
+                    if col in row.index:
+                        node_data[col] = row[col]
+            G_tree.add_node(node_id, **node_data)
+
+        # --- Comment nodes ---
+        for _, row in comments_df.iterrows():
             node_id = row[id_col]
             time_created = (datetime.fromtimestamp(row[time_col]).isoformat()
                             if time_is_utc else row[time_col])
             node_data = {
+                'node_type': 'comment',
                 'author': row.get(author_col, 'unknown'),
                 'body': row.get(body_col, ''),
                 'link_id': row[link_id_col],
-                'time_created': time_created
+                'time_created': time_created,
             }
-            if incl_topic:
+            if incl_topic and topic_column in row.index:
                 node_data['topic'] = row[topic_column]
             if extra_node_cols:
                 for col in extra_node_cols:
                     node_data[col] = row[col]
-
             G_tree.add_node(node_id, **node_data)
 
-        # Add edges to the graph and build adjacency list data
+        # --- Edges ---
         adj_data = {'Source': [], 'Target': [], 'TimeCreated': [], 'LinkID': []}
-        for index, row in df.iterrows():
+        for _, row in comments_df.iterrows():
             parent_id = str(row[parent_id_col]) if pd.notna(row[parent_id_col]) else ''
             source = parent_id.replace('t3_', '').replace('t1_', '')
-            targets = row[id_col]
+            target = row[id_col]
             time_created = (datetime.fromtimestamp(row[time_col]).isoformat()
                             if time_is_utc else row[time_col])
             link_id = row[link_id_col]
 
-            if source and source in G_tree.nodes and targets in G_tree.nodes:
-                G_tree.add_edge(source, targets, time_created=time_created, link_id=link_id)
+            if source and source in G_tree.nodes and target in G_tree.nodes:
+                G_tree.add_edge(source, target, time_created=time_created, link_id=link_id)
                 adj_data['Source'].append(source)
-                adj_data['Target'].append(targets)
+                adj_data['Target'].append(target)
                 adj_data['TimeCreated'].append(time_created)
                 adj_data['LinkID'].append(link_id)
 
-        # Create adjacency list DataFrame
         adj_list_df_tree = pd.DataFrame(adj_data)
-
         return G_tree, adj_list_df_tree
     
        
